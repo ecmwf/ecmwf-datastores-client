@@ -187,6 +187,7 @@ jobs:
       env:
         DATAPI_URL: ${{ secrets.DATAPI_URL }}
         DATAPI_KEY: ${{ secrets.DATAPI_KEY }}
+        DATAPI_ANON_KEY: ${{ secrets.DATAPI_ANON_KEY }}
       run: |
         make ci-integration-tests COV_REPORT=xml
 
