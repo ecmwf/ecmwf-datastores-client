@@ -34,6 +34,11 @@ requires-python = ">=3.8"
 [project.optional-dependencies]
 legacy = ["cdsapi"]
 
+[project.urls]
+documentation = "https://ecmwf-projects.github.io/datapi/"
+source = "https://github.com/ecmwf-projects/datapi"
+tracker = "https://github.com/ecmwf-projects/datapi/issues"
+
 [tool.coverage.run]
 branch = true
 
