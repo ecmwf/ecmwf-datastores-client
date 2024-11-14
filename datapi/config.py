@@ -23,7 +23,7 @@ SUPPORTED_API_VERSION = "v1"
 
 def read_configuration_file(config_path: str | None = None) -> dict[Any, Any]:
     if config_path is None:
-        config_path = os.getenv("CADS_API_RC", "~/.cads-api-client.json")
+        config_path = os.getenv("DATAPI_RC", "~/.datapi.json")
     config_path = os.path.expanduser(config_path)
     try:
         with open(config_path) as fin:
@@ -38,6 +38,5 @@ def read_configuration_file(config_path: str | None = None) -> dict[Any, Any]:
 
 def get_config(key: str, config_path: str | None = None) -> Any:
     return (
-        os.getenv(f"CADS_API_{key.upper()}")
-        or read_configuration_file(config_path)[key]
+        os.getenv(f"DATAPI_{key.upper()}") or read_configuration_file(config_path)[key]
     )

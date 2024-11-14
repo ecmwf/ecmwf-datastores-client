@@ -6,7 +6,7 @@ from typing import Any
 
 import pytest
 
-from cads_api_client import ApiClient
+from datapi import ApiClient
 
 
 def test_features_url_cds_adaptor_area_selection(

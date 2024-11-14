@@ -6,7 +6,7 @@ import pathlib
 import pytest
 import responses
 
-from cads_api_client import Results
+from datapi import Results
 
 RESULTS_URL = "http://localhost:8080/api/retrieve/v1/jobs/9bfc1362-2832-48e1-a235-359267420bb2/results"
 RESULTS_JSON = {

@@ -6,7 +6,7 @@ import pathlib
 import pytest
 from urllib3.exceptions import InsecureRequestWarning
 
-from cads_api_client import ApiClient, Remote, Results, processing
+from datapi import ApiClient, Remote, Results, processing
 
 
 def test_api_client_download_results(

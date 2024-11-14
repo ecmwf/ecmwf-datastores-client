@@ -21,7 +21,7 @@ from typing import Any, Callable
 import attrs
 import requests
 
-import cads_api_client
+import datapi
 
 from . import config
 from .processing import ApiResponse, ApiResponsePaginated, RequestKwargs
@@ -66,10 +66,10 @@ class Collection(ApiResponse):
         return str(self._json_dict["id"])
 
     @property
-    def process(self) -> cads_api_client.Process:
+    def process(self) -> datapi.Process:
         """Collection process."""
         url = self._get_link_href(rel="retrieve")
-        return cads_api_client.Process.from_request("get", url, **self._request_kwargs)
+        return datapi.Process.from_request("get", url, **self._request_kwargs)
 
     @property
     def form(self) -> list[dict[str, Any]]:
@@ -87,7 +87,7 @@ class Collection(ApiResponse):
             "get", url, log_messages=False, **self._request_kwargs
         )._json_list
 
-    def submit(self, **request: Any) -> cads_api_client.Remote:
+    def submit(self, **request: Any) -> datapi.Remote:
         warnings.warn(
             "`.submit` has been deprecated, and in the future will raise an error."
             " Please use `.process.submit` from now on.",

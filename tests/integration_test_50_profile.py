@@ -5,7 +5,7 @@ from typing import Literal
 import pytest
 from requests import HTTPError
 
-from cads_api_client import ApiClient, config
+from datapi import ApiClient, config
 
 
 @pytest.mark.parametrize("scope", [None, "all", "dataset", "portal"])

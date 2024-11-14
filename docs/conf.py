@@ -9,17 +9,17 @@
 import os
 import sys
 
-import cads_api_client
+import datapi
 
 sys.path.insert(0, os.path.abspath("../"))
 
 # -- Project information -----------------------------------------------------
 
-project = "cads_api_client"
+project = "datapi"
 copyright = "2022, European Union"
 author = "European Union"
-version = cads_api_client.__version__
-release = cads_api_client.__version__
+version = datapi.__version__
+release = datapi.__version__
 
 # -- General configuration ---------------------------------------------------
 
@@ -38,7 +38,7 @@ autodoc_typehints = "none"
 
 # autoapi configuration
 autoapi_add_toctree_entry = False
-autoapi_dirs = ["../cads_api_client"]
+autoapi_dirs = ["../datapi"]
 autoapi_ignore = ["*/version.py"]
 autoapi_member_order = "groupwise"
 autoapi_options = [
