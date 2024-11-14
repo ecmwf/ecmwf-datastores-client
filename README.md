@@ -6,7 +6,8 @@ Technical documentation: https://ecmwf-projects.github.io/datapi/
 
 ## Configuration
 
-The `ApiClient` requires the `url` to the API root and a valid API `key`. You can also set the `DATAPI_URL` and `DATAPI_KEY` environment variables, or use a configuration file. The configuration file must be located at `~/.datapirc`, or at the path specified by the `DATAPI_RC` environment variable.
+The `ApiClient` requires the `url` to the API root and a valid API `key`. You can also set the `DATAPI_URL` and `DATAPI_KEY` environment variables, or use a configuration file.
+The configuration file must be located at `~/.datapirc`, or at the path specified by the `DATAPI_RC` environment variable.
 
 ```
 $ cat $HOME/.datapirc
