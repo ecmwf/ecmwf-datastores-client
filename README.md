@@ -6,11 +6,12 @@ Technical documentation: https://ecmwf-projects.github.io/datapi/
 
 ## Configuration
 
-The `ApiClient` requires the `url` to the API root and a valid API `key`. You can also set the `DATAPI_URL` and `DATAPI_KEY` environment variables, or use a configuration file. The configuration file must be located at `~/.datapi.json`, or at the path specified by the `DATAPI_RC` environment variable.
+The `ApiClient` requires the `url` to the API root and a valid API `key`. You can also set the `DATAPI_URL` and `DATAPI_KEY` environment variables, or use a configuration file. The configuration file must be located at `~/.datapirc`, or at the path specified by the `DATAPI_RC` environment variable.
 
 ```
-$ cat $HOME/.datapi.json
-{"url": "https://cds.climate.copernicus.eu/api", "key": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"}
+$ cat $HOME/.datapirc
+url: https://cds.climate.copernicus.eu/api
+key: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 ```
 
 It is possible (though not recommended) to use the API key of one of the test users:

@@ -14,26 +14,32 @@
 
 from __future__ import annotations
 
-import json
 import os
 from typing import Any
 
 SUPPORTED_API_VERSION = "v1"
 
 
-def read_configuration_file(config_path: str | None = None) -> dict[Any, Any]:
+def parse_configuration_file(path: str) -> dict[str, str]:
+    config = {}
+    with open(path) as f:
+        for line in f.readlines():
+            if ":" in line:
+                key, value = line.strip().split(":", 1)
+                config[key] = value.strip()
+    return config
+
+
+def read_configuration_file(config_path: str | None = None) -> dict[str, str]:
     if config_path is None:
-        config_path = os.getenv("DATAPI_RC", "~/.datapi.json")
+        config_path = os.getenv("DATAPI_RC", "~/.datapirc")
     config_path = os.path.expanduser(config_path)
     try:
-        with open(config_path) as fin:
-            config = json.load(fin)
-        assert isinstance(config, dict)
+        return parse_configuration_file(config_path)
     except FileNotFoundError:
         raise
     except Exception:
-        raise ValueError(f"failed to parse {config_path!r} file")
-    return config
+        raise ValueError(f"Failed to parse {config_path!r} file")
 
 
 def get_config(key: str, config_path: str | None = None) -> Any:

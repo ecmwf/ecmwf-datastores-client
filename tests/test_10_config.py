@@ -1,4 +1,3 @@
-import json
 import pathlib
 
 import pytest
@@ -11,9 +10,8 @@ def test_read_configuration(
 ) -> None:
     expected_config = {"url": "dummy-url", "key": "dummy-key"}
 
-    config_file = tmp_path / ".datapi.json"
-    with config_file.open("w") as fp:
-        json.dump({"url": "dummy-url", "key": "dummy-key"}, fp)
+    config_file = tmp_path / ".datapirc"
+    config_file.write_text("url: dummy-url\nkey: dummy-key")
 
     res = config.read_configuration_file(str(config_file))
     assert res == expected_config
@@ -24,10 +22,10 @@ def test_read_configuration(
 
 
 def test_read_configuration_error(tmp_path: pathlib.Path) -> None:
-    config_file = tmp_path / ".datapi.json"
-    config_file.write_text("XXX")
+    config_file = tmp_path / ".datapirc"
+    config_file.write_bytes(b"\x80")
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Failed to parse"):
         config.read_configuration_file(str(config_file))
 
     with pytest.raises(FileNotFoundError):
@@ -39,14 +37,12 @@ def test_get_config_from_configuration_file(
 ) -> None:
     monkeypatch.delenv("DATAPI_KEY", raising=False)
     monkeypatch.delenv("DATAPI_URL", raising=False)
-    expected_config = {"url": "dummy-url", "key": "dummy-key"}
 
-    config_file = tmp_path / ".datapi.json"
-    with config_file.open("w") as fp:
-        json.dump(expected_config, fp)
+    config_file = tmp_path / ".datapirc"
+    config_file.write_text("url: dummy-url\nkey: dummy-key")
 
     res = config.get_config("url", str(config_file))
-    assert res == expected_config["url"]
+    assert res == "dummy-url"
 
     with pytest.raises(KeyError):
         config.get_config("non-existent-key", str(config_file))
@@ -56,11 +52,9 @@ def test_get_config_from_environment_variables(
     tmp_path: pathlib.Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     expected_config = {"url": "dummy-url", "key": "dummy-key"}
-    file_config = {"url": "wrong-url", "key": "wrong-key"}
 
-    config_file = tmp_path / ".datapi.json"
-    with config_file.open("w") as fp:
-        json.dump(file_config, fp)
+    config_file = tmp_path / ".datapirc"
+    config_file.write_text("url: wrong-url\nkey: wrong-key")
 
     monkeypatch.setenv("DATAPI_URL", expected_config["url"])
     monkeypatch.setenv("DATAPI_KEY", expected_config["key"])
