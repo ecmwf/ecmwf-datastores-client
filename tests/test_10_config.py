@@ -13,11 +13,11 @@ def test_read_configuration(
     config_file = tmp_path / ".datapirc"
     config_file.write_text("url: dummy-url\nkey: dummy-key")
 
-    res = config.read_configuration_file(str(config_file))
+    res = config.read_config(str(config_file))
     assert res == expected_config
 
     monkeypatch.setenv("DATAPI_RC", str(config_file))
-    res = config.read_configuration_file(None)
+    res = config.read_config(None)
     assert res == expected_config
 
 
@@ -26,10 +26,19 @@ def test_read_configuration_error(tmp_path: pathlib.Path) -> None:
     config_file.write_bytes(b"\x80")
 
     with pytest.raises(ValueError, match="Failed to parse"):
-        config.read_configuration_file(str(config_file))
+        config.read_config(str(config_file))
 
     with pytest.raises(FileNotFoundError):
-        config.read_configuration_file("non-existent-file")
+        config.read_config("non-existent-file")
+
+
+def test_read_default_config() -> None:
+    config_path = pathlib.Path.home() / ".datapirc"
+    if not config_path.exists():
+        with pytest.raises(FileNotFoundError):
+            config.read_config()
+    else:
+        assert config.read_config() == config.read_config(str(config_path))
 
 
 def test_get_config_from_configuration_file(

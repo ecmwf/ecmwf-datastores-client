@@ -15,34 +15,28 @@
 from __future__ import annotations
 
 import os
-from typing import Any
 
 SUPPORTED_API_VERSION = "v1"
+CONFIG_PREFIX = "datapi"
 
 
-def parse_configuration_file(path: str) -> dict[str, str]:
-    config = {}
-    with open(path) as f:
-        for line in f.readlines():
-            if ":" in line:
-                key, value = line.strip().split(":", 1)
-                config[key] = value.strip()
-    return config
-
-
-def read_configuration_file(config_path: str | None = None) -> dict[str, str]:
-    if config_path is None:
-        config_path = os.getenv("DATAPI_RC", "~/.datapirc")
-    config_path = os.path.expanduser(config_path)
+def read_config(path: str | None = None) -> dict[str, str]:
+    if path is None:
+        path = os.getenv(f"{CONFIG_PREFIX}_RC".upper(), f"~/.{CONFIG_PREFIX}rc".lower())
+    path = os.path.expanduser(path)
     try:
-        return parse_configuration_file(config_path)
+        config = {}
+        with open(path) as f:
+            for line in f.readlines():
+                if ":" in line:
+                    key, value = line.strip().split(":", 1)
+                    config[key] = value.strip()
+        return config
     except FileNotFoundError:
         raise
     except Exception:
-        raise ValueError(f"Failed to parse {config_path!r} file")
+        raise ValueError(f"Failed to parse {path!r} file")
 
 
-def get_config(key: str, config_path: str | None = None) -> Any:
-    return (
-        os.getenv(f"DATAPI_{key.upper()}") or read_configuration_file(config_path)[key]
-    )
+def get_config(key: str, config_path: str | None = None) -> str:
+    return os.getenv(f"{CONFIG_PREFIX}_{key}".upper()) or read_config(config_path)[key]
