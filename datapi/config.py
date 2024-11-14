@@ -14,29 +14,29 @@
 
 from __future__ import annotations
 
-import json
 import os
-from typing import Any
 
 SUPPORTED_API_VERSION = "v1"
+CONFIG_PREFIX = "datapi"
 
 
-def read_configuration_file(config_path: str | None = None) -> dict[Any, Any]:
-    if config_path is None:
-        config_path = os.getenv("DATAPI_RC", "~/.datapi.json")
-    config_path = os.path.expanduser(config_path)
+def read_config(path: str | None = None) -> dict[str, str]:
+    if path is None:
+        path = os.getenv(f"{CONFIG_PREFIX}_RC".upper(), f"~/.{CONFIG_PREFIX}rc".lower())
+    path = os.path.expanduser(path)
     try:
-        with open(config_path) as fin:
-            config = json.load(fin)
-        assert isinstance(config, dict)
+        config = {}
+        with open(path) as f:
+            for line in f.readlines():
+                if ":" in line:
+                    key, value = line.strip().split(":", 1)
+                    config[key] = value.strip()
+        return config
     except FileNotFoundError:
         raise
     except Exception:
-        raise ValueError(f"failed to parse {config_path!r} file")
-    return config
+        raise ValueError(f"Failed to parse {path!r} file")
 
 
-def get_config(key: str, config_path: str | None = None) -> Any:
-    return (
-        os.getenv(f"DATAPI_{key.upper()}") or read_configuration_file(config_path)[key]
-    )
+def get_config(key: str, config_path: str | None = None) -> str:
+    return os.getenv(f"{CONFIG_PREFIX}_{key}".upper()) or read_config(config_path)[key]
