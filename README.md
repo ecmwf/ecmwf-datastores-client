@@ -1,6 +1,6 @@
 # datapi
 
-ECMWF Software EnginE (ESEE) Data Stores API Python Client
+ECMWF Software EnginE (ESEE) Data Stores API Python Client.
 
 Technical documentation: https://ecmwf-projects.github.io/datapi/
 
