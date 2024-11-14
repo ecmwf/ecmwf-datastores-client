@@ -16,5 +16,6 @@ dependencies:
 # DO NOT EDIT ABOVE THIS LINE, ADD DEPENDENCIES BELOW
 - types-requests
 - pip:
-  - git+https://github.com/bopen/cdsapi.git@datapi
   - responses
+# FIXME!
+  - git+https://github.com/bopen/cdsapi.git@datapi
