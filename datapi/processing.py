@@ -291,15 +291,6 @@ class Processes(ApiResponsePaginated):
         """Available collection IDs."""
         return [proc["id"] for proc in self._json_dict["processes"]]
 
-    @property
-    def process_ids(self) -> list[str]:
-        warnings.warn(
-            "`.process_ids` has been deprecated, and in the future will raise an error."
-            " Please use `.collection_ids` from now on.",
-            DeprecationWarning,
-        )
-        return self.collection_ids
-
 
 @attrs.define
 class Process(ApiResponse):
@@ -609,15 +600,6 @@ class Jobs(ApiResponsePaginated):
     def request_uids(self) -> list[str]:
         """List of request UIDs."""
         return [job["jobID"] for job in self._json_dict["jobs"]]
-
-    @property
-    def job_ids(self) -> list[str]:
-        warnings.warn(
-            "`.job_ids` has been deprecated, and in the future will raise an error."
-            " Please use `.request_uids` from now on.",
-            DeprecationWarning,
-        )
-        return self.request_uids
 
 
 @attrs.define

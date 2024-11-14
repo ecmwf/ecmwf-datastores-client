@@ -12,7 +12,7 @@ def test_processig_processes_limit(api_anon_client: ApiClient) -> None:
     assert len(processes.collection_ids) == 1
     next_processes = processes.next
     assert next_processes is not None
-    assert len(next_processes.process_ids) == 1
+    assert len(next_processes.collection_ids) == 1
 
 
 def test_processing_processes_sortby(api_anon_client: ApiClient) -> None:

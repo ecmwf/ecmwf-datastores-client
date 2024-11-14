@@ -15,7 +15,6 @@
 from __future__ import annotations
 
 import datetime
-import warnings
 from typing import Any, Callable
 
 import attrs
@@ -86,14 +85,6 @@ class Collection(ApiResponse):
         return ApiResponse.from_request(
             "get", url, log_messages=False, **self._request_kwargs
         )._json_list
-
-    def submit(self, **request: Any) -> datapi.Remote:
-        warnings.warn(
-            "`.submit` has been deprecated, and in the future will raise an error."
-            " Please use `.process.submit` from now on.",
-            DeprecationWarning,
-        )
-        return self.process.submit(**request)
 
 
 @attrs.define(slots=False)

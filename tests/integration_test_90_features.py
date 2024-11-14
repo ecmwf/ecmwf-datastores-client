@@ -1,6 +1,5 @@
 import datetime
 import os
-import pathlib
 from pathlib import Path
 from typing import Any
 
@@ -72,16 +71,12 @@ def test_features_mars_cds_adaptor_format(
     assert os.path.getsize(result)
 
 
-def test_features_upload_big_file(
-    api_anon_client: ApiClient, tmp_path: pathlib.Path
-) -> None:
+def test_features_upload_big_file(api_anon_client: ApiClient) -> None:
     # See: https://github.com/fsspec/s3fs/pull/910
-    target = str(tmp_path / "test.grib")
     size = 1_048_576_000 + 1
-    api_anon_client.retrieve(
+    results = api_anon_client.submit_and_wait_on_results(
         "test-adaptor-dummy",
         size=size,
         _timestamp=datetime.datetime.now().isoformat(),
-        target=target,
     )
-    assert os.path.getsize(target) == size
+    assert results.content_length == size
