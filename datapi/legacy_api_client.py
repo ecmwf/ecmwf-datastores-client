@@ -25,7 +25,7 @@ import cdsapi.api
 import multiurl
 import requests
 
-from . import __version__ as cads_api_client_version
+from . import __version__ as datapi_version
 from .api_client import ApiClient
 from .processing import Remote, Results
 
@@ -133,7 +133,7 @@ class LegacyApiClient(cdsapi.api.Client):  # type: ignore[misc]
                 "sleep_max": self.sleep_max,
                 "retry_max": self.retry_max,
                 "delete": self.delete,
-                "cads_api_client_version": cads_api_client_version,
+                "datapi_version": datapi_version,
             },
         )
 

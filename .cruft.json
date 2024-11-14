@@ -4,9 +4,9 @@
   "checkout": null,
   "context": {
     "cookiecutter": {
-      "project_name": "cads-api-client",
-      "project_slug": "cads_api_client",
-      "project_short_description": "CADS API Python client",
+      "project_name": "datapi",
+      "project_slug": "datapi",
+      "project_short_description": "ESEE Data Stores API Python Client",
       "copyright_holder": "European Union",
       "copyright_year": "2022",
       "mypy_strict": "True",

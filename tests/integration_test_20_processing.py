@@ -3,7 +3,7 @@ import logging
 import pytest
 from requests import HTTPError
 
-from cads_api_client import ApiClient, Process, Processes, Remote
+from datapi import ApiClient, Process, Processes, Remote
 
 
 def test_processig_processes_limit(api_anon_client: ApiClient) -> None:
@@ -31,7 +31,7 @@ def test_processing_process(
     assert isinstance(process, Process)
     assert process.id == "test-adaptor-dummy"
 
-    with caplog.at_level(logging.INFO, logger="cads_api_client.processing"):
+    with caplog.at_level(logging.INFO, logger="datapi.processing"):
         remote = process.submit()
     assert isinstance(remote, Remote)
     assert "The job has been submitted as an anonymous user" in caplog.text

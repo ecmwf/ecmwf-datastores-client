@@ -6,7 +6,7 @@ import requests
 import responses
 from responses.matchers import json_params_matcher
 
-from cads_api_client import catalogue, processing
+from datapi import catalogue, processing
 
 COLLECTION_ID = "reanalysis-era5-pressure-levels"
 JOB_SUCCESSFUL_ID = "9bfc1362-2832-48e1-a235-359267420bb2"
@@ -424,38 +424,38 @@ def test_remote_logs(
 
     collection = cat.get_collection(COLLECTION_ID)
 
-    with caplog.at_level(logging.DEBUG, logger="cads_api_client.processing"):
+    with caplog.at_level(logging.DEBUG, logger="datapi.processing"):
         remote = collection.process.submit(variable="temperature", year="2022")
         remote._wait_on_results()
 
     assert caplog.record_tuples == [
         (
-            "cads_api_client.processing",
+            "datapi.processing",
             10,
             "GET http://localhost:8080/api/retrieve/v1/processes/reanalysis-era5-pressure-levels",
         ),
         (
-            "cads_api_client.processing",
+            "datapi.processing",
             10,
             f"REPLY {json.dumps(PROCESS_JSON)}",
         ),
         (
-            "cads_api_client.processing",
+            "datapi.processing",
             30,
             "This is a warning message",
         ),
         (
-            "cads_api_client.processing",
+            "datapi.processing",
             30,
             "[2023-12-12T13:00:00] This is a warning dataset message",
         ),
         (
-            "cads_api_client.processing",
+            "datapi.processing",
             20,
             "[2023-12-12T14:00:00] This is a success dataset message",
         ),
         (
-            "cads_api_client.processing",
+            "datapi.processing",
             10,
             (
                 "POST http://localhost:8080/api/retrieve/v1/processes/"
@@ -464,26 +464,26 @@ def test_remote_logs(
             ),
         ),
         (
-            "cads_api_client.processing",
+            "datapi.processing",
             10,
             f"REPLY {json.dumps(JOB_SUCCESSFUL_JSON)}",
         ),
         (
-            "cads_api_client.processing",
+            "datapi.processing",
             20,
             "Request ID is 9bfc1362-2832-48e1-a235-359267420bb2",
         ),
         (
-            "cads_api_client.processing",
+            "datapi.processing",
             10,
             "GET http://localhost:8080/api/retrieve/v1/jobs/9bfc1362-2832-48e1-a235-359267420bb2",
         ),
         (
-            "cads_api_client.processing",
+            "datapi.processing",
             10,
             f"REPLY {json.dumps(JOB_SUCCESSFUL_JSON)}",
         ),
-        ("cads_api_client.processing", 20, "This is a log"),
-        ("cads_api_client.processing", 30, "This is a warning log"),
-        ("cads_api_client.processing", 20, "status has been updated to successful"),
+        ("datapi.processing", 20, "This is a log"),
+        ("datapi.processing", 30, "This is a warning log"),
+        ("datapi.processing", 20, "status has been updated to successful"),
     ]

@@ -22,21 +22,21 @@ import attrs
 import multiurl.base
 import requests
 
-import cads_api_client
+import datapi
 
 from . import __version__, catalogue, config, processing, profile
 
 
 @attrs.define(slots=False)
 class ApiClient:
-    """A client to interact with the CADS API.
+    """A client to interact with the ESEE Data Stores.
 
     Parameters
     ----------
     url: str or None, default: None
-        API URL. If None, infer from CADS_API_URL or CADS_API_RC.
+        API URL. If None, infer from DATAPI_URL or DATAPI_RC.
     key: str or None, default: None
-        API Key. If None, infer from CADS_API_KEY or CADS_API_RC.
+        API Key. If None, infer from DATAPI_KEY or DATAPI_RC.
     verify: bool, default: True
         Whether to verify the TLS certificate at the remote end.
     timeout: float or tuple[float,float], default: 60
@@ -83,7 +83,7 @@ class ApiClient:
             warnings.warn(str(exc), UserWarning)
 
     def _get_headers(self, key_is_mandatory: bool = True) -> dict[str, str]:
-        headers = {"User-Agent": f"cads-api-client/{__version__}"}
+        headers = {"User-Agent": f"datapi/{__version__}"}
         if self.key is not None:
             headers["PRIVATE-TOKEN"] = self.key
         elif key_is_mandatory:
@@ -248,7 +248,7 @@ class ApiClient:
         licences = self._profile_api.accepted_licences(**params).get("licences", [])
         return licences
 
-    def get_collection(self, collection_id: str) -> cads_api_client.Collection:
+    def get_collection(self, collection_id: str) -> datapi.Collection:
         """Retrieve a catalogue collection.
 
         Parameters
@@ -258,7 +258,7 @@ class ApiClient:
 
         Returns
         -------
-        cads_api_client.Collection
+        datapi.Collection
         """
         return self._catalogue_api.get_collection(collection_id)
 
@@ -268,7 +268,7 @@ class ApiClient:
         sortby: Literal[None, "id", "relevance", "title", "update"] = None,
         query: str | None = None,
         keywords: list[str] | None = None,
-    ) -> cads_api_client.Collections:
+    ) -> datapi.Collections:
         """Retrieve catalogue collections.
 
         Parameters
@@ -284,7 +284,7 @@ class ApiClient:
 
         Returns
         -------
-        cads_api_client.Collections
+        datapi.Collections
         """
         params = {
             k: v
@@ -300,7 +300,7 @@ class ApiClient:
         limit: int | None = None,
         sortby: Literal[None, "created", "-created"] = None,
         status: Literal[None, "accepted", "running", "successful", "failed"] = None,
-    ) -> cads_api_client.Jobs:
+    ) -> datapi.Jobs:
         """Retrieve submitted jobs.
 
         Parameters
@@ -314,7 +314,7 @@ class ApiClient:
 
         Returns
         -------
-        cads_api_client.Jobs
+        datapi.Jobs
         """
         params = {
             k: v
@@ -344,7 +344,7 @@ class ApiClient:
         licences = self._catalogue_api.get_licenses(**params).get("licences", [])
         return licences
 
-    def get_process(self, collection_id: str) -> cads_api_client.Process:
+    def get_process(self, collection_id: str) -> datapi.Process:
         """
         Retrieve a process.
 
@@ -355,7 +355,7 @@ class ApiClient:
 
         Returns
         -------
-        cads_api_client.Process
+        datapi.Process
         """
         return self._retrieve_api.get_process(collection_id)
 
@@ -363,13 +363,13 @@ class ApiClient:
         self,
         limit: int | None = None,
         sortby: Literal[None, "id", "-id"] = None,
-    ) -> cads_api_client.Processes:
+    ) -> datapi.Processes:
         params = {
             k: v for k, v in zip(["limit", "sortby"], [limit, sortby]) if v is not None
         }
         return self._retrieve_api.get_processes(**params)
 
-    def get_remote(self, request_uid: str) -> cads_api_client.Remote:
+    def get_remote(self, request_uid: str) -> datapi.Remote:
         """
         Retrieve the remote object of a request.
 
@@ -380,11 +380,11 @@ class ApiClient:
 
         Returns
         -------
-        cads_api_client.Remote
+        datapi.Remote
         """
         return self._retrieve_api.get_job(request_uid).make_remote()
 
-    def get_results(self, request_uid: str) -> cads_api_client.Results:
+    def get_results(self, request_uid: str) -> datapi.Results:
         """
         Retrieve the results of a request.
 
@@ -395,7 +395,7 @@ class ApiClient:
 
         Returns
         -------
-        cads_api_client.Results
+        datapi.Results
         """
         return self.get_remote(request_uid).make_results()
 
@@ -423,7 +423,7 @@ class ApiClient:
         """
         return self.submit(collection_id, **request).download(target)
 
-    def submit(self, collection_id: str, **request: Any) -> cads_api_client.Remote:
+    def submit(self, collection_id: str, **request: Any) -> datapi.Remote:
         """Submit a request.
 
         Parameters
@@ -435,13 +435,13 @@ class ApiClient:
 
         Returns
         -------
-        cads_api_client.Remote
+        datapi.Remote
         """
         return self._retrieve_api.submit(collection_id, **request)
 
     def submit_and_wait_on_results(
         self, collection_id: str, **request: Any
-    ) -> cads_api_client.Results:
+    ) -> datapi.Results:
         """Submit a request and wait for the results to be ready.
 
         Parameters
@@ -453,6 +453,6 @@ class ApiClient:
 
         Returns
         -------
-        cads_api_client.Results
+        datapi.Results
         """
         return self._retrieve_api.submit(collection_id, **request).make_results()

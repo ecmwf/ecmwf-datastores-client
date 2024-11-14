@@ -24,10 +24,10 @@ dependencies = [
   "requests",
   "typing-extensions"
 ]
-description = "CADS API Python client"
+description = "ESEE Data Stores API Python Client"
 dynamic = ["version"]
 license = {file = "LICENSE"}
-name = "cads-api-client"
+name = "datapi"
 readme = "README.md"
 requires-python = ">=3.8"
 
@@ -76,13 +76,13 @@ max-line-length = 110
 convention = "numpy"
 
 [tool.setuptools]
-packages = ["cads_api_client"]
+packages = ["datapi"]
 
 [tool.setuptools.package-data]
-"cads_api_client" = ["py.typed"]
+"datapi" = ["py.typed"]
 
 [tool.setuptools_scm]
-write_to = "cads_api_client/version.py"
+write_to = "datapi/version.py"
 write_to_template = '''
 # Do not change! Do not track in version control!
 __version__ = "{version}"

@@ -8,7 +8,7 @@ from typing import Any
 import pytest
 from requests import HTTPError
 
-from cads_api_client import ApiClient, Remote
+from datapi import ApiClient, Remote
 
 does_not_raise = contextlib.nullcontext
 

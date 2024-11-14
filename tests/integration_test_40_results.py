@@ -6,7 +6,7 @@ from typing import Any
 import pytest
 import requests
 
-from cads_api_client import ApiClient, Results
+from datapi import ApiClient, Results
 
 does_not_raise = contextlib.nullcontext
 

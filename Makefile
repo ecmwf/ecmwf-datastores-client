@@ -1,4 +1,4 @@
-PROJECT := cads_api_client
+PROJECT := datapi
 CONDA := conda
 CONDAFLAGS :=
 COV_REPORT := html

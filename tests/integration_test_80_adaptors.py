@@ -7,7 +7,7 @@ import zipfile
 import pytest
 from requests import HTTPError
 
-from cads_api_client import ApiClient
+from datapi import ApiClient
 
 
 def test_adaptors_dummy(api_anon_client: ApiClient, tmp_path: pathlib.Path) -> None:

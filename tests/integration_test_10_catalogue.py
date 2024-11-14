@@ -1,6 +1,6 @@
 import pytest
 
-from cads_api_client import ApiClient, Collection, processing
+from datapi import ApiClient, Collection, processing
 
 
 @pytest.fixture

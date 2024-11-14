@@ -1,15 +1,15 @@
-# cads-api-client
+# datapi
 
-CADS API Python client
+ESEE Data Stores API Python Client
 
-Technical documentation: https://ecmwf-projects.github.io/cads-api-client/
+Technical documentation: https://ecmwf-projects.github.io/datapi/
 
 ## Configuration
 
-The `ApiClient` requires the `url` to the API root and a valid API `key`. You can also set the `CADS_API_URL` and `CADS_API_KEY` environment variables, or use a configuration file. The configuration file must be located at `~/.cads-api-client.json`, or at the path specified by the `CADS_API_RC` environment variable.
+The `ApiClient` requires the `url` to the API root and a valid API `key`. You can also set the `DATAPI_URL` and `DATAPI_KEY` environment variables, or use a configuration file. The configuration file must be located at `~/.datapi.json`, or at the path specified by the `DATAPI_RC` environment variable.
 
 ```
-$ cat $HOME/.cads-api-client.json
+$ cat $HOME/.datapi.json
 {"url": "https://cds.climate.copernicus.eu/api", "key": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"}
 ```
 
@@ -35,10 +35,10 @@ Instantiate the API client and verify the authentication:
 
 ```python
 >>> import os
->>> from cads_api_client import ApiClient
+>>> from datapi import ApiClient
 >>> client = ApiClient(
-...     url=os.getenv("CADS_API_URL"),
-...     key=os.getenv("CADS_API_KEY"),
+...     url=os.getenv("DATAPI_URL"),
+...     key=os.getenv("DATAPI_KEY"),
 ... )
 >>> client.check_authentication()
 {...}

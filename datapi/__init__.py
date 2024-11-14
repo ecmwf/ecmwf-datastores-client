@@ -1,4 +1,4 @@
-"""CADS API Python client."""
+"""ESEE Data Stores API Python Client."""
 
 # Copyright 2022, European Union.
 #

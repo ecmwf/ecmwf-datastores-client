@@ -10,8 +10,8 @@ from typing import Any
 import pytest
 import requests
 
-from cads_api_client import processing
-from cads_api_client.legacy_api_client import LegacyApiClient
+from datapi import processing
+from datapi.legacy_api_client import LegacyApiClient
 
 does_not_raise = contextlib.nullcontext
 

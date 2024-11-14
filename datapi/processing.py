@@ -32,7 +32,7 @@ import attrs
 import multiurl
 import requests
 
-import cads_api_client
+import datapi
 
 from . import config
 
@@ -311,7 +311,7 @@ class Process(ApiResponse):
         process_id: str = self._json_dict["id"]
         return process_id
 
-    def submit(self, **request: Any) -> cads_api_client.Remote:
+    def submit(self, **request: Any) -> datapi.Remote:
         """Submit a request.
 
         Parameters
@@ -321,7 +321,7 @@ class Process(ApiResponse):
 
         Returns
         -------
-        cads_api_client.Remote
+        datapi.Remote
         """
         job = Job.from_request(
             "post",

@@ -183,9 +183,11 @@ jobs:
       run: |
         python -m pip install --no-deps -e .
     - name: Run tests
+      timeout-minutes: 10
       env:
-        CADS_API_URL: ${{ secrets.CADS_API_URL }}
-        CADS_API_KEY: ${{ secrets.CADS_API_KEY }}
+        DATAPI_URL: ${{ secrets.DATAPI_URL }}
+        DATAPI_KEY: ${{ secrets.DATAPI_KEY }}
+        DATAPI_ANON_KEY: ${{ secrets.DATAPI_ANON_KEY }}
       run: |
         make ci-integration-tests COV_REPORT=xml
 
@@ -214,9 +216,9 @@ jobs:
     - name: Check wheels
       run: |
         cd dist || exit
-        python -m pip install cads_api_client*.whl || exit
+        python -m pip install datapi*.whl || exit
         python -m twine check --strict * || exit
-        python -c "import cads_api_client" || exit
+        python -c "import datapi" || exit
         cd ..
     - uses: actions/upload-artifact@v4
       with:
@@ -233,7 +235,7 @@ jobs:
       startsWith(github.ref, 'refs/tags')
     environment:
       name: pypi
-      url: https://pypi.org/p/cads-api-client
+      url: https://pypi.org/p/datapi
     permissions:
       id-token: write  # IMPORTANT: this permission is mandatory for trusted publish
 
