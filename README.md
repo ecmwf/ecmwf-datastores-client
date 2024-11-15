@@ -4,6 +4,20 @@ ECMWF Software EnginE (ESEE) Data Stores API Python Client.
 
 Technical documentation: https://ecmwf-projects.github.io/datapi/
 
+## Installation
+
+Install with conda:
+
+```
+$ conda install -c conda-forge datapi
+```
+
+Install with pip:
+
+```
+$ pip install datapi
+```
+
 ## Configuration
 
 The `ApiClient` requires the `url` to the API root and a valid API `key`. You can also set the `DATAPI_URL` and `DATAPI_KEY` environment variables, or use a configuration file.
