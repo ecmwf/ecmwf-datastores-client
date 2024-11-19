@@ -18,4 +18,4 @@ dependencies:
 - pip:
   - responses
 # FIXME!
-  - git+https://github.com/bopen/cdsapi.git@datapi
+  - git+https://github.com/bopen/cdsapi.git
