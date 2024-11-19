@@ -18,4 +18,4 @@ dependencies:
 - pip:
   - responses
 # FIXME!
-  - https://github.com/ecmwf/cdsapi.git
+  - git+https://github.com/ecmwf/cdsapi.git
