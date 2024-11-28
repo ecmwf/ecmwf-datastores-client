@@ -203,13 +203,15 @@ class ApiResponse:
 
     @property
     def _json_dict(self) -> dict[str, Any]:
-        assert isinstance(content := self.json, dict)
-        return content
+        json_dict = self.json
+        assert isinstance(json_dict, dict)
+        return json_dict
 
     @property
     def _json_list(self) -> list[dict[str, Any]]:
-        assert isinstance(content := self.json, list)
-        return content
+        json_list = self.json
+        assert isinstance(json_list, list)
+        return json_list
 
     def log_messages(self) -> None:
         if message_str := self._json_dict.get("message"):
