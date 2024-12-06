@@ -32,7 +32,7 @@ readme = "README.md"
 requires-python = ">=3.8"
 
 [project.optional-dependencies]
-legacy = ["cdsapi"]
+legacy = ["cdsapi >= 0.7.5"]
 
 [project.urls]
 documentation = "https://ecmwf-projects.github.io/datapi/"
