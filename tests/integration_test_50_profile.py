@@ -37,6 +37,7 @@ def test_api_client_check_authentication(
     api_root_url: str, api_anon_client: ApiClient
 ) -> None:
     assert api_anon_client.check_authentication() == {
+        "email": None,
         "id": -1,
         "role": "anonymous",
         "sub": "anonymous",
