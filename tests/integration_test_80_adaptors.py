@@ -10,6 +10,7 @@ from requests import HTTPError
 from datapi import ApiClient
 
 
+@pytest.mark.extra
 def test_adaptors_dummy(api_anon_client: ApiClient, tmp_path: pathlib.Path) -> None:
     collection_id = "test-adaptor-dummy"
     target = str(tmp_path / "dummy.grib")
@@ -21,6 +22,7 @@ def test_adaptors_dummy(api_anon_client: ApiClient, tmp_path: pathlib.Path) -> N
     assert os.path.exists(target)
 
 
+@pytest.mark.extra
 def test_adaptors_dummy_cached(
     api_anon_client: ApiClient, tmp_path: pathlib.Path
 ) -> None:
@@ -53,6 +55,7 @@ def test_adaptors_dummy_cached(
             assert expected_bytes == zip_grib_fs.read()
 
 
+@pytest.mark.extra
 def test_adaptors_url(api_anon_client: ApiClient, tmp_path: pathlib.Path) -> None:
     collection_id = "test-adaptor-url"
     request = {
@@ -73,6 +76,7 @@ def test_adaptors_url(api_anon_client: ApiClient, tmp_path: pathlib.Path) -> Non
     assert filecmp.cmp(target1, target2)
 
 
+@pytest.mark.extra
 def test_adaptors_url_constraints(
     api_anon_client: ApiClient, tmp_path: pathlib.Path
 ) -> None:
@@ -80,6 +84,7 @@ def test_adaptors_url_constraints(
         api_anon_client.submit("test-adaptor-url", foo="bar")
 
 
+@pytest.mark.extra
 def test_adaptors_direct_mars(
     api_anon_client: ApiClient, tmp_path: pathlib.Path
 ) -> None:
@@ -105,6 +110,7 @@ def test_adaptors_direct_mars(
     assert os.path.exists(target)
 
 
+@pytest.mark.extra
 def test_adaptors_mars(api_anon_client: ApiClient, tmp_path: pathlib.Path) -> None:
     collection_id = "test-adaptor-mars"
     request = {

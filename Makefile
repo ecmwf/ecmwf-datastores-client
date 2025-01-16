@@ -36,12 +36,10 @@ docs-build:
 integration-tests:
 	python -m pytest -vv --cov=. --cov-report=$(COV_REPORT) tests/integration*.py
 
-legacy-tests:
-	python -m pytest -vv --cov=. --cov-report=$(COV_REPORT) tests/integration_test_*legacy*.py
-
 doc-tests:
 	python -m pytest -vv --doctest-glob='*.md' README.md
 
 all-tests: unit-tests integration-tests doc-tests
 
-ci-integration-tests: unit-tests legacy-tests doc-tests
+ci-integration-tests: unit-tests doc-tests
+	python -m pytest -vv --cov=. -m="not extra" --cov-report=$(COV_REPORT) tests/integration*.py

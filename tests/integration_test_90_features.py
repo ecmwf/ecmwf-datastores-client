@@ -8,6 +8,7 @@ import pytest
 from datapi import ApiClient
 
 
+@pytest.mark.extra
 def test_features_url_cds_adaptor_area_selection(
     tmp_path: Path,
     api_anon_client: ApiClient,
@@ -33,6 +34,7 @@ def test_features_url_cds_adaptor_area_selection(
     assert os.path.getsize(result_bigger) > os.path.getsize(result_smaller)
 
 
+@pytest.mark.extra
 @pytest.mark.parametrize(
     "format,expected_extension",
     [
@@ -71,6 +73,7 @@ def test_features_mars_cds_adaptor_format(
     assert os.path.getsize(result)
 
 
+@pytest.mark.extra
 def test_features_upload_big_file(api_anon_client: ApiClient) -> None:
     # See: https://github.com/fsspec/s3fs/pull/910
     size = 1_048_576_000 + 1

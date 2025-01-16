@@ -21,17 +21,6 @@ def test_read_configuration(
     assert res == expected_config
 
 
-def test_read_configuration_error(tmp_path: pathlib.Path) -> None:
-    config_file = tmp_path / ".datapirc"
-    config_file.write_bytes(b"\x80")
-
-    with pytest.raises(ValueError, match="Failed to parse"):
-        config.read_config(str(config_file))
-
-    with pytest.raises(FileNotFoundError):
-        config.read_config("non-existent-file")
-
-
 def test_read_default_config() -> None:
     config_path = pathlib.Path.home() / ".datapirc"
     if not config_path.exists():

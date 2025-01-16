@@ -52,10 +52,11 @@ jobs:
   unit-tests:
     name: unit-tests
     needs: combine-environments
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         python-version: ['3.11']
+        os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
     - uses: actions/checkout@v4
