@@ -23,6 +23,7 @@ def remote(api_anon_client: ApiClient) -> Remote:
 
 def test_remote_delete(remote: Remote) -> None:
     result = remote.delete()
+    time.sleep(1)
     assert result["status"] == "dismissed"
 
     with pytest.raises(HTTPError, match="404 Client Error"):
