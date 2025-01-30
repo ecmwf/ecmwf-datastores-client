@@ -4,6 +4,7 @@ import contextlib
 import datetime
 import os
 import pathlib
+import time
 import uuid
 from typing import Any
 
@@ -85,6 +86,7 @@ def test_remote_cleanup(
     remote = client.submit("test-adaptor-dummy")
     request_uid = remote.request_uid
     del remote
+    time.sleep(1)
 
     client = ApiClient(url=api_root_url, key=api_anon_key, maximum_tries=0)
     with raises:
