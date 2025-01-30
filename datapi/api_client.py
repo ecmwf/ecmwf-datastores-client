@@ -373,6 +373,9 @@ class ApiClient:
         """
         return self.submit(collection_id, **request).download(target)
 
+    def star_collection(self, collection_id: str) -> list[str]:
+        return self._profile_api.star_collection(collection_id)
+
     def submit(self, collection_id: str, **request: Any) -> datapi.Remote:
         """Submit a request.
 
@@ -406,3 +409,6 @@ class ApiClient:
         datapi.Results
         """
         return self._retrieve_api.submit(collection_id, **request).make_results()
+
+    def unstar_collection(self, collection_id: str) -> None:
+        return self._profile_api.unstar_collection(collection_id)

@@ -208,7 +208,7 @@ class ApiResponse:
         return json_dict
 
     @property
-    def _json_list(self) -> list[dict[str, Any]]:
+    def _json_list(self) -> list[Any]:
         json_list = self.json
         assert isinstance(json_list, list)
         return json_list

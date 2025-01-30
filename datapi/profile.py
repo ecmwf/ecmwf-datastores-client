@@ -75,3 +75,13 @@ class Profile:
     def check_authentication(self) -> dict[str, Any]:
         url = f"{self.url}/account/verification/pat"
         return self._get_api_response("post", url)._json_dict
+
+    def star_collection(self, collection_id: str) -> list[str]:
+        url = f"{self.url}/account/starred"
+        return self._get_api_response(
+            "post", url, json={"uid": collection_id}, log_messages=False
+        )._json_list
+
+    def unstar_collection(self, collection_id: str) -> None:
+        url = f"{self.url}/account/starred/{collection_id}"
+        self._get_api_response("delete", url, log_messages=False)
