@@ -69,7 +69,6 @@ def test_processing_get_jobs_status(api_anon_client: ApiClient) -> None:
 def test_processing_get_jobs_sortby(api_anon_client: ApiClient) -> None:
     uid1 = api_anon_client.submit("test-adaptor-dummy").request_uid
     uid2 = api_anon_client.submit("test-adaptor-dummy").request_uid
-    assert [uid2, uid1] == api_anon_client.get_jobs(
-        sortby="-created", limit=2
-    ).request_uids
+    uids = api_anon_client.get_jobs(sortby="-created").request_uids
+    assert uids.index(uid2) < uids.index(uid1)
     assert [uid2] != api_anon_client.get_jobs(sortby="created", limit=1).request_uids

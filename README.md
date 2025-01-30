@@ -47,7 +47,7 @@ Configure the logging level to display INFO messages:
 
 ```
 
-Instantiate the API client and verify the authentication:
+Instantiate the API client and optionally verify authentication:
 
 ```python
 >>> import os
@@ -56,7 +56,7 @@ Instantiate the API client and verify the authentication:
 ...     url=os.getenv("DATAPI_URL"),
 ...     key=os.getenv("DATAPI_KEY"),
 ... )
->>> client.check_authentication()
+>>> client.check_authentication()  # optional check
 {...}
 
 ```

@@ -145,20 +145,6 @@ class ApiClient:
         return profile.Profile(f"{self.url}/profiles", **self._get_request_kwargs())
 
     def accept_licence(self, licence_id: str, revision: int) -> dict[str, Any]:
-        """Accept a licence.
-
-        Parameters
-        ----------
-        licence_id: str
-            Licence ID.
-        revision: int
-            Licence revision number.
-
-        Returns
-        -------
-        dict[str,Any]
-            Content of the response.
-        """
         return self._profile_api.accept_licence(licence_id, revision=revision)
 
     def apply_constraints(self, collection_id: str, **request: Any) -> dict[str, Any]:
@@ -231,18 +217,6 @@ class ApiClient:
         self,
         scope: Literal[None, "all", "dataset", "portal"] = None,
     ) -> list[dict[str, Any]]:
-        """Retrieve accepted licences.
-
-        Parameters
-        ----------
-        scope: {None, 'all', 'dataset', 'portal'}
-            Licence scope.
-
-        Returns
-        -------
-        list[dict[str,Any]]
-            List of dictionaries with license information.
-        """
         params = {k: v for k, v in zip(["scope"], [scope]) if v is not None}
         licences: list[dict[str, Any]]
         licences = self._profile_api.accepted_licences(**params).get("licences", [])
@@ -327,36 +301,12 @@ class ApiClient:
         self,
         scope: Literal[None, "all", "dataset", "portal"] = None,
     ) -> list[dict[str, Any]]:
-        """Retrieve licences.
-
-        Parameters
-        ----------
-        scope: {None, 'all', 'dataset', 'portal'}
-            Licence scope.
-
-        Returns
-        -------
-        list[dict[str,Any]]
-            List of dictionaries with license information.
-        """
         params = {k: v for k, v in zip(["scope"], [scope]) if v is not None}
         licences: list[dict[str, Any]]
         licences = self._catalogue_api.get_licenses(**params).get("licences", [])
         return licences
 
     def get_process(self, collection_id: str) -> datapi.Process:
-        """
-        Retrieve a process.
-
-        Parameters
-        ----------
-        collection_id: str
-            Collection ID (e.g., ``"projections-cmip6"``).
-
-        Returns
-        -------
-        datapi.Process
-        """
         return self._retrieve_api.get_process(collection_id)
 
     def get_processes(
