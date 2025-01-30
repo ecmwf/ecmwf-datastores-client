@@ -32,23 +32,25 @@ def test_processing_process(
     assert process.id == "test-adaptor-dummy"
 
     with caplog.at_level(logging.INFO, logger="datapi.processing"):
-        remote = process.submit()
+        remote = process.submit({})
     assert isinstance(remote, Remote)
     assert "The job has been submitted as an anonymous user" in caplog.text
 
 
 def test_processing_apply_constraints(api_anon_client: ApiClient) -> None:
     result = api_anon_client.apply_constraints(
-        "test-adaptor-url", version="deprecated (1.0)"
+        "test-adaptor-url", {"version": "deprecated (1.0)"}
     )
     assert result["reference_dataset"] == ["cru", "cru_and_gpcc"]
 
     with pytest.raises(HTTPError, match="invalid param 'foo'"):
-        api_anon_client.apply_constraints("test-adaptor-url", foo="bar")
+        api_anon_client.apply_constraints("test-adaptor-url", {"foo": "bar"})
 
 
 def test_processing_estimate_costs(api_anon_client: ApiClient) -> None:
-    result = api_anon_client.estimate_costs("test-adaptor-url", variable=["foo", "bar"])
+    result = api_anon_client.estimate_costs(
+        "test-adaptor-url", {"variable": ["foo", "bar"]}
+    )
     assert result == {
         "id": "size",
         "cost": 2.0,
@@ -58,7 +60,7 @@ def test_processing_estimate_costs(api_anon_client: ApiClient) -> None:
 
 
 def test_processing_get_jobs_status(api_anon_client: ApiClient) -> None:
-    remote = api_anon_client.submit("test-adaptor-dummy", format="foo")
+    remote = api_anon_client.submit("test-adaptor-dummy", {"format": "foo"})
     request_uid = remote.request_uid
     with pytest.raises(HTTPError, match="400 Client Error: Bad Request"):
         remote.make_results()
@@ -67,8 +69,8 @@ def test_processing_get_jobs_status(api_anon_client: ApiClient) -> None:
 
 
 def test_processing_get_jobs_sortby(api_anon_client: ApiClient) -> None:
-    uid1 = api_anon_client.submit("test-adaptor-dummy").request_uid
-    uid2 = api_anon_client.submit("test-adaptor-dummy").request_uid
+    uid1 = api_anon_client.submit("test-adaptor-dummy", {}).request_uid
+    uid2 = api_anon_client.submit("test-adaptor-dummy", {}).request_uid
     uids = api_anon_client.get_jobs(sortby="-created").request_uids
     assert uids.index(uid2) < uids.index(uid1)
     assert [uid2] != api_anon_client.get_jobs(sortby="created", limit=1).request_uids

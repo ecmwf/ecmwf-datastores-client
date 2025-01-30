@@ -304,12 +304,12 @@ class Process(ApiResponse):
         process_id: str = self._json_dict["id"]
         return process_id
 
-    def submit(self, **request: Any) -> datapi.Remote:
+    def submit(self, request: dict[str, Any]) -> datapi.Remote:
         """Submit a request.
 
         Parameters
         ----------
-        **request: Any
+        request: dict[str,Any]
             Request parameters.
 
         Returns
@@ -324,12 +324,12 @@ class Process(ApiResponse):
         )
         return job.make_remote()
 
-    def apply_constraints(self, **request: Any) -> dict[str, Any]:
+    def apply_constraints(self, request: dict[str, Any]) -> dict[str, Any]:
         """Apply constraints to the parameters in a request.
 
         Parameters
         ----------
-        **request: Any
+        request: dict[str,Any]
             Request parameters.
 
         Returns
@@ -345,12 +345,12 @@ class Process(ApiResponse):
         )
         return response._json_dict
 
-    def estimate_costs(self, **request: Any) -> dict[str, Any]:
+    def estimate_costs(self, request: dict[str, Any]) -> dict[str, Any]:
         """Estimate costs of the parameters in a request.
 
         Parameters
         ----------
-        **request: Any
+        request: dict[str,Any]
             Request parameters.
 
         Returns
@@ -723,5 +723,5 @@ class Processing:
         url = f"{self.url}/jobs/{job_id}"
         return Job.from_request("get", url, **self._request_kwargs)
 
-    def submit(self, collection_id: str, **request: Any) -> Remote:
-        return self.get_process(collection_id).submit(**request)
+    def submit(self, collection_id: str, request: dict[str, Any]) -> Remote:
+        return self.get_process(collection_id).submit(request)

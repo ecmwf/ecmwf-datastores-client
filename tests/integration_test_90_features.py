@@ -21,15 +21,12 @@ def test_features_url_cds_adaptor_area_selection(
     }
 
     result_bigger = api_anon_client.retrieve(
-        collection_id,
-        **request,
-        target=str(tmp_path / "bigger.zip"),
+        collection_id, request, target=str(tmp_path / "bigger.zip")
     )
     result_smaller = api_anon_client.retrieve(
         collection_id,
-        **request,
+        request | {"area": [50, 0, 40, 10]},
         target=str(tmp_path / "smaller.zip"),
-        area=[50, 0, 40, 10],
     )
     assert os.path.getsize(result_bigger) > os.path.getsize(result_smaller)
 
@@ -60,13 +57,10 @@ def test_features_mars_cds_adaptor_format(
         "day": "02",
         "time": "00:00",
         "target": None,
+        "format": format,
     }
 
-    result = api_anon_client.retrieve(
-        collection_id,
-        **request,
-        format=format,
-    )
+    result = api_anon_client.retrieve(collection_id, request)
 
     _, actual_extension = os.path.splitext(result)
     assert actual_extension == expected_extension
@@ -76,10 +70,10 @@ def test_features_mars_cds_adaptor_format(
 @pytest.mark.extra
 def test_features_upload_big_file(api_anon_client: ApiClient) -> None:
     # See: https://github.com/fsspec/s3fs/pull/910
+    request = {
+        "size": 1_048_576_000 + 1,
+        "_timestamp": datetime.datetime.now().isoformat(),
+    }
     size = 1_048_576_000 + 1
-    results = api_anon_client.submit_and_wait_on_results(
-        "test-adaptor-dummy",
-        size=size,
-        _timestamp=datetime.datetime.now().isoformat(),
-    )
+    results = api_anon_client.submit_and_wait_on_results("test-adaptor-dummy", request)
     assert results.content_length == size

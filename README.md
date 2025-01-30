@@ -78,7 +78,7 @@ datetime.datetime(...)
 ...     "pressure_level": "1000",
 ...     "time": "00:00",
 ... }
->>> collection.process.apply_constraints(**request)
+>>> collection.process.apply_constraints(request)
 {...}
 
 ```
@@ -86,10 +86,10 @@ datetime.datetime(...)
 Retrieve data:
 
 ```python
->>> client.retrieve(collection_id, target="tmp1-era5.grib", **request)  # blocks
+>>> client.retrieve(collection_id, request, target="tmp1-era5.grib")  # blocks
 'tmp1-era5.grib'
 
->>> remote = client.submit(collection_id, **request)  # doesn't block
+>>> remote = client.submit(collection_id, request)  # doesn't block
 >>> remote.request_uid
 '...'
 >>> remote.status

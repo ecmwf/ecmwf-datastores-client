@@ -16,7 +16,7 @@ def test_adaptors_dummy(api_anon_client: ApiClient, tmp_path: pathlib.Path) -> N
     target = str(tmp_path / "dummy.grib")
     remote = api_anon_client.submit(
         collection_id,
-        _timestamp=datetime.datetime.now().isoformat(),
+        {"_timestamp": datetime.datetime.now().isoformat()},
     )
     assert remote.download(target) == target
     assert os.path.exists(target)
@@ -28,8 +28,11 @@ def test_adaptors_dummy_cached(
 ) -> None:
     collection_id = "test-adaptor-dummy"
     target_grib = str(tmp_path / "dummy.grib")
-    request = {"size": 1, "_timestamp": datetime.datetime.now().isoformat()}
-    results = api_anon_client.submit_and_wait_on_results(collection_id, **request)
+    request = {
+        "size": 1,
+        "_timestamp": datetime.datetime.now().isoformat(),
+    }
+    results = api_anon_client.submit_and_wait_on_results(collection_id, request)
     assert results.content_type == "application/x-grib"
     assert results.download(target_grib) == target_grib
     assert os.path.getsize(target_grib) == 1
@@ -37,7 +40,7 @@ def test_adaptors_dummy_cached(
 
     target_netcdf = str(tmp_path / "dummy.nc")
     results = api_anon_client.submit_and_wait_on_results(
-        collection_id, format="netcdf", **request
+        collection_id, request | {"format": "netcdf"}
     )
     assert results.content_type == "application/netcdf"
     assert results.download(target_netcdf) == target_netcdf
@@ -46,7 +49,7 @@ def test_adaptors_dummy_cached(
 
     target_zip = str(tmp_path / "dummy.zip")
     results = api_anon_client.submit_and_wait_on_results(
-        collection_id, format="zip", **request
+        collection_id, request | {"format": "zip"}
     )
     assert results.content_type == "application/zip"
     assert results.download(target_zip) == target_zip
@@ -66,12 +69,12 @@ def test_adaptors_url(api_anon_client: ApiClient, tmp_path: pathlib.Path) -> Non
         "_timestamp": datetime.datetime.now().isoformat(),
     }
     target1 = str(tmp_path / "wfde1.zip")
-    remote = api_anon_client.submit(collection_id, **request)
+    remote = api_anon_client.submit(collection_id, request)
     assert remote.download(target1) == target1
     assert os.path.exists(target1)
 
     target2 = str(tmp_path / "wfde2.zip")
-    remote = api_anon_client.submit(collection_id, **request)
+    remote = api_anon_client.submit(collection_id, request)
     assert remote.download(target2) == target2
     assert filecmp.cmp(target1, target2)
 
@@ -81,7 +84,7 @@ def test_adaptors_url_constraints(
     api_anon_client: ApiClient, tmp_path: pathlib.Path
 ) -> None:
     with pytest.raises(HTTPError, match="400 Client Error: Bad Request"):
-        api_anon_client.submit("test-adaptor-url", foo="bar")
+        api_anon_client.submit("test-adaptor-url", {"foo": "bar"})
 
 
 @pytest.mark.extra
@@ -99,13 +102,10 @@ def test_adaptors_direct_mars(
         "levtype": "pl",
         "number": "all",
         "class": "ea",
+        "_timestamp": datetime.datetime.now().isoformat(),
     }
     target = str(tmp_path / "era5-complete.grib")
-    remote = api_anon_client.submit(
-        collection_id,
-        _timestamp=datetime.datetime.now().isoformat(),
-        **request,
-    )
+    remote = api_anon_client.submit(collection_id, request)
     assert remote.download(target) == target
     assert os.path.exists(target)
 
@@ -120,12 +120,9 @@ def test_adaptors_mars(api_anon_client: ApiClient, tmp_path: pathlib.Path) -> No
         "month": "01",
         "day": "02",
         "time": "00:00",
+        "_timestamp": datetime.datetime.now().isoformat(),
     }
     target = str(tmp_path / "era5.grib")
-    remote = api_anon_client.submit(
-        collection_id,
-        **request,
-        _timestamp=datetime.datetime.now().isoformat(),
-    )
+    remote = api_anon_client.submit(collection_id, request)
     assert remote.download(target) == target
     assert os.path.exists(target)

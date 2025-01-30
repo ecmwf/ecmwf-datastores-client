@@ -373,10 +373,11 @@ def test_submit(cat: catalogue.Catalogue) -> None:
 
     assert collection.process.response.json() == PROCESS_JSON
 
-    remote = collection.process.submit(variable="temperature", year="2022")
+    request = {"variable": "temperature", "year": "2022"}
+    remote = collection.process.submit(request)
     assert remote.json == JOB_SUCCESSFUL_JSON
 
-    remote = collection.process.submit(variable="temperature", year="2022")
+    remote = collection.process.submit(request)
     assert remote.url == JOB_SUCCESSFUL_URL
     assert remote.status == "successful"
     assert remote.results_ready is True
@@ -393,7 +394,8 @@ def test_wait_on_result(cat: catalogue.Catalogue) -> None:
     responses_add()
 
     collection = cat.get_collection(COLLECTION_ID)
-    remote = collection.process.submit(variable="temperature", year="2022")
+    request = {"variable": "temperature", "year": "2022"}
+    remote = collection.process.submit(request)
     remote._wait_on_results()
 
 
@@ -402,7 +404,8 @@ def test_wait_on_result_failed(cat: catalogue.Catalogue) -> None:
     responses_add()
 
     collection = cat.get_collection(COLLECTION_ID)
-    remote = collection.process.submit(variable="temperature", year="0000")
+    request = {"variable": "temperature", "year": "0000"}
+    remote = collection.process.submit(request)
     with pytest.raises(
         processing.ProcessingFailedError,
         match="job failed\nThis is a traceback",
@@ -423,9 +426,9 @@ def test_remote_logs(
     responses_add()
 
     collection = cat.get_collection(COLLECTION_ID)
-
+    request = {"variable": "temperature", "year": "2022"}
     with caplog.at_level(logging.DEBUG, logger="datapi.processing"):
-        remote = collection.process.submit(variable="temperature", year="2022")
+        remote = collection.process.submit(request)
         remote._wait_on_results()
 
     assert caplog.record_tuples == [

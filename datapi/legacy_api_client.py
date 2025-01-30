@@ -168,12 +168,12 @@ class LegacyApiClient(cdsapi.api.Client):  # type: ignore[misc]
         if self.wait_until_complete:
             submitted = self.client.submit_and_wait_on_results(
                 collection_id=name,
-                **request,
+                request=request,
             )
         else:
             submitted = self.client.submit(
                 collection_id=name,
-                **request,
+                request=request,
             )
 
         return submitted if target is None else submitted.download(target)
