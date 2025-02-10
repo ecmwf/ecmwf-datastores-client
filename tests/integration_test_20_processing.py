@@ -55,7 +55,6 @@ def test_processing_estimate_costs(api_anon_client: ApiClient) -> None:
         "id": "size",
         "cost": 2.0,
         "limit": 1000.0,
-        "cost_bar_steps": None,
     }
 
 
