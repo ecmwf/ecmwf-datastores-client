@@ -15,6 +15,7 @@
 from __future__ import annotations
 
 import datetime
+import warnings
 from typing import Any, Callable
 
 import attrs
@@ -65,10 +66,19 @@ class Collection(ApiResponse):
         return str(self._json_dict["id"])
 
     @property
-    def process(self) -> datapi.Process:
-        """Collection process."""
+    def _process(self) -> datapi.Process:
         url = self._get_link_href(rel="retrieve")
         return datapi.Process.from_request("get", url, **self._request_kwargs)
+
+    @property
+    def process(self) -> datapi.Process:
+        warnings.warn(
+            "`process` has been deprecated, and in the future will raise an error."
+            "Please use `submit`, `apply_constraints`, and `estimate_costs` from now on.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self._process
 
     @property
     def form(self) -> list[dict[str, Any]]:
@@ -85,6 +95,50 @@ class Collection(ApiResponse):
         return ApiResponse.from_request(
             "get", url, log_messages=False, **self._request_kwargs
         )._json_list
+
+    def submit(self, request: dict[str, Any]) -> datapi.Remote:
+        """Submit a request.
+
+        Parameters
+        ----------
+        request: dict[str,Any]
+            Request parameters.
+
+        Returns
+        -------
+        datapi.Remote
+        """
+        return self._process.submit(request)
+
+    def apply_constraints(self, request: dict[str, Any]) -> dict[str, Any]:
+        """Apply constraints to the parameters in a request.
+
+        Parameters
+        ----------
+        request: dict[str,Any]
+            Request parameters.
+
+        Returns
+        -------
+        dict[str,Any]
+            Dictionary of valid values.
+        """
+        return self._process.apply_constraints(request)
+
+    def estimate_costs(self, request: dict[str, Any]) -> dict[str, Any]:
+        """Estimate costs of the parameters in a request.
+
+        Parameters
+        ----------
+        request: dict[str,Any]
+            Request parameters.
+
+        Returns
+        -------
+        dict[str,Any]
+            Dictionary of estimated costs.
+        """
+        return self._process.estimate_costs(request)
 
 
 @attrs.define(slots=False)

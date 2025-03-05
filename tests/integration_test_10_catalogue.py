@@ -64,7 +64,7 @@ def test_catalogue_collection_json(collection: Collection) -> None:
 
 
 def test_catalogue_collection_process(collection: Collection) -> None:
-    process = collection.process
+    process = collection._process
     assert isinstance(process, processing.Process)
     assert process.id == "test-adaptor-mars"
 

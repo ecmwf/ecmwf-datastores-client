@@ -371,13 +371,15 @@ def test_submit(cat: catalogue.Catalogue) -> None:
 
     collection = cat.get_collection(COLLECTION_ID)
 
-    assert collection.process.response.json() == PROCESS_JSON
+    with pytest.warns(DeprecationWarning, match="`process` has been deprecated"):
+        collection.process
+    assert collection._process.response.json() == PROCESS_JSON
 
     request = {"variable": "temperature", "year": "2022"}
-    remote = collection.process.submit(request)
+    remote = collection.submit(request)
     assert remote.json == JOB_SUCCESSFUL_JSON
 
-    remote = collection.process.submit(request)
+    remote = collection.submit(request)
     assert remote.url == JOB_SUCCESSFUL_URL
     assert remote.status == "successful"
     assert remote.results_ready is True
@@ -390,12 +392,24 @@ def test_submit(cat: catalogue.Catalogue) -> None:
 
 
 @responses.activate
+@pytest.mark.parametrize("method", ("submit", "apply_constraints", "estimate_costs"))
+def test_process_docstrings(cat: catalogue.Catalogue, method: str) -> None:
+    responses_add()
+
+    collection = cat.get_collection(COLLECTION_ID)
+    assert (
+        getattr(collection, method).__doc__
+        == getattr(collection._process, method).__doc__
+    )
+
+
+@responses.activate
 def test_wait_on_result(cat: catalogue.Catalogue) -> None:
     responses_add()
 
     collection = cat.get_collection(COLLECTION_ID)
     request = {"variable": "temperature", "year": "2022"}
-    remote = collection.process.submit(request)
+    remote = collection.submit(request)
     remote._wait_on_results()
 
 
@@ -405,7 +419,7 @@ def test_wait_on_result_failed(cat: catalogue.Catalogue) -> None:
 
     collection = cat.get_collection(COLLECTION_ID)
     request = {"variable": "temperature", "year": "0000"}
-    remote = collection.process.submit(request)
+    remote = collection.submit(request)
     with pytest.raises(
         processing.ProcessingFailedError,
         match="job failed\nThis is a traceback",
@@ -428,7 +442,7 @@ def test_remote_logs(
     collection = cat.get_collection(COLLECTION_ID)
     request = {"variable": "temperature", "year": "2022"}
     with caplog.at_level(logging.DEBUG, logger="datapi.processing"):
-        remote = collection.process.submit(request)
+        remote = collection.submit(request)
         remote._wait_on_results()
 
     assert caplog.record_tuples == [

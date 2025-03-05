@@ -296,8 +296,6 @@ class Processes(ApiResponsePaginated):
 
 @attrs.define
 class Process(ApiResponse):
-    """A class to interact with a process."""
-
     @property
     def id(self) -> str:
         """Process ID."""
