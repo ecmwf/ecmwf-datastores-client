@@ -384,7 +384,7 @@ class Remote:
     def __attrs_post_init__(self) -> None:
         self.log_start_time = None
         self.last_status = None
-        self.info(f"Request ID is {self.request_uid}")
+        self.info(f"Request ID is {self.request_id}")
 
     @property
     def _request_kwargs(self) -> RequestKwargs:
@@ -411,9 +411,19 @@ class Remote:
         )
 
     @property
-    def request_uid(self) -> str:
-        """Request UID."""
+    def request_id(self) -> str:
+        """Request ID."""
         return self.url.rpartition("/")[2]
+
+    @property
+    def request_uid(self) -> str:
+        warnings.warn(
+            "`request_uid` has been deprecated, and in the future will raise an error."
+            "Please use `request_id` from now on.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.request_id
 
     @property
     def json(self) -> dict[str, Any]:
@@ -533,7 +543,7 @@ class Remote:
     def update(self, request_id: str | None = None) -> None:
         self._warn()
         if request_id:
-            assert request_id == self.request_uid
+            assert request_id == self.request_id
         try:
             del self.reply
         except AttributeError:
@@ -558,7 +568,7 @@ class Remote:
             except Exception as exc:
                 reply["error"].setdefault("message", str(exc))
 
-        reply.setdefault("request_id", self.request_uid)
+        reply.setdefault("request_id", self.request_id)
         return reply
 
     def log(self, *args: Any, **kwargs: Any) -> None:
@@ -599,9 +609,19 @@ class Jobs(ApiResponsePaginated):
     """A class to interact with submitted jobs."""
 
     @property
-    def request_uids(self) -> list[str]:
-        """List of request UIDs."""
+    def request_ids(self) -> list[str]:
+        """List of request IDs."""
         return [job["jobID"] for job in self._json_dict["jobs"]]
+
+    @property
+    def request_uids(self) -> list[str]:
+        warnings.warn(
+            "`request_uids` has been deprecated, and in the future will raise an error."
+            "Please use `request_ids` from now on.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.request_ids
 
 
 @attrs.define

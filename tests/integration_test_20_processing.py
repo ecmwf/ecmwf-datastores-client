@@ -60,16 +60,24 @@ def test_processing_estimate_costs(api_anon_client: ApiClient) -> None:
 
 def test_processing_get_jobs_status(api_anon_client: ApiClient) -> None:
     remote = api_anon_client.submit("test-adaptor-dummy", {"format": "foo"})
-    request_uid = remote.request_uid
+    request_id = remote.request_id
     with pytest.raises(HTTPError, match="400 Client Error: Bad Request"):
         remote.make_results()
-    assert request_uid in api_anon_client.get_jobs(status="failed").request_uids
-    assert request_uid not in api_anon_client.get_jobs(status="successful").request_uids
+    assert request_id in api_anon_client.get_jobs(status="failed").request_ids
+    assert request_id not in api_anon_client.get_jobs(status="successful").request_ids
 
 
 def test_processing_get_jobs_sortby(api_anon_client: ApiClient) -> None:
-    uid1 = api_anon_client.submit("test-adaptor-dummy", {}).request_uid
-    uid2 = api_anon_client.submit("test-adaptor-dummy", {}).request_uid
-    uids = api_anon_client.get_jobs(sortby="-created").request_uids
-    assert uids.index(uid2) < uids.index(uid1)
-    assert [uid2] != api_anon_client.get_jobs(sortby="created", limit=1).request_uids
+    id1 = api_anon_client.submit("test-adaptor-dummy", {}).request_id
+    id2 = api_anon_client.submit("test-adaptor-dummy", {}).request_id
+    ids = api_anon_client.get_jobs(sortby="-created").request_ids
+    assert ids.index(id2) < ids.index(id1)
+    assert [id2] != api_anon_client.get_jobs(sortby="created", limit=1).request_ids
+
+
+def test_deprecation_warnings(api_anon_client: ApiClient) -> None:
+    with pytest.warns(DeprecationWarning):
+        api_anon_client.submit("test-adaptor-dummy", {}).request_uid
+
+    with pytest.warns(DeprecationWarning):
+        api_anon_client.get_jobs().request_uids

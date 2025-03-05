@@ -15,7 +15,7 @@ def test_api_client_download_results(
     remote = api_anon_client.submit("test-adaptor-dummy", {})
     target = str(tmp_path / "test.grib")
 
-    result = api_anon_client.download_results(remote.request_uid, target)
+    result = api_anon_client.download_results(remote.request_id, target)
     assert result == target
     assert os.path.exists(result)
 
@@ -28,15 +28,15 @@ def test_api_client_get_process(api_anon_client: ApiClient) -> None:
 
 
 def test_api_client_get_remote(api_anon_client: ApiClient) -> None:
-    request_uid = api_anon_client.submit("test-adaptor-dummy", {}).request_uid
-    remote = api_anon_client.get_remote(request_uid)
-    assert remote.request_uid == request_uid
+    request_id = api_anon_client.submit("test-adaptor-dummy", {}).request_id
+    remote = api_anon_client.get_remote(request_id)
+    assert remote.request_id == request_id
     assert set(remote.headers) == {"User-Agent", "PRIVATE-TOKEN"}
 
 
 def test_api_client_get_results(api_anon_client: ApiClient) -> None:
-    request_uid = api_anon_client.submit("test-adaptor-dummy", {}).request_uid
-    results = api_anon_client.get_results(request_uid)
+    request_id = api_anon_client.submit("test-adaptor-dummy", {}).request_id
+    results = api_anon_client.get_results(request_id)
     assert isinstance(results, Results)
 
 

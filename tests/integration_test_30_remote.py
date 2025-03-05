@@ -53,8 +53,8 @@ def test_remote_request(remote: Remote) -> None:
     }
 
 
-def test_remote_request_uid(remote: Remote) -> None:
-    assert uuid.UUID(remote.request_uid)
+def test_remote_request_id(remote: Remote) -> None:
+    assert uuid.UUID(remote.request_id)
 
 
 def test_remote_status(remote: Remote) -> None:
@@ -85,13 +85,13 @@ def test_remote_cleanup(
         url=api_root_url, key=api_anon_key, cleanup=cleanup, maximum_tries=0
     )
     remote = client.submit("test-adaptor-dummy", {})
-    request_uid = remote.request_uid
+    request_id = remote.request_id
     del remote
     time.sleep(1)
 
     client = ApiClient(url=api_root_url, key=api_anon_key, maximum_tries=0)
     with raises:
-        client.get_remote(request_uid)
+        client.get_remote(request_id)
 
 
 def test_remote_datetimes(api_anon_client: ApiClient) -> None:

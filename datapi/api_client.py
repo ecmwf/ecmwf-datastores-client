@@ -181,13 +181,13 @@ class ApiClient:
         """
         return self._profile_api.check_authentication()
 
-    def download_results(self, request_uid: str, target: str | None = None) -> str:
+    def download_results(self, request_id: str, target: str | None = None) -> str:
         """Download the results of a request.
 
         Parameters
         ----------
-        request_uid: str
-            Request UID.
+        request_id: str
+            Request ID.
         target: str or None
             Target path. If None, download to the working directory.
 
@@ -196,7 +196,7 @@ class ApiClient:
         str
             Path to the retrieved file.
         """
-        return self.get_remote(request_uid).download(target)
+        return self.get_remote(request_id).download(target)
 
     def estimate_costs(self, collection_id: str, request: Any) -> dict[str, Any]:
         """Estimate costs of the parameters in a request.
@@ -321,35 +321,35 @@ class ApiClient:
         }
         return self._retrieve_api.get_processes(**params)
 
-    def get_remote(self, request_uid: str) -> datapi.Remote:
+    def get_remote(self, request_id: str) -> datapi.Remote:
         """
         Retrieve the remote object of a request.
 
         Parameters
         ----------
-        request_uid: str
-            Request UID.
+        request_id: str
+            Request ID.
 
         Returns
         -------
         datapi.Remote
         """
-        return self._retrieve_api.get_job(request_uid).make_remote()
+        return self._retrieve_api.get_job(request_id).make_remote()
 
-    def get_results(self, request_uid: str) -> datapi.Results:
+    def get_results(self, request_id: str) -> datapi.Results:
         """
         Retrieve the results of a request.
 
         Parameters
         ----------
-        request_uid: str
-            Request UID.
+        request_id: str
+            Request ID.
 
         Returns
         -------
         datapi.Results
         """
-        return self.get_remote(request_uid).make_results()
+        return self.get_remote(request_id).make_results()
 
     def retrieve(
         self,

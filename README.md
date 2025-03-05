@@ -90,7 +90,7 @@ Retrieve data:
 'tmp1-era5.grib'
 
 >>> remote = client.submit(collection_id, request)  # doesn't block
->>> remote.request_uid
+>>> remote.request_id
 '...'
 >>> remote.status
 '...'
@@ -102,7 +102,7 @@ Retrieve data:
 Interact with a previously submitted job:
 
 ```python
->>> remote = client.get_remote(remote.request_uid)
+>>> remote = client.get_remote(remote.request_id)
 >>> remote.delete()
 {...}
 
