@@ -62,7 +62,7 @@ def test_processing_get_jobs_status(api_anon_client: ApiClient) -> None:
     remote = api_anon_client.submit("test-adaptor-dummy", {"format": "foo"})
     request_id = remote.request_id
     with pytest.raises(HTTPError, match="400 Client Error: Bad Request"):
-        remote.make_results()
+        remote.get_results()
     assert request_id in api_anon_client.get_jobs(status="failed").request_ids
     assert request_id not in api_anon_client.get_jobs(status="successful").request_ids
 

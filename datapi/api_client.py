@@ -334,7 +334,7 @@ class ApiClient:
         -------
         datapi.Remote
         """
-        return self._retrieve_api.get_job(request_id).make_remote()
+        return self._retrieve_api.get_job(request_id).get_remote()
 
     def get_results(self, request_id: str) -> datapi.Results:
         """
@@ -349,7 +349,7 @@ class ApiClient:
         -------
         datapi.Results
         """
-        return self.get_remote(request_id).make_results()
+        return self.get_remote(request_id).get_results()
 
     def retrieve(
         self,
@@ -410,7 +410,7 @@ class ApiClient:
         -------
         datapi.Results
         """
-        return self._retrieve_api.submit(collection_id, request).make_results()
+        return self._retrieve_api.submit(collection_id, request).get_results()
 
     def unstar_collection(self, collection_id: str) -> None:
         return self._profile_api.unstar_collection(collection_id)

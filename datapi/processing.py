@@ -320,7 +320,7 @@ class Process(ApiResponse):
             json={"inputs": request},
             **self._request_kwargs,
         )
-        return job.make_remote()
+        return job.get_remote()
 
     def apply_constraints(self, request: dict[str, Any]) -> dict[str, Any]:
         """Apply constraints to the parameters in a request.
@@ -486,13 +486,13 @@ class Remote:
         if status in ("accepted", "running"):
             return False
         if status == "failed":
-            results = self.make_results(wait=False)
+            results = self._make_results(wait=False)
             raise ProcessingFailedError(error_json_to_message(results._json_dict))
         if status in ("dismissed", "deleted"):
             raise ProcessingFailedError(f"API state {status!r}")
         raise ProcessingFailedError(f"Unknown API state {status!r}")
 
-    def make_results(self, wait: bool = True) -> Results:
+    def _make_results(self, wait: bool) -> Results:
         if wait:
             self._wait_on_results()
         response = self._get_api_response("get")
@@ -502,6 +502,24 @@ class Remote:
             results_url = f"{self.url}/results"
         results = Results.from_request("get", results_url, **self._request_kwargs)
         return results
+
+    def make_results(self, wait: bool = True) -> Results:
+        warnings.warn(
+            "`make_results` has been deprecated, and in the future will raise an error."
+            "Please use `get_results` from now on.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self._make_results(wait)
+
+    def get_results(self) -> Results:
+        """Retrieve results.
+
+        Returns
+        -------
+        datapi.Results
+        """
+        return self._make_results(wait=True)
 
     def download(self, target: str | None = None) -> str:
         """Download the results.
@@ -516,7 +534,7 @@ class Remote:
         str
             Path to the retrieved file.
         """
-        results = self.make_results()
+        results = self.get_results()
         return results.download(target)
 
     def delete(self) -> dict[str, Any]:
@@ -562,7 +580,7 @@ class Remote:
         elif reply["state"] == "failed":
             reply.setdefault("error", {})
             try:
-                self.make_results()
+                self.get_results()
             except Exception as exc:
                 reply["error"].setdefault("message", str(exc))
 
@@ -594,12 +612,21 @@ class Remote:
 
 @attrs.define
 class Job(ApiResponse):
-    def make_remote(self) -> Remote:
+    def get_remote(self) -> Remote:
         if self.response.request.method == "POST":
             url = self._get_link_href(rel="monitor")
         else:
             url = self._get_link_href(rel="self")
         return Remote(url, **self._request_kwargs)
+
+    def make_remote(self) -> Remote:
+        warnings.warn(
+            "`make_remote` has been deprecated, and in the future will raise an error."
+            "Please use `get_remote` from now on.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.get_remote()
 
 
 @attrs.define

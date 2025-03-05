@@ -246,12 +246,12 @@ def test_legacy_api_client_download(
     target = client.download(remote)
     assert os.path.getsize(target) == 1
 
-    results = remote.make_results()
+    results = remote.get_results()
     results_dict = {
         "location": results.location,
         "contentLength": results.content_length,
     }
-    results_tuple = (remote, remote.make_results(), results_dict)
+    results_tuple = (remote, remote.get_results(), results_dict)
     target1 = "remote.grib"
     target2 = "results.grib"
     target3 = "dict.grib"
