@@ -14,6 +14,10 @@ COLLECTION_JSON = {
         "spatial": {"bbox": [[0.0, -89.0, 360.0, 89.0]]},
         "temporal": {"interval": [["1959-01-01T00:00:00Z", "2025-01-10T00:00:00Z"]]},
     },
+    "published": "1990-01-01T00:00:00Z",
+    "updated": "1991-01-01T00:00:00Z",
+    "title": "This is a title",
+    "description": "This is a description",
 }
 
 
@@ -49,6 +53,22 @@ def test_catalogue_collection_begin_datetime(collection: Collection) -> None:
 def test_catalogue_collection_end_datetime(collection: Collection) -> None:
     assert collection.end_datetime is not None
     assert collection.end_datetime.isoformat() == "2025-01-10T00:00:00+00:00"
+
+
+def test_catalogue_collection_published_at(collection: Collection) -> None:
+    assert collection.published_at.isoformat() == "1990-01-01T00:00:00+00:00"
+
+
+def test_catalogue_collection_updated_at(collection: Collection) -> None:
+    assert collection.updated_at.isoformat() == "1991-01-01T00:00:00+00:00"
+
+
+def test_catalogue_collection_title(collection: Collection) -> None:
+    assert collection.title == "This is a title"
+
+
+def test_catalogue_collection_description(collection: Collection) -> None:
+    assert collection.description == "This is a description"
 
 
 def test_catalogue_collection_bbox(collection: Collection) -> None:

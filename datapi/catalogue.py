@@ -56,6 +56,34 @@ class Collection(ApiResponse):
         return datetime.datetime.fromisoformat(value.replace("Z", "+00:00"))
 
     @property
+    def published_at(self) -> datetime.datetime:
+        """When the collection was first published."""
+        return datetime.datetime.fromisoformat(
+            self._json_dict["published"].replace("Z", "+00:00")
+        )
+
+    @property
+    def updated_at(self) -> datetime.datetime:
+        """When the collection was last updated."""
+        return datetime.datetime.fromisoformat(
+            self._json_dict["updated"].replace("Z", "+00:00")
+        )
+
+    @property
+    def title(self) -> str:
+        """Title of the collection."""
+        value = self._json_dict["title"]
+        assert isinstance(value, str)
+        return value
+
+    @property
+    def description(self) -> str:
+        """Description of the collection."""
+        value = self._json_dict["description"]
+        assert isinstance(value, str)
+        return value
+
+    @property
     def bbox(self) -> tuple[float, float, float, float]:
         """Bounding box of the collection (W, S, E, N)."""
         return tuple(self._json_dict["extent"]["spatial"]["bbox"][0])
@@ -74,7 +102,7 @@ class Collection(ApiResponse):
     def process(self) -> datapi.Process:
         warnings.warn(
             "`process` has been deprecated, and in the future will raise an error."
-            "Please use `submit`, `apply_constraints`, and `estimate_costs` from now on.",
+            "Please use `submit` and `apply_constraints` from now on.",
             DeprecationWarning,
             stacklevel=2,
         )
@@ -82,7 +110,6 @@ class Collection(ApiResponse):
 
     @property
     def form(self) -> list[dict[str, Any]]:
-        """Form JSON."""
         url = f"{self.url}/form.json"
         return ApiResponse.from_request(
             "get", url, log_messages=False, **self._request_kwargs
@@ -90,7 +117,6 @@ class Collection(ApiResponse):
 
     @property
     def constraints(self) -> list[dict[str, Any]]:
-        """Constraints JSON."""
         url = f"{self.url}/constraints.json"
         return ApiResponse.from_request(
             "get", url, log_messages=False, **self._request_kwargs
@@ -126,18 +152,6 @@ class Collection(ApiResponse):
         return self._process.apply_constraints(request)
 
     def estimate_costs(self, request: dict[str, Any]) -> dict[str, Any]:
-        """Estimate costs of the parameters in a request.
-
-        Parameters
-        ----------
-        request: dict[str,Any]
-            Request parameters.
-
-        Returns
-        -------
-        dict[str,Any]
-            Dictionary of estimated costs.
-        """
         return self._process.estimate_costs(request)
 
 

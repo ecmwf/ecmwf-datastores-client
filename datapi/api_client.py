@@ -199,20 +199,6 @@ class ApiClient:
         return self.get_remote(request_id).download(target)
 
     def estimate_costs(self, collection_id: str, request: Any) -> dict[str, Any]:
-        """Estimate costs of the parameters in a request.
-
-        Parameters
-        ----------
-        collection_id: str
-            Collection ID (e.g., ``"projections-cmip6"``).
-        request: dict[str,Any]
-            Request parameters.
-
-        Returns
-        -------
-        dict[str,Any]
-            Dictionary of estimated costs.
-        """
         return self.get_process(collection_id).estimate_costs(request)
 
     def get_accepted_licences(

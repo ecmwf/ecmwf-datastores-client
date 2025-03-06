@@ -98,13 +98,14 @@ def test_remote_datetimes(api_anon_client: ApiClient) -> None:
     request = {"elapsed": 1, "_timestamp": datetime.datetime.now().isoformat()}
     remote = api_anon_client.submit("test-adaptor-dummy", request)
     assert remote.results_ready is False
-    assert isinstance(remote.creation_datetime, datetime.datetime)
-    assert remote.end_datetime is None
+    assert isinstance(remote.created_at, datetime.datetime)
+    assert remote.finished_at is None
 
     remote.get_results()
-    assert remote.start_datetime is not None
-    assert remote.end_datetime is not None
-    assert remote.creation_datetime < remote.start_datetime < remote.end_datetime
+    assert remote.started_at is not None
+    assert remote.finished_at is not None
+    assert remote.created_at < remote.started_at < remote.finished_at
+    assert remote.finished_at == remote.updated_at
 
 
 def test_make_results_deprecation(api_anon_client: ApiClient) -> None:

@@ -344,18 +344,6 @@ class Process(ApiResponse):
         return response._json_dict
 
     def estimate_costs(self, request: dict[str, Any]) -> dict[str, Any]:
-        """Estimate costs of the parameters in a request.
-
-        Parameters
-        ----------
-        request: dict[str,Any]
-            Request parameters.
-
-        Returns
-        -------
-        dict[str,Any]
-            Dictionary of estimated costs.
-        """
         response = ApiResponse.from_request(
             "post",
             f"{self.url}/costing",
@@ -454,21 +442,56 @@ class Remote:
         return str(status)
 
     @property
-    def creation_datetime(self) -> datetime.datetime:
-        """Creation datetime of the job."""
+    def updated_at(self) -> datetime.datetime:
+        """When the job was last updated."""
+        return datetime.datetime.fromisoformat(self.json["updated"])
+
+    @property
+    def created_at(self) -> datetime.datetime:
+        """When the job was created."""
         return datetime.datetime.fromisoformat(self.json["created"])
 
     @property
-    def start_datetime(self) -> datetime.datetime | None:
-        """Start datetime of the job. If None, job has not started."""
+    def creation_datetime(self) -> datetime.datetime:
+        warnings.warn(
+            "`creation_datetime` has been deprecated, and in the future will raise an error."
+            "Please use `created_at` from now on.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.created_at
+
+    @property
+    def started_at(self) -> datetime.datetime | None:
+        """When the job started. If None, the job has not started."""
         value = self.json.get("started")
         return value if value is None else datetime.datetime.fromisoformat(value)
 
     @property
-    def end_datetime(self) -> datetime.datetime | None:
-        """End datetime of the job. If None, job has not finished."""
+    def start_datetime(self) -> datetime.datetime | None:
+        warnings.warn(
+            "`start_datetime` has been deprecated, and in the future will raise an error."
+            "Please use `started_at` from now on.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.started_at
+
+    @property
+    def finished_at(self) -> datetime.datetime | None:
+        """When the job finished. If None, the job has not finished."""
         value = self.json.get("finished")
         return value if value is None else datetime.datetime.fromisoformat(value)
+
+    @property
+    def end_datetime(self) -> datetime.datetime | None:
+        warnings.warn(
+            "`end_datetime` has been deprecated, and in the future will raise an error."
+            "Please use `finished_at` from now on.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.finished_at
 
     def _wait_on_results(self) -> None:
         sleep = 1.0
@@ -661,7 +684,6 @@ class Results(ApiResponse):
 
     @property
     def asset(self) -> dict[str, Any]:
-        """Asset dictionary."""
         return dict(self._json_dict["asset"]["value"])
 
     def _download(self, url: str, target: str) -> requests.Response:

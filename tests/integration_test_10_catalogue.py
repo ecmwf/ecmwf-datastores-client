@@ -51,6 +51,28 @@ def test_catalogue_collection_end_datetime(collection: Collection) -> None:
     assert collection.end_datetime.isoformat() == "2023-05-09T00:00:00+00:00"
 
 
+def test_catalogue_collection_published_at(collection: Collection) -> None:
+    assert collection.published_at.isoformat() == "2018-06-14T00:00:00+00:00"
+
+
+def test_catalogue_collection_updated_at(collection: Collection) -> None:
+    assert collection.updated_at.isoformat() == "2023-05-15T00:00:00+00:00"
+
+
+def test_catalogue_collection_title(collection: Collection) -> None:
+    assert (
+        collection.title
+        == "TEST DATASET for MarsCdsAdaptor based on: ERA5 hourly data on single levels from 1940 to present"
+    )
+
+
+def test_catalogue_collection_description(collection: Collection) -> None:
+    assert collection.description == (
+        "ERA5 is the fifth generation ECMWF reanalysis for the global climate and weather for the past 8"
+        " decades.\nData is available from 1940 onwards.\nERA5 replaces the ERA-Interim reanalysis."
+    )
+
+
 def test_catalogue_collection_bbox(collection: Collection) -> None:
     assert collection.bbox == (0, -89, 360, 89)
 
