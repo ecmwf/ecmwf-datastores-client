@@ -89,7 +89,7 @@ Remote(...)
 >>> results = client.submit_and_wait_on_results(collection_id, request)  # blocks
 >>> results
 Results(...)
->>> remote.download("target_3.grib")
+>>> results.download("target_3.grib")
 'target_3.grib'
 
 >>> client.download_results(remote.request_id, "target_4.grib")  # blocks
