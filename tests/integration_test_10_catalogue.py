@@ -14,6 +14,7 @@ def test_catalogue_collections(api_anon_client: ApiClient) -> None:
 
     collection_ids = list(collections.collection_ids)
     while len(collection_ids) != collections.json["numberMatched"]:
+        assert "search" not in collections.json
         assert (next_collections := collections.next) is not None
         collections = next_collections
         collection_ids.extend(collections.collection_ids)

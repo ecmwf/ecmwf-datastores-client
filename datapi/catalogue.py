@@ -185,8 +185,9 @@ class Catalogue:
             log_callback=self.log_callback,
         )
 
-    def get_collections(self, **params: Any) -> Collections:
+    def get_collections(self, search_stats: bool = False, **params: Any) -> Collections:
         url = f"{self.url}/datasets"
+        params["search_stats"] = search_stats
         return Collections.from_request(
             "get", url, params=params, **self._request_kwargs
         )

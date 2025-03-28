@@ -248,7 +248,7 @@ class ApiClient:
         -------
         datapi.Collections
         """
-        params = {
+        params: dict[str, Any] = {
             k: v
             for k, v in zip(
                 ["limit", "sortby", "q", "kw"], [limit, sortby, query, keywords]
