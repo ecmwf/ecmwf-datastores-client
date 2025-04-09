@@ -34,7 +34,7 @@ import requests
 
 import datapi
 
-from . import config
+from . import config, utils
 
 T_ApiResponse = TypeVar("T_ApiResponse", bound="ApiResponse")
 
@@ -444,12 +444,12 @@ class Remote:
     @property
     def updated_at(self) -> datetime.datetime:
         """When the job was last updated."""
-        return datetime.datetime.fromisoformat(self.json["updated"])
+        return utils.string_to_datetime(self.json["updated"])
 
     @property
     def created_at(self) -> datetime.datetime:
         """When the job was created."""
-        return datetime.datetime.fromisoformat(self.json["created"])
+        return utils.string_to_datetime(self.json["created"])
 
     @property
     def creation_datetime(self) -> datetime.datetime:
@@ -465,7 +465,7 @@ class Remote:
     def started_at(self) -> datetime.datetime | None:
         """When the job started. If None, the job has not started."""
         value = self.json.get("started")
-        return value if value is None else datetime.datetime.fromisoformat(value)
+        return value if value is None else utils.string_to_datetime(value)
 
     @property
     def start_datetime(self) -> datetime.datetime | None:
@@ -481,7 +481,7 @@ class Remote:
     def finished_at(self) -> datetime.datetime | None:
         """When the job finished. If None, the job has not finished."""
         value = self.json.get("finished")
-        return value if value is None else datetime.datetime.fromisoformat(value)
+        return value if value is None else utils.string_to_datetime(value)
 
     @property
     def end_datetime(self) -> datetime.datetime | None:

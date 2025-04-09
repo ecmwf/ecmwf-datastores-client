@@ -23,7 +23,7 @@ import requests
 
 import datapi
 
-from . import config
+from . import config, utils
 from .processing import ApiResponse, ApiResponsePaginated, RequestKwargs
 
 
@@ -46,28 +46,24 @@ class Collection(ApiResponse):
         """Begin datetime of the collection."""
         if (value := self._json_dict["extent"]["temporal"]["interval"][0][0]) is None:
             return value
-        return datetime.datetime.fromisoformat(value.replace("Z", "+00:00"))
+        return utils.string_to_datetime(value)
 
     @property
     def end_datetime(self) -> datetime.datetime | None:
         """End datetime of the collection."""
         if (value := self._json_dict["extent"]["temporal"]["interval"][0][1]) is None:
             return value
-        return datetime.datetime.fromisoformat(value.replace("Z", "+00:00"))
+        return utils.string_to_datetime(value)
 
     @property
     def published_at(self) -> datetime.datetime:
         """When the collection was first published."""
-        return datetime.datetime.fromisoformat(
-            self._json_dict["published"].replace("Z", "+00:00")
-        )
+        return utils.string_to_datetime(self._json_dict["published"])
 
     @property
     def updated_at(self) -> datetime.datetime:
         """When the collection was last updated."""
-        return datetime.datetime.fromisoformat(
-            self._json_dict["updated"].replace("Z", "+00:00")
-        )
+        return utils.string_to_datetime(self._json_dict["updated"])
 
     @property
     def title(self) -> str:

@@ -381,12 +381,12 @@ def test_submit(cat: catalogue.Catalogue) -> None:
     assert remote.status == "successful"
     assert remote.results_ready is True
 
-    assert remote.created_at.isoformat() == "2022-09-02T17:30:48.201213"
-    assert remote.updated_at.isoformat() == "2022-09-02T17:32:54.308116"
+    assert remote.created_at.isoformat() == "2022-09-02T17:30:48.201213+00:00"
+    assert remote.updated_at.isoformat() == "2022-09-02T17:32:54.308116+00:00"
     assert remote.started_at is not None
-    assert remote.started_at.isoformat() == "2022-09-02T17:32:43.890617"
+    assert remote.started_at.isoformat() == "2022-09-02T17:32:43.890617+00:00"
     assert remote.finished_at is not None
-    assert remote.finished_at.isoformat() == "2022-09-02T17:32:54.308120"
+    assert remote.finished_at.isoformat() == "2022-09-02T17:32:54.308120+00:00"
 
 
 @responses.activate
@@ -403,15 +403,17 @@ def test_depracations(cat: catalogue.Catalogue) -> None:
     with pytest.warns(
         DeprecationWarning, match="`creation_datetime` has been deprecated"
     ):
-        assert remote.creation_datetime.isoformat() == "2022-09-02T17:30:48.201213"
+        assert (
+            remote.creation_datetime.isoformat() == "2022-09-02T17:30:48.201213+00:00"
+        )
 
     with pytest.warns(DeprecationWarning, match="`start_datetime` has been deprecated"):
         assert remote.start_datetime is not None
-        assert remote.start_datetime.isoformat() == "2022-09-02T17:32:43.890617"
+        assert remote.start_datetime.isoformat() == "2022-09-02T17:32:43.890617+00:00"
 
     with pytest.warns(DeprecationWarning, match="`end_datetime` has been deprecated"):
         assert remote.end_datetime is not None
-        assert remote.end_datetime.isoformat() == "2022-09-02T17:32:54.308120"
+        assert remote.end_datetime.isoformat() == "2022-09-02T17:32:54.308120+00:00"
 
 
 @responses.activate
@@ -449,11 +451,11 @@ def test_wait_on_result_failed(cat: catalogue.Catalogue) -> None:
     ):
         remote._wait_on_results()
 
-    assert remote.created_at.isoformat() == "2022-09-02T17:30:48.201213"
+    assert remote.created_at.isoformat() == "2022-09-02T17:30:48.201213+00:00"
     assert remote.started_at is not None
-    assert remote.started_at.isoformat() == "2022-09-02T17:32:43.890617"
+    assert remote.started_at.isoformat() == "2022-09-02T17:32:43.890617+00:00"
     assert remote.finished_at is not None
-    assert remote.finished_at.isoformat() == "2022-09-02T17:32:54.308120"
+    assert remote.finished_at.isoformat() == "2022-09-02T17:32:54.308120+00:00"
 
 
 @responses.activate
