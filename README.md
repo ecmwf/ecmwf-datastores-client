@@ -80,6 +80,11 @@ Retrieve data:
 >>> client.retrieve(collection_id, request, target="target_1.grib")  # blocks
 'target_1.grib'
 
+```
+
+Alternative methods to retrieve data:
+
+```python
 >>> remote = client.submit(collection_id, request)  # doesn't block
 >>> remote
 Remote(...)
