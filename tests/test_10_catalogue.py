@@ -3,7 +3,7 @@ from __future__ import annotations
 import pytest
 import responses
 
-from datapi import Collection
+from ecmwf.datastores import Collection
 
 COLLECTION_URL = (
     "http://localhost:8080/api/catalogue/v1/collections/reanalysis-era5-pressure-levels"

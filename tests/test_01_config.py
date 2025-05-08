@@ -2,7 +2,7 @@ import pathlib
 
 import pytest
 
-from datapi import config
+from ecmwf.datastores import config
 
 
 def test_read_configuration(
@@ -10,19 +10,19 @@ def test_read_configuration(
 ) -> None:
     expected_config = {"url": "dummy-url", "key": "dummy-key"}
 
-    config_file = tmp_path / ".datapirc"
+    config_file = tmp_path / ".ecmwfdatastoresrc"
     config_file.write_text("url: dummy-url\nkey: dummy-key")
 
     res = config.read_config(str(config_file))
     assert res == expected_config
 
-    monkeypatch.setenv("DATAPI_RC", str(config_file))
+    monkeypatch.setenv("ECMWF_DATASTORES_RC_FILE", str(config_file))
     res = config.read_config(None)
     assert res == expected_config
 
 
 def test_read_default_config() -> None:
-    config_path = pathlib.Path.home() / ".datapirc"
+    config_path = pathlib.Path.home() / ".ecmwfdatastoresrc"
     if not config_path.exists():
         with pytest.raises(FileNotFoundError):
             config.read_config()
@@ -33,10 +33,10 @@ def test_read_default_config() -> None:
 def test_get_config_from_configuration_file(
     tmp_path: pathlib.Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    monkeypatch.delenv("DATAPI_KEY", raising=False)
-    monkeypatch.delenv("DATAPI_URL", raising=False)
+    monkeypatch.delenv("ECMWF_DATASTORES_KEY", raising=False)
+    monkeypatch.delenv("ECMWF_DATASTORES_URL", raising=False)
 
-    config_file = tmp_path / ".datapirc"
+    config_file = tmp_path / ".ecmwfdatastoresrc"
     config_file.write_text("url: dummy-url\nkey: dummy-key")
 
     res = config.get_config("url", str(config_file))
@@ -51,11 +51,11 @@ def test_get_config_from_environment_variables(
 ) -> None:
     expected_config = {"url": "dummy-url", "key": "dummy-key"}
 
-    config_file = tmp_path / ".datapirc"
+    config_file = tmp_path / ".ecmwfdatastoresrc"
     config_file.write_text("url: wrong-url\nkey: wrong-key")
 
-    monkeypatch.setenv("DATAPI_URL", expected_config["url"])
-    monkeypatch.setenv("DATAPI_KEY", expected_config["key"])
+    monkeypatch.setenv("ECMWF_DATASTORES_URL", expected_config["url"])
+    monkeypatch.setenv("ECMWF_DATASTORES_KEY", expected_config["key"])
 
     res = config.get_config("url", str(config_file))
 

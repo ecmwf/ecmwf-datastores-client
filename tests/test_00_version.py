@@ -1,5 +1,5 @@
-import datapi
+import ecmwf.datastores
 
 
 def test_version() -> None:
-    assert datapi.__version__ != "999"
+    assert ecmwf.datastores.__version__ != "999"

@@ -24,10 +24,10 @@ dependencies = [
   "requests",
   "typing-extensions"
 ]
-description = "ESEE Data Stores API Python Client"
+description = "ECMWF Data Stores Service (DSS) API Python client"
 dynamic = ["version"]
 license = {file = "LICENSE"}
-name = "datapi"
+name = "ecmwf-datastores-client"
 readme = "README.md"
 requires-python = ">=3.8"
 
@@ -35,9 +35,9 @@ requires-python = ">=3.8"
 legacy = ["cdsapi >= 0.7.5"]
 
 [project.urls]
-documentation = "https://ecmwf-projects.github.io/datapi/"
-source = "https://github.com/ecmwf-projects/datapi"
-tracker = "https://github.com/ecmwf-projects/datapi/issues"
+documentation = "https://ecmwf.github.io/ecmwf-datastores-client/"
+source = "https://github.com/ecmwf/ecmwf-datastores-client"
+tracker = "https://github.com/ecmwf/ecmwf-datastores-client/issues"
 
 [tool.coverage.run]
 branch = true
@@ -84,14 +84,14 @@ max-line-length = 110
 convention = "numpy"
 
 [tool.setuptools]
-packages = ["datapi"]
+packages = ["ecmwf.datastores"]
 
 [tool.setuptools.package-data]
-"datapi" = ["py.typed"]
+"ecmwf.datastores" = ["py.typed"]
 
 [tool.setuptools_scm]
 fallback_version = "999"
-write_to = "datapi/version.py"
+write_to = "ecmwf/datastores/version.py"
 write_to_template = '''
 # Do not change! Do not track in version control!
 __version__ = "{version}"

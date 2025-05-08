@@ -9,17 +9,17 @@
 import os
 import sys
 
-import datapi
+import ecmwf.datastores
 
 sys.path.insert(0, os.path.abspath("../"))
 
 # -- Project information -----------------------------------------------------
 
-project = "datapi"
+project = "ecmwf.datastores"
 copyright = "2022, European Union"
 author = "European Union"
-version = datapi.__version__
-release = datapi.__version__
+version = ecmwf.datastores.__version__
+release = ecmwf.datastores.__version__
 
 # -- General configuration ---------------------------------------------------
 
@@ -38,7 +38,7 @@ autodoc_typehints = "none"
 
 # autoapi configuration
 autoapi_add_toctree_entry = False
-autoapi_dirs = ["../datapi"]
+autoapi_dirs = ["../ecmwf.datastores"]
 autoapi_ignore = ["*/version.py"]
 autoapi_member_order = "groupwise"
 autoapi_options = [

@@ -7,11 +7,11 @@ import zipfile
 import pytest
 from requests import HTTPError
 
-from datapi import ApiClient
+from ecmwf.datastores import Client
 
 
 @pytest.mark.extra
-def test_adaptors_dummy(api_anon_client: ApiClient, tmp_path: pathlib.Path) -> None:
+def test_adaptors_dummy(api_anon_client: Client, tmp_path: pathlib.Path) -> None:
     collection_id = "test-adaptor-dummy"
     target = str(tmp_path / "dummy.grib")
     remote = api_anon_client.submit(
@@ -23,9 +23,7 @@ def test_adaptors_dummy(api_anon_client: ApiClient, tmp_path: pathlib.Path) -> N
 
 
 @pytest.mark.extra
-def test_adaptors_dummy_cached(
-    api_anon_client: ApiClient, tmp_path: pathlib.Path
-) -> None:
+def test_adaptors_dummy_cached(api_anon_client: Client, tmp_path: pathlib.Path) -> None:
     collection_id = "test-adaptor-dummy"
     target_grib = str(tmp_path / "dummy.grib")
     request = {
@@ -59,7 +57,7 @@ def test_adaptors_dummy_cached(
 
 
 @pytest.mark.extra
-def test_adaptors_url(api_anon_client: ApiClient, tmp_path: pathlib.Path) -> None:
+def test_adaptors_url(api_anon_client: Client, tmp_path: pathlib.Path) -> None:
     collection_id = "test-adaptor-url"
     request = {
         "variable": "grid_point_altitude",
@@ -81,16 +79,14 @@ def test_adaptors_url(api_anon_client: ApiClient, tmp_path: pathlib.Path) -> Non
 
 @pytest.mark.extra
 def test_adaptors_url_constraints(
-    api_anon_client: ApiClient, tmp_path: pathlib.Path
+    api_anon_client: Client, tmp_path: pathlib.Path
 ) -> None:
     with pytest.raises(HTTPError, match="400 Client Error: Bad Request"):
         api_anon_client.submit("test-adaptor-url", {"foo": "bar"})
 
 
 @pytest.mark.extra
-def test_adaptors_direct_mars(
-    api_anon_client: ApiClient, tmp_path: pathlib.Path
-) -> None:
+def test_adaptors_direct_mars(api_anon_client: Client, tmp_path: pathlib.Path) -> None:
     collection_id = "test-adaptor-direct-mars"
     request = {
         "levelist": "1",
@@ -111,7 +107,7 @@ def test_adaptors_direct_mars(
 
 
 @pytest.mark.extra
-def test_adaptors_mars(api_anon_client: ApiClient, tmp_path: pathlib.Path) -> None:
+def test_adaptors_mars(api_anon_client: Client, tmp_path: pathlib.Path) -> None:
     collection_id = "test-adaptor-mars"
     request = {
         "product_type": "reanalysis",

@@ -6,12 +6,12 @@ from typing import TYPE_CHECKING
 import pytest
 
 if TYPE_CHECKING:
-    from datapi import ApiClient
+    from ecmwf.datastores import Client
 
 
 @pytest.fixture
 def api_root_url() -> str:
-    from datapi import config
+    from ecmwf.datastores import config
 
     try:
         return str(config.get_config("url"))
@@ -21,11 +21,14 @@ def api_root_url() -> str:
 
 @pytest.fixture
 def api_anon_key() -> str:
-    return os.getenv("DATAPI_ANON_KEY", "00112233-4455-6677-c899-aabbccddeeff")
+    return os.getenv(
+        "ECMWF_DATASTORES_ANON_KEY",
+        "00112233-4455-6677-c899-aabbccddeeff",  # gitleaks:allow
+    )
 
 
 @pytest.fixture
-def api_anon_client(api_root_url: str, api_anon_key: str) -> ApiClient:
-    from datapi import ApiClient
+def api_anon_client(api_root_url: str, api_anon_key: str) -> Client:
+    from ecmwf.datastores import Client
 
-    return ApiClient(url=api_root_url, key=api_anon_key, maximum_tries=0)
+    return Client(url=api_root_url, key=api_anon_key, maximum_tries=0)

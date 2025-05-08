@@ -5,22 +5,22 @@ from typing import Literal
 import pytest
 from requests import HTTPError
 
-from datapi import ApiClient, config
+from ecmwf.datastores import Client, config
 
 
 @pytest.fixture
-def api_client() -> ApiClient:
+def api_client() -> Client:
     try:
         # Can not use anonymous user
         config.get_config("key")
     except Exception:
         pytest.skip("The API key is missing")
-    return ApiClient(maximum_tries=0)
+    return Client(maximum_tries=0)
 
 
 @pytest.mark.parametrize("scope", [None, "all", "dataset", "portal"])
 def test_profile_accept_licence(
-    api_client: ApiClient,
+    api_client: Client,
     scope: Literal["all", "dataset", "portal"] | None,
 ) -> None:
     licence = api_client.get_licences(scope=scope)[0]
@@ -38,7 +38,7 @@ def test_profile_accept_licence(
 
 
 def test_profile_check_authentication(
-    api_root_url: str, api_anon_client: ApiClient
+    api_root_url: str, api_anon_client: Client
 ) -> None:
     assert api_anon_client.check_authentication() == {
         "email": None,
@@ -47,12 +47,12 @@ def test_profile_check_authentication(
         "sub": "anonymous",
     }
 
-    bad_client = ApiClient(key="foo", url=api_root_url)
+    bad_client = Client(key="foo", url=api_root_url)
     with pytest.raises(HTTPError, match="401 Client Error"):
         bad_client.check_authentication()
 
 
-def test_profile_star_collection(api_client: ApiClient) -> None:
+def test_profile_star_collection(api_client: Client) -> None:
     starred = api_client.star_collection("test-adaptor-dummy")
     assert "test-adaptor-dummy" in starred
 

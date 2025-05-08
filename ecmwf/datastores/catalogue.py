@@ -21,7 +21,7 @@ from typing import Any, Callable
 import attrs
 import requests
 
-import datapi
+import ecmwf.datastores
 
 from . import config, utils
 from .processing import ApiResponse, ApiResponsePaginated, RequestKwargs
@@ -90,12 +90,12 @@ class Collection(ApiResponse):
         return str(self._json_dict["id"])
 
     @property
-    def _process(self) -> datapi.Process:
+    def _process(self) -> ecmwf.datastores.Process:
         url = self._get_link_href(rel="retrieve")
-        return datapi.Process.from_request("get", url, **self._request_kwargs)
+        return ecmwf.datastores.Process.from_request("get", url, **self._request_kwargs)
 
     @property
-    def process(self) -> datapi.Process:
+    def process(self) -> ecmwf.datastores.Process:
         warnings.warn(
             "`process` has been deprecated, and in the future will raise an error."
             "Please use `submit` and `apply_constraints` from now on.",
@@ -118,7 +118,7 @@ class Collection(ApiResponse):
             "get", url, log_messages=False, **self._request_kwargs
         )._json_list
 
-    def submit(self, request: dict[str, Any]) -> datapi.Remote:
+    def submit(self, request: dict[str, Any]) -> ecmwf.datastores.Remote:
         """Submit a request.
 
         Parameters
@@ -128,7 +128,7 @@ class Collection(ApiResponse):
 
         Returns
         -------
-        datapi.Remote
+        ecmwf.datastores.Remote
         """
         return self._process.submit(request)
 

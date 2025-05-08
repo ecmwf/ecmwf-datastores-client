@@ -3,10 +3,10 @@ import logging
 import pytest
 from requests import HTTPError
 
-from datapi import ApiClient, Process, Processes, Remote
+from ecmwf.datastores import Client, Process, Processes, Remote
 
 
-def test_processing_processes_limit(api_anon_client: ApiClient) -> None:
+def test_processing_processes_limit(api_anon_client: Client) -> None:
     processes = api_anon_client.get_processes(limit=1)
     assert isinstance(processes, Processes)
     assert len(processes.collection_ids) == 1
@@ -15,7 +15,7 @@ def test_processing_processes_limit(api_anon_client: ApiClient) -> None:
     assert len(next_processes.collection_ids) == 1
 
 
-def test_processing_processes_sortby(api_anon_client: ApiClient) -> None:
+def test_processing_processes_sortby(api_anon_client: Client) -> None:
     processes = api_anon_client.get_processes(sortby="id")
     assert len(processes.collection_ids) > 1
     assert processes.collection_ids == sorted(processes.collection_ids)
@@ -25,19 +25,19 @@ def test_processing_processes_sortby(api_anon_client: ApiClient) -> None:
 
 
 def test_processing_process(
-    caplog: pytest.LogCaptureFixture, api_anon_client: ApiClient
+    caplog: pytest.LogCaptureFixture, api_anon_client: Client
 ) -> None:
     process = api_anon_client.get_process("test-adaptor-dummy")
     assert isinstance(process, Process)
     assert process.id == "test-adaptor-dummy"
 
-    with caplog.at_level(logging.INFO, logger="datapi.processing"):
+    with caplog.at_level(logging.INFO, logger="ecmwf.datastores.processing"):
         remote = process.submit({})
     assert isinstance(remote, Remote)
     assert "The job has been submitted as an anonymous user" in caplog.text
 
 
-def test_processing_apply_constraints(api_anon_client: ApiClient) -> None:
+def test_processing_apply_constraints(api_anon_client: Client) -> None:
     result = api_anon_client.apply_constraints(
         "test-adaptor-url", {"version": "deprecated (1.0)"}
     )
@@ -47,7 +47,7 @@ def test_processing_apply_constraints(api_anon_client: ApiClient) -> None:
         api_anon_client.apply_constraints("test-adaptor-url", {"foo": "bar"})
 
 
-def test_processing_estimate_costs(api_anon_client: ApiClient) -> None:
+def test_processing_estimate_costs(api_anon_client: Client) -> None:
     result = api_anon_client.estimate_costs(
         "test-adaptor-url", {"variable": ["foo", "bar"]}
     )
@@ -58,7 +58,7 @@ def test_processing_estimate_costs(api_anon_client: ApiClient) -> None:
     }
 
 
-def test_processing_get_jobs_status(api_anon_client: ApiClient) -> None:
+def test_processing_get_jobs_status(api_anon_client: Client) -> None:
     remote = api_anon_client.submit("test-adaptor-dummy", {"format": "foo"})
     request_id = remote.request_id
     with pytest.raises(HTTPError, match="400 Client Error: Bad Request"):
@@ -67,7 +67,7 @@ def test_processing_get_jobs_status(api_anon_client: ApiClient) -> None:
     assert request_id not in api_anon_client.get_jobs(status="successful").request_ids
 
 
-def test_processing_get_jobs_sortby(api_anon_client: ApiClient) -> None:
+def test_processing_get_jobs_sortby(api_anon_client: Client) -> None:
     id1 = api_anon_client.submit("test-adaptor-dummy", {}).request_id
     id2 = api_anon_client.submit("test-adaptor-dummy", {}).request_id
     ids = api_anon_client.get_jobs(sortby="-created").request_ids
@@ -75,7 +75,7 @@ def test_processing_get_jobs_sortby(api_anon_client: ApiClient) -> None:
     assert [id2] != api_anon_client.get_jobs(sortby="created", limit=1).request_ids
 
 
-def test_deprecation_warnings(api_anon_client: ApiClient) -> None:
+def test_deprecation_warnings(api_anon_client: Client) -> None:
     with pytest.warns(DeprecationWarning):
         api_anon_client.submit("test-adaptor-dummy", {}).request_uid
 

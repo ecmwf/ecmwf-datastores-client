@@ -32,7 +32,7 @@ import attrs
 import multiurl
 import requests
 
-import datapi
+import ecmwf.datastores
 
 from . import config, utils
 
@@ -302,7 +302,7 @@ class Process(ApiResponse):
         process_id: str = self._json_dict["id"]
         return process_id
 
-    def submit(self, request: dict[str, Any]) -> datapi.Remote:
+    def submit(self, request: dict[str, Any]) -> ecmwf.datastores.Remote:
         """Submit a request.
 
         Parameters
@@ -312,7 +312,7 @@ class Process(ApiResponse):
 
         Returns
         -------
-        datapi.Remote
+        ecmwf.datastores.Remote
         """
         job = Job.from_request(
             "post",
@@ -540,7 +540,7 @@ class Remote:
 
         Returns
         -------
-        datapi.Results
+        ecmwf.datastores.Results
         """
         return self._make_results(wait=True)
 

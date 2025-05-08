@@ -5,13 +5,13 @@ from typing import Any
 
 import pytest
 
-from datapi import ApiClient
+from ecmwf.datastores import Client
 
 
 @pytest.mark.extra
 def test_features_url_cds_adaptor_area_selection(
     tmp_path: Path,
-    api_anon_client: ApiClient,
+    api_anon_client: Client,
 ) -> None:
     collection_id = "test-adaptor-url"
     request: dict[str, Any] = {
@@ -40,7 +40,7 @@ def test_features_url_cds_adaptor_area_selection(
     ],
 )
 def test_features_mars_cds_adaptor_format(
-    api_anon_client: ApiClient,
+    api_anon_client: Client,
     monkeypatch: pytest.MonkeyPatch,
     tmp_path: Path,
     format: str,
@@ -68,7 +68,7 @@ def test_features_mars_cds_adaptor_format(
 
 
 @pytest.mark.extra
-def test_features_upload_big_file(api_anon_client: ApiClient) -> None:
+def test_features_upload_big_file(api_anon_client: Client) -> None:
     # See: https://github.com/fsspec/s3fs/pull/910
     request = {
         "size": 1_048_576_000 + 1,

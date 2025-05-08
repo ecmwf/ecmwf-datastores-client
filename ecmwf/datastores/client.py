@@ -22,21 +22,21 @@ import attrs
 import multiurl.base
 import requests
 
-import datapi
+import ecmwf.datastores
 
 from . import __version__, catalogue, config, processing, profile
 
 
 @attrs.define(slots=False)
-class ApiClient:
-    """A client to interact with the ESEE Data Stores.
+class Client:
+    """ECMWF Data Stores Service (DSS) API Python client.
 
     Parameters
     ----------
     url: str or None, default: None
-        API URL. If None, infer from DATAPI_URL or DATAPI_RC.
+        API URL. If None, infer from ECMWF_DATASTORES_URL or ECMWF_DATASTORES_RC_FILE.
     key: str or None, default: None
-        API Key. If None, infer from DATAPI_KEY or DATAPI_RC.
+        API Key. If None, infer from ECMWF_DATASTORES_KEY or ECMWF_DATASTORES_RC_FILE.
     verify: bool, default: True
         Whether to verify the TLS certificate at the remote end.
     timeout: float or tuple[float,float], default: 60
@@ -83,7 +83,7 @@ class ApiClient:
             warnings.warn(str(exc), UserWarning)
 
     def _get_headers(self, key_is_mandatory: bool = True) -> dict[str, str]:
-        headers = {"User-Agent": f"datapi/{__version__}"}
+        headers = {"User-Agent": f"ecmwf-datastores-client/{__version__}"}
         if self.key is not None:
             headers["PRIVATE-TOKEN"] = self.key
         elif key_is_mandatory:
@@ -210,7 +210,7 @@ class ApiClient:
         licences = self._profile_api.accepted_licences(**params).get("licences", [])
         return licences
 
-    def get_collection(self, collection_id: str) -> datapi.Collection:
+    def get_collection(self, collection_id: str) -> ecmwf.datastores.Collection:
         """Retrieve a catalogue collection.
 
         Parameters
@@ -220,7 +220,7 @@ class ApiClient:
 
         Returns
         -------
-        datapi.Collection
+        ecmwf.datastores.Collection
         """
         return self._catalogue_api.get_collection(collection_id)
 
@@ -230,7 +230,7 @@ class ApiClient:
         sortby: Literal[None, "id", "relevance", "title", "update"] = None,
         query: str | None = None,
         keywords: list[str] | None = None,
-    ) -> datapi.Collections:
+    ) -> ecmwf.datastores.Collections:
         """Retrieve catalogue collections.
 
         Parameters
@@ -246,7 +246,7 @@ class ApiClient:
 
         Returns
         -------
-        datapi.Collections
+        ecmwf.datastores.Collections
         """
         params: dict[str, Any] = {
             k: v
@@ -262,7 +262,7 @@ class ApiClient:
         limit: int | None = None,
         sortby: Literal[None, "created", "-created"] = None,
         status: Literal[None, "accepted", "running", "successful", "failed"] = None,
-    ) -> datapi.Jobs:
+    ) -> ecmwf.datastores.Jobs:
         """Retrieve submitted jobs.
 
         Parameters
@@ -276,7 +276,7 @@ class ApiClient:
 
         Returns
         -------
-        datapi.Jobs
+        ecmwf.datastores.Jobs
         """
         params = {
             k: v
@@ -294,20 +294,20 @@ class ApiClient:
         licences = self._catalogue_api.get_licenses(**params).get("licences", [])
         return licences
 
-    def get_process(self, collection_id: str) -> datapi.Process:
+    def get_process(self, collection_id: str) -> ecmwf.datastores.Process:
         return self._retrieve_api.get_process(collection_id)
 
     def get_processes(
         self,
         limit: int | None = None,
         sortby: Literal[None, "id", "-id"] = None,
-    ) -> datapi.Processes:
+    ) -> ecmwf.datastores.Processes:
         params = {
             k: v for k, v in zip(["limit", "sortby"], [limit, sortby]) if v is not None
         }
         return self._retrieve_api.get_processes(**params)
 
-    def get_remote(self, request_id: str) -> datapi.Remote:
+    def get_remote(self, request_id: str) -> ecmwf.datastores.Remote:
         """
         Retrieve the remote object of a request.
 
@@ -318,11 +318,11 @@ class ApiClient:
 
         Returns
         -------
-        datapi.Remote
+        ecmwf.datastores.Remote
         """
         return self._retrieve_api.get_job(request_id).get_remote()
 
-    def get_results(self, request_id: str) -> datapi.Results:
+    def get_results(self, request_id: str) -> ecmwf.datastores.Results:
         """
         Retrieve the results of a request.
 
@@ -333,7 +333,7 @@ class ApiClient:
 
         Returns
         -------
-        datapi.Results
+        ecmwf.datastores.Results
         """
         return self.get_remote(request_id).get_results()
 
@@ -364,7 +364,9 @@ class ApiClient:
     def star_collection(self, collection_id: str) -> list[str]:
         return self._profile_api.star_collection(collection_id)
 
-    def submit(self, collection_id: str, request: dict[str, Any]) -> datapi.Remote:
+    def submit(
+        self, collection_id: str, request: dict[str, Any]
+    ) -> ecmwf.datastores.Remote:
         """Submit a request.
 
         Parameters
@@ -376,13 +378,13 @@ class ApiClient:
 
         Returns
         -------
-        datapi.Remote
+        ecmwf.datastores.Remote
         """
         return self._retrieve_api.submit(collection_id, request)
 
     def submit_and_wait_on_results(
         self, collection_id: str, request: dict[str, Any]
-    ) -> datapi.Results:
+    ) -> ecmwf.datastores.Results:
         """Submit a request and wait for the results to be ready.
 
         Parameters
@@ -394,7 +396,7 @@ class ApiClient:
 
         Returns
         -------
-        datapi.Results
+        ecmwf.datastores.Results
         """
         return self._retrieve_api.submit(collection_id, request).get_results()
 

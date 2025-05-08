@@ -17,12 +17,15 @@ from __future__ import annotations
 import os
 
 SUPPORTED_API_VERSION = "v1"
-CONFIG_PREFIX = "datapi"
+CONFIG_PREFIX = "ecmwf_datastores"
 
 
 def read_config(path: str | None = None) -> dict[str, str]:
     if path is None:
-        path = os.getenv(f"{CONFIG_PREFIX}_RC".upper(), f"~/.{CONFIG_PREFIX}rc".lower())
+        path = os.getenv(
+            f"{CONFIG_PREFIX}_RC_FILE".upper(),
+            f"~/.{CONFIG_PREFIX}rc".replace("_", "").lower(),
+        )
     path = os.path.expanduser(path)
     try:
         config = {}

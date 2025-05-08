@@ -1,30 +1,30 @@
-# datapi
+# ecmwf-datastores-client
 
-ECMWF Software EnginE (ESEE) Data Stores API Python Client.
+ECMWF Data Stores Service (DSS) API Python client.
 
-Technical documentation: https://ecmwf-projects.github.io/datapi/
+Technical documentation: https://ecmwf.github.io/ecmwf-datastores-client/
 
 ## Installation
 
 Install with conda:
 
 ```
-$ conda install -c conda-forge datapi
+$ conda install -c conda-forge ecmwf-datastores-client
 ```
 
 Install with pip:
 
 ```
-$ pip install datapi
+$ pip install ecmwf-datastores-client
 ```
 
 ## Configuration
 
-The `ApiClient` requires the `url` to the API root and a valid API `key`. You can also set the `DATAPI_URL` and `DATAPI_KEY` environment variables, or use a configuration file.
-The configuration file must be located at `~/.datapirc`, or at the path specified by the `DATAPI_RC` environment variable.
+The `Client` requires the `url` to the API root and a valid API `key`. You can also set the `ECMWF_DATASTORES_URL` and `ECMWF_DATASTORES_KEY` environment variables, or use a configuration file.
+The configuration file must be located at `~/.ecmwfdatastoresrc`, or at the path specified by the `ECMWF_DATASTORES_RC_FILE` environment variable.
 
 ```
-$ cat $HOME/.datapirc
+$ cat $HOME/.ecmwfdatastoresrc
 url: https://cds.climate.copernicus.eu/api
 key: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 ```
@@ -51,10 +51,10 @@ Instantiate the API client and optionally verify authentication:
 
 ```python
 >>> import os
->>> from datapi import ApiClient
->>> client = ApiClient(
-...     url=os.getenv("DATAPI_URL"),
-...     key=os.getenv("DATAPI_KEY"),
+>>> from ecmwf.datastores import Client
+>>> client = Client(
+...     url=os.getenv("ECMWF_DATASTORES_URL"),
+...     key=os.getenv("ECMWF_DATASTORES_KEY"),
 ... )
 >>> client.check_authentication()  # optional check
 {...}

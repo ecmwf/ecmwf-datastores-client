@@ -4,9 +4,9 @@
   "checkout": null,
   "context": {
     "cookiecutter": {
-      "project_name": "datapi",
-      "project_slug": "datapi",
-      "project_short_description": "ESEE Data Stores API Python Client",
+      "project_name": "ecmwf-datastores-client",
+      "project_slug": "ecmwf.datastores",
+      "project_short_description": "ECMWF Data Stores Service (DSS) API Python client",
       "copyright_holder": "European Union",
       "copyright_year": "2022",
       "mypy_strict": "True",

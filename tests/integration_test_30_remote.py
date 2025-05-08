@@ -11,13 +11,13 @@ from typing import Any
 import pytest
 from requests import HTTPError
 
-from datapi import ApiClient, Remote
+from ecmwf.datastores import Client, Remote
 
 does_not_raise = contextlib.nullcontext
 
 
 @pytest.fixture
-def remote(api_anon_client: ApiClient) -> Remote:
+def remote(api_anon_client: Client) -> Remote:
     return api_anon_client.submit("test-adaptor-dummy", {"size": 1})
 
 
@@ -61,7 +61,7 @@ def test_remote_status(remote: Remote) -> None:
     assert remote.status in ("accepted", "running", "successful")
 
 
-def test_remote_failed(api_anon_client: ApiClient) -> None:
+def test_remote_failed(api_anon_client: Client) -> None:
     remote = api_anon_client.submit("test-adaptor-dummy", {"format": "foo"})
     with pytest.raises(HTTPError, match="400 Client Error: Bad Request"):
         remote.download()
@@ -81,7 +81,7 @@ def test_remote_cleanup(
     cleanup: bool,
     raises: contextlib.nullcontext[Any],
 ) -> None:
-    client = ApiClient(
+    client = Client(
         url=api_root_url, key=api_anon_key, cleanup=cleanup, maximum_tries=0
     )
     remote = client.submit("test-adaptor-dummy", {})
@@ -89,12 +89,12 @@ def test_remote_cleanup(
     del remote
     time.sleep(1)
 
-    client = ApiClient(url=api_root_url, key=api_anon_key, maximum_tries=0)
+    client = Client(url=api_root_url, key=api_anon_key, maximum_tries=0)
     with raises:
         client.get_remote(request_id)
 
 
-def test_remote_datetimes(api_anon_client: ApiClient) -> None:
+def test_remote_datetimes(api_anon_client: Client) -> None:
     request = {"elapsed": 1, "_timestamp": datetime.datetime.now().isoformat()}
     remote = api_anon_client.submit("test-adaptor-dummy", request)
     assert remote.results_ready is False
@@ -108,7 +108,7 @@ def test_remote_datetimes(api_anon_client: ApiClient) -> None:
     assert remote.finished_at == remote.updated_at
 
 
-def test_make_results_deprecation(api_anon_client: ApiClient) -> None:
+def test_make_results_deprecation(api_anon_client: Client) -> None:
     remote = api_anon_client.submit("test-adaptor-dummy", {})
     with pytest.warns(DeprecationWarning, match="`make_results` has been deprecated"):
         remote.make_results()
