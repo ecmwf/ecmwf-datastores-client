@@ -22,9 +22,11 @@ import attrs
 import multiurl.base
 import requests
 
-import ecmwf.datastores
-
-from . import __version__, catalogue, config, processing, profile
+from ecmwf import datastores
+from ecmwf.datastores import config
+from ecmwf.datastores.catalogue import Catalogue
+from ecmwf.datastores.processing import Processing, RequestKwargs
+from ecmwf.datastores.profile import Profile
 
 
 @attrs.define(slots=False)
@@ -83,7 +85,7 @@ class Client:
             warnings.warn(str(exc), UserWarning)
 
     def _get_headers(self, key_is_mandatory: bool = True) -> dict[str, str]:
-        headers = {"User-Agent": f"ecmwf-datastores-client/{__version__}"}
+        headers = {"User-Agent": f"ecmwf-datastores-client/{datastores.__version__}"}
         if self.key is not None:
             headers["PRIVATE-TOKEN"] = self.key
         elif key_is_mandatory:
@@ -113,10 +115,8 @@ class Client:
             "verify": self.verify,
         }
 
-    def _get_request_kwargs(
-        self, key_is_mandatory: bool = True
-    ) -> processing.RequestKwargs:
-        return processing.RequestKwargs(
+    def _get_request_kwargs(self, key_is_mandatory: bool = True) -> RequestKwargs:
+        return RequestKwargs(
             headers=self._get_headers(key_is_mandatory=key_is_mandatory),
             session=self.session,
             retry_options=self._retry_options,
@@ -128,21 +128,19 @@ class Client:
         )
 
     @functools.cached_property
-    def _catalogue_api(self) -> catalogue.Catalogue:
-        return catalogue.Catalogue(
+    def _catalogue_api(self) -> Catalogue:
+        return Catalogue(
             f"{self.url}/catalogue",
             **self._get_request_kwargs(key_is_mandatory=False),
         )
 
     @functools.cached_property
-    def _retrieve_api(self) -> processing.Processing:
-        return processing.Processing(
-            f"{self.url}/retrieve", **self._get_request_kwargs()
-        )
+    def _retrieve_api(self) -> Processing:
+        return Processing(f"{self.url}/retrieve", **self._get_request_kwargs())
 
     @functools.cached_property
-    def _profile_api(self) -> profile.Profile:
-        return profile.Profile(f"{self.url}/profiles", **self._get_request_kwargs())
+    def _profile_api(self) -> Profile:
+        return Profile(f"{self.url}/profiles", **self._get_request_kwargs())
 
     def accept_licence(self, licence_id: str, revision: int) -> dict[str, Any]:
         return self._profile_api.accept_licence(licence_id, revision=revision)
@@ -210,7 +208,7 @@ class Client:
         licences = self._profile_api.accepted_licences(**params).get("licences", [])
         return licences
 
-    def get_collection(self, collection_id: str) -> ecmwf.datastores.Collection:
+    def get_collection(self, collection_id: str) -> datastores.Collection:
         """Retrieve a catalogue collection.
 
         Parameters
@@ -220,7 +218,7 @@ class Client:
 
         Returns
         -------
-        ecmwf.datastores.Collection
+        datastores.Collection
         """
         return self._catalogue_api.get_collection(collection_id)
 
@@ -230,7 +228,7 @@ class Client:
         sortby: Literal[None, "id", "relevance", "title", "update"] = None,
         query: str | None = None,
         keywords: list[str] | None = None,
-    ) -> ecmwf.datastores.Collections:
+    ) -> datastores.Collections:
         """Retrieve catalogue collections.
 
         Parameters
@@ -246,7 +244,7 @@ class Client:
 
         Returns
         -------
-        ecmwf.datastores.Collections
+        datastores.Collections
         """
         params: dict[str, Any] = {
             k: v
@@ -262,7 +260,7 @@ class Client:
         limit: int | None = None,
         sortby: Literal[None, "created", "-created"] = None,
         status: Literal[None, "accepted", "running", "successful", "failed"] = None,
-    ) -> ecmwf.datastores.Jobs:
+    ) -> datastores.Jobs:
         """Retrieve submitted jobs.
 
         Parameters
@@ -276,7 +274,7 @@ class Client:
 
         Returns
         -------
-        ecmwf.datastores.Jobs
+        datastores.Jobs
         """
         params = {
             k: v
@@ -294,20 +292,20 @@ class Client:
         licences = self._catalogue_api.get_licenses(**params).get("licences", [])
         return licences
 
-    def get_process(self, collection_id: str) -> ecmwf.datastores.Process:
+    def get_process(self, collection_id: str) -> datastores.Process:
         return self._retrieve_api.get_process(collection_id)
 
     def get_processes(
         self,
         limit: int | None = None,
         sortby: Literal[None, "id", "-id"] = None,
-    ) -> ecmwf.datastores.Processes:
+    ) -> datastores.Processes:
         params = {
             k: v for k, v in zip(["limit", "sortby"], [limit, sortby]) if v is not None
         }
         return self._retrieve_api.get_processes(**params)
 
-    def get_remote(self, request_id: str) -> ecmwf.datastores.Remote:
+    def get_remote(self, request_id: str) -> datastores.Remote:
         """
         Retrieve the remote object of a request.
 
@@ -318,11 +316,11 @@ class Client:
 
         Returns
         -------
-        ecmwf.datastores.Remote
+        datastores.Remote
         """
         return self._retrieve_api.get_job(request_id).get_remote()
 
-    def get_results(self, request_id: str) -> ecmwf.datastores.Results:
+    def get_results(self, request_id: str) -> datastores.Results:
         """
         Retrieve the results of a request.
 
@@ -333,7 +331,7 @@ class Client:
 
         Returns
         -------
-        ecmwf.datastores.Results
+        datastores.Results
         """
         return self.get_remote(request_id).get_results()
 
@@ -364,9 +362,7 @@ class Client:
     def star_collection(self, collection_id: str) -> list[str]:
         return self._profile_api.star_collection(collection_id)
 
-    def submit(
-        self, collection_id: str, request: dict[str, Any]
-    ) -> ecmwf.datastores.Remote:
+    def submit(self, collection_id: str, request: dict[str, Any]) -> datastores.Remote:
         """Submit a request.
 
         Parameters
@@ -378,13 +374,13 @@ class Client:
 
         Returns
         -------
-        ecmwf.datastores.Remote
+        datastores.Remote
         """
         return self._retrieve_api.submit(collection_id, request)
 
     def submit_and_wait_on_results(
         self, collection_id: str, request: dict[str, Any]
-    ) -> ecmwf.datastores.Results:
+    ) -> datastores.Results:
         """Submit a request and wait for the results to be ready.
 
         Parameters
@@ -396,7 +392,7 @@ class Client:
 
         Returns
         -------
-        ecmwf.datastores.Results
+        datastores.Results
         """
         return self._retrieve_api.submit(collection_id, request).get_results()
 
