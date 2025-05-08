@@ -1,14 +1,14 @@
 import pytest
 
-from datapi import ApiClient, Collection, processing
+from ecmwf.datastores import Client, Collection, processing
 
 
 @pytest.fixture
-def collection(api_anon_client: ApiClient) -> Collection:
+def collection(api_anon_client: Client) -> Collection:
     return api_anon_client.get_collection("test-adaptor-mars")
 
 
-def test_catalogue_collections(api_anon_client: ApiClient) -> None:
+def test_catalogue_collections(api_anon_client: Client) -> None:
     collections = api_anon_client.get_collections()
     assert collections.next is not None
 
@@ -21,23 +21,23 @@ def test_catalogue_collections(api_anon_client: ApiClient) -> None:
     assert "reanalysis-era5-single-levels" in collection_ids
 
 
-def test_catalogue_collections_limit(api_anon_client: ApiClient) -> None:
+def test_catalogue_collections_limit(api_anon_client: Client) -> None:
     collections = api_anon_client.get_collections(limit=1)
     assert len(collections.collection_ids) == 1
 
 
-def test_catalogue_collections_sortby(api_anon_client: ApiClient) -> None:
+def test_catalogue_collections_sortby(api_anon_client: Client) -> None:
     collections_title = api_anon_client.get_collections(sortby="title")
     collections_relevance = api_anon_client.get_collections(sortby="relevance")
     assert collections_title.collection_ids != collections_relevance.collection_ids
 
 
-def test_catalogue_collections_query(api_anon_client: ApiClient) -> None:
+def test_catalogue_collections_query(api_anon_client: Client) -> None:
     collections = api_anon_client.get_collections(query="test")
     assert collections.collection_ids
 
 
-def test_catalogue_collections_keywords(api_anon_client: ApiClient) -> None:
+def test_catalogue_collections_keywords(api_anon_client: Client) -> None:
     collections = api_anon_client.get_collections(keywords=["Product type: Reanalysis"])
     assert collections.collection_ids
 
@@ -96,7 +96,7 @@ def test_catalogue_collection_url(collection: Collection) -> None:
     assert collection.url.endswith("collections/test-adaptor-mars")
 
 
-def test_catalogue_get_licences(api_anon_client: ApiClient) -> None:
+def test_catalogue_get_licences(api_anon_client: Client) -> None:
     all_licences = api_anon_client.get_licences(scope="all")
     assert all("id" in licence and "revision" in licence for licence in all_licences)
 

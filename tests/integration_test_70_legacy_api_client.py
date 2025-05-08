@@ -10,15 +10,15 @@ from typing import Any
 import pytest
 import requests
 
-from datapi import processing
-from datapi.legacy_api_client import LegacyApiClient
+from ecmwf.datastores import processing
+from ecmwf.datastores.legacy_client import LegacyClient
 
 does_not_raise = contextlib.nullcontext
 
 
 @pytest.fixture
-def legacy_client(api_root_url: str, api_anon_key: str) -> LegacyApiClient:
-    return LegacyApiClient(url=api_root_url, key=api_anon_key, retry_max=1)
+def legacy_client(api_root_url: str, api_anon_key: str) -> LegacyClient:
+    return LegacyClient(url=api_root_url, key=api_anon_key, retry_max=1)
 
 
 def legacy_update(remote: processing.Remote) -> None:
@@ -55,7 +55,7 @@ def legacy_update(remote: processing.Remote) -> None:
 
 
 def test_legacy_api_client_retrieve(
-    tmp_path: pathlib.Path, legacy_client: LegacyApiClient
+    tmp_path: pathlib.Path, legacy_client: LegacyClient
 ) -> None:
     collection_id = "test-adaptor-dummy"
     request = {"size": 1}
@@ -68,7 +68,7 @@ def test_legacy_api_client_retrieve(
 def test_legacy_api_client_result(
     monkeypatch: pytest.MonkeyPatch,
     tmp_path: pathlib.Path,
-    legacy_client: LegacyApiClient,
+    legacy_client: LegacyClient,
 ) -> None:
     monkeypatch.chdir(tmp_path)
 
@@ -98,9 +98,7 @@ def test_legacy_api_client_quiet(
     api_anon_key: str,
     quiet: bool,
 ) -> None:
-    client = LegacyApiClient(
-        url=api_root_url, key=api_anon_key, quiet=quiet, retry_max=0
-    )
+    client = LegacyClient(url=api_root_url, key=api_anon_key, quiet=quiet, retry_max=0)
     client.retrieve("test-adaptor-dummy", {})
     records = [record for record in caplog.records if record.levelname == "INFO"]
     assert not records if quiet else records
@@ -113,7 +111,7 @@ def test_legacy_api_client_debug(
     api_anon_key: str,
     debug: bool,
 ) -> None:
-    LegacyApiClient(url=api_root_url, key=api_anon_key, debug=debug, retry_max=0)
+    LegacyClient(url=api_root_url, key=api_anon_key, debug=debug, retry_max=0)
     records = [record for record in caplog.records if record.levelname == "DEBUG"]
     assert records if debug else not records
 
@@ -129,7 +127,7 @@ def test_legacy_api_client_wait_until_complete(
     wait_until_complete: bool,
     expected_type: type,
 ) -> None:
-    client = LegacyApiClient(
+    client = LegacyClient(
         url=api_root_url,
         key=api_anon_key,
         wait_until_complete=wait_until_complete,
@@ -165,7 +163,7 @@ def test_legacy_api_client_update(
     format: str,
     raises: contextlib.nullcontext[Any],
 ) -> None:
-    client = LegacyApiClient(
+    client = LegacyClient(
         url=api_root_url, key=api_anon_key, wait_until_complete=False, retry_max=0
     )
     remote = client.retrieve(collection_id, {"format": format})
@@ -177,7 +175,7 @@ def test_legacy_api_client_update(
 @pytest.mark.filterwarnings("ignore:Unverified HTTPS")
 def test_legacy_api_client_kwargs(api_root_url: str, api_anon_key: str) -> None:
     session = requests.Session()
-    client = LegacyApiClient(
+    client = LegacyClient(
         url=api_root_url,
         key=api_anon_key,
         verify=0,
@@ -206,7 +204,7 @@ def test_legacy_api_client_logging(
     api_anon_key: str,
 ) -> None:
     logger = logging.getLogger("foo")
-    client = LegacyApiClient(
+    client = LegacyClient(
         url=api_root_url,
         key=api_anon_key,
         info_callback=logger.info,
@@ -235,7 +233,7 @@ def test_legacy_api_client_download(
     api_anon_key: str,
 ) -> None:
     monkeypatch.chdir(tmp_path)
-    client = LegacyApiClient(
+    client = LegacyClient(
         url=api_root_url,
         key=api_anon_key,
         retry_max=1,
@@ -260,7 +258,7 @@ def test_legacy_api_client_download(
     assert all(os.path.getsize(target) == 1 for target in targets)
 
 
-def test_legacy_api_client_status(legacy_client: LegacyApiClient) -> None:
+def test_legacy_api_client_status(legacy_client: LegacyClient) -> None:
     status = legacy_client.status()
     assert set(status) <= {
         "critical",
@@ -280,7 +278,7 @@ def test_legacy_api_client_status(legacy_client: LegacyApiClient) -> None:
 
 
 def test_legacy_api_client_remote(
-    legacy_client: LegacyApiClient, tmp_path: pathlib.Path
+    legacy_client: LegacyClient, tmp_path: pathlib.Path
 ) -> None:
     results = legacy_client.retrieve("test-adaptor-dummy", {"size": 1})
     remote = legacy_client.remote(results.location)
@@ -298,7 +296,7 @@ def test_legacy_api_client_warning(
         UserWarning,
         match="deprecated: {'full_stack': 'a', 'metadata': 'b', 'forget': 'c'}",
     ):
-        LegacyApiClient(
+        LegacyClient(
             url=api_root_url,
             key=api_anon_key,
             full_stack="a",  # type: ignore[arg-type]
@@ -307,7 +305,7 @@ def test_legacy_api_client_warning(
         )
 
 
-def test_legacy_api_client_toolbox(legacy_client: LegacyApiClient) -> None:
+def test_legacy_api_client_toolbox(legacy_client: LegacyClient) -> None:
     with pytest.raises(NotImplementedError):
         legacy_client.service("service")
     with pytest.raises(NotImplementedError):

@@ -1,4 +1,4 @@
-"""ESEE Data Stores API Python Client."""
+"""ECMWF Data Stores Service (DSS) API Python client."""
 
 # Copyright 2022, European Union.
 #
@@ -22,13 +22,13 @@ except ImportError:  # pragma: no cover
     # Local copy or not installed with setuptools
     __version__ = "999"
 
-from .api_client import ApiClient
 from .catalogue import Collection, Collections
+from .client import Client
 from .processing import Jobs, Process, Processes, Remote, Results
 
 __all__ = [
     "__version__",
-    "ApiClient",
+    "Client",
     "Collection",
     "Collections",
     "Jobs",

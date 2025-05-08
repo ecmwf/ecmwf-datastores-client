@@ -1,4 +1,4 @@
-PROJECT := datapi
+PROJECT := ecmwf.datastores
 CONDA := conda
 CONDAFLAGS :=
 COV_REPORT := html

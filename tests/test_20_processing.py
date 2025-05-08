@@ -6,7 +6,7 @@ import requests
 import responses
 from responses.matchers import json_params_matcher
 
-from datapi import catalogue, processing
+from ecmwf.datastores import catalogue, processing
 
 COLLECTION_ID = "reanalysis-era5-pressure-levels"
 JOB_SUCCESSFUL_ID = "9bfc1362-2832-48e1-a235-359267420bb2"
@@ -466,38 +466,38 @@ def test_remote_logs(
 
     collection = cat.get_collection(COLLECTION_ID)
     request = {"variable": "temperature", "year": "2022"}
-    with caplog.at_level(logging.DEBUG, logger="datapi.processing"):
+    with caplog.at_level(logging.DEBUG, logger="ecmwf.datastores.processing"):
         remote = collection.submit(request)
         remote._wait_on_results()
 
     assert caplog.record_tuples == [
         (
-            "datapi.processing",
+            "ecmwf.datastores.processing",
             10,
             "GET http://localhost:8080/api/retrieve/v1/processes/reanalysis-era5-pressure-levels",
         ),
         (
-            "datapi.processing",
+            "ecmwf.datastores.processing",
             10,
             f"REPLY {json.dumps(PROCESS_JSON)}",
         ),
         (
-            "datapi.processing",
+            "ecmwf.datastores.processing",
             30,
             "This is a warning message",
         ),
         (
-            "datapi.processing",
+            "ecmwf.datastores.processing",
             30,
             "[2023-12-12T13:00:00] This is a warning dataset message",
         ),
         (
-            "datapi.processing",
+            "ecmwf.datastores.processing",
             20,
             "[2023-12-12T14:00:00] This is a success dataset message",
         ),
         (
-            "datapi.processing",
+            "ecmwf.datastores.processing",
             10,
             (
                 "POST http://localhost:8080/api/retrieve/v1/processes/"
@@ -506,26 +506,26 @@ def test_remote_logs(
             ),
         ),
         (
-            "datapi.processing",
+            "ecmwf.datastores.processing",
             10,
             f"REPLY {json.dumps(JOB_SUCCESSFUL_JSON)}",
         ),
         (
-            "datapi.processing",
+            "ecmwf.datastores.processing",
             20,
             "Request ID is 9bfc1362-2832-48e1-a235-359267420bb2",
         ),
         (
-            "datapi.processing",
+            "ecmwf.datastores.processing",
             10,
             "GET http://localhost:8080/api/retrieve/v1/jobs/9bfc1362-2832-48e1-a235-359267420bb2",
         ),
         (
-            "datapi.processing",
+            "ecmwf.datastores.processing",
             10,
             f"REPLY {json.dumps(JOB_SUCCESSFUL_JSON)}",
         ),
-        ("datapi.processing", 20, "This is a log"),
-        ("datapi.processing", 30, "This is a warning log"),
-        ("datapi.processing", 20, "status has been updated to successful"),
+        ("ecmwf.datastores.processing", 20, "This is a log"),
+        ("ecmwf.datastores.processing", 30, "This is a warning log"),
+        ("ecmwf.datastores.processing", 20, "status has been updated to successful"),
     ]

@@ -186,9 +186,9 @@ jobs:
     - name: Run tests
       timeout-minutes: 10
       env:
-        DATAPI_URL: ${{ secrets.DATAPI_URL }}
-        DATAPI_KEY: ${{ secrets.DATAPI_KEY }}
-        DATAPI_ANON_KEY: ${{ secrets.DATAPI_ANON_KEY }}
+        ECMWF_DATASTORES_URL: ${{ secrets.ECMWF_DATASTORES_URL }}
+        ECMWF_DATASTORES_KEY: ${{ secrets.ECMWF_DATASTORES_KEY }}
+        ECMWF_DATASTORES_ANON_KEY: ${{ secrets.ECMWF_DATASTORES_ANON_KEY }}
       run: |
         make ci-integration-tests COV_REPORT=xml
 
@@ -217,9 +217,9 @@ jobs:
     - name: Check wheels
       run: |
         cd dist || exit
-        python -m pip install datapi*.whl || exit
+        python -m pip install ecmwf_datastores_client*.whl || exit
         python -m twine check --strict * || exit
-        python -c "import datapi" || exit
+        python -c "import ecmwf.datastores" || exit
         cd ..
     - uses: actions/upload-artifact@v4
       with:
@@ -236,7 +236,7 @@ jobs:
       startsWith(github.ref, 'refs/tags')
     environment:
       name: pypi
-      url: https://pypi.org/p/datapi
+      url: https://pypi.org/p/ecmwf-datastores-client
     permissions:
       id-token: write  # IMPORTANT: this permission is mandatory for trusted publish
 

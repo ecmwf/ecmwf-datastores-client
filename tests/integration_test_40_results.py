@@ -8,13 +8,13 @@ from typing import Any
 import pytest
 import requests
 
-from datapi import ApiClient, Results
+from ecmwf.datastores import Client, Results
 
 does_not_raise = contextlib.nullcontext
 
 
 @pytest.fixture
-def results(api_anon_client: ApiClient) -> Results:
+def results(api_anon_client: Client) -> Results:
     return api_anon_client.submit_and_wait_on_results("test-adaptor-dummy", {"size": 1})
 
 
@@ -32,7 +32,7 @@ def test_results_progress(
     capsys: pytest.CaptureFixture[str],
 ) -> None:
     with capsys.disabled():
-        client = ApiClient(
+        client = Client(
             url=api_root_url, key=api_anon_key, progress=progress, maximum_tries=0
         )
         submitted = client.submit("test-adaptor-dummy", {})
@@ -68,7 +68,7 @@ def test_results_robust_download(
         request = self.issue_request(self.range)
         return request.patched_iter_content
 
-    client = ApiClient(
+    client = Client(
         url=api_root_url, key=api_anon_key, retry_after=0, maximum_tries=maximum_tries
     )
     results = client.submit_and_wait_on_results("test-adaptor-dummy", {"size": 10})
@@ -82,7 +82,7 @@ def test_results_robust_download(
         results.download(str(target))
 
 
-def test_results_override(api_anon_client: ApiClient, tmp_path: pathlib.Path) -> None:
+def test_results_override(api_anon_client: Client, tmp_path: pathlib.Path) -> None:
     target_1 = tmp_path / "tmp1.grib"
     api_anon_client.retrieve("test-adaptor-dummy", {"size": 1}, target=str(target_1))
 

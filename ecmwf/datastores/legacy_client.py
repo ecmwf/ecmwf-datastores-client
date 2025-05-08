@@ -25,8 +25,8 @@ import cdsapi.api
 import multiurl
 import requests
 
-from . import __version__ as datapi_version
-from .api_client import ApiClient
+from . import __version__ as datastores_version
+from .client import Client
 from .processing import Remote, Results
 
 LOGGER = logging.getLogger(__name__)
@@ -65,7 +65,7 @@ class LoggingContext:
             self.logger.removeHandler(handler)
 
 
-class LegacyApiClient(cdsapi.api.Client):  # type: ignore[misc]
+class LegacyClient(cdsapi.api.Client):  # type: ignore[misc]
     def __init__(
         self,
         url: str | None = None,
@@ -108,7 +108,7 @@ class LegacyApiClient(cdsapi.api.Client):  # type: ignore[misc]
         self.debug_callback = debug_callback
         self.session = requests.Session() if session is None else session
 
-        self.client = ApiClient(
+        self.client = Client(
             url=self.url,
             key=self.key,
             verify=self.verify,
@@ -133,7 +133,7 @@ class LegacyApiClient(cdsapi.api.Client):  # type: ignore[misc]
                 "sleep_max": self.sleep_max,
                 "retry_max": self.retry_max,
                 "delete": self.delete,
-                "datapi_version": datapi_version,
+                "datastores_version": datastores_version,
             },
         )
 
