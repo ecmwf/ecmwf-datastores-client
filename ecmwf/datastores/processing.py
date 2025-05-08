@@ -32,9 +32,8 @@ import attrs
 import multiurl
 import requests
 
-import ecmwf.datastores
-
-from . import config, utils
+from ecmwf import datastores
+from ecmwf.datastores import config, utils
 
 T_ApiResponse = TypeVar("T_ApiResponse", bound="ApiResponse")
 
@@ -302,7 +301,7 @@ class Process(ApiResponse):
         process_id: str = self._json_dict["id"]
         return process_id
 
-    def submit(self, request: dict[str, Any]) -> ecmwf.datastores.Remote:
+    def submit(self, request: dict[str, Any]) -> datastores.Remote:
         """Submit a request.
 
         Parameters
@@ -312,7 +311,7 @@ class Process(ApiResponse):
 
         Returns
         -------
-        ecmwf.datastores.Remote
+        datastores.Remote
         """
         job = Job.from_request(
             "post",
@@ -540,7 +539,7 @@ class Remote:
 
         Returns
         -------
-        ecmwf.datastores.Results
+        datastores.Results
         """
         return self._make_results(wait=True)
 

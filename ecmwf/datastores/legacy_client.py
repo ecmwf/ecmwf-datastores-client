@@ -25,9 +25,7 @@ import cdsapi.api
 import multiurl
 import requests
 
-from . import __version__ as datastores_version
-from .client import Client
-from .processing import Remote, Results
+from ecmwf import datastores
 
 LOGGER = logging.getLogger(__name__)
 F = TypeVar("F", bound=Callable[..., Any])
@@ -108,7 +106,7 @@ class LegacyClient(cdsapi.api.Client):  # type: ignore[misc]
         self.debug_callback = debug_callback
         self.session = requests.Session() if session is None else session
 
-        self.client = Client(
+        self.client = datastores.Client(
             url=self.url,
             key=self.key,
             verify=self.verify,
@@ -133,7 +131,7 @@ class LegacyClient(cdsapi.api.Client):  # type: ignore[misc]
                 "sleep_max": self.sleep_max,
                 "retry_max": self.retry_max,
                 "delete": self.delete,
-                "datastores_version": datastores_version,
+                "datastores_version": datastores.__version__,
             },
         )
 
@@ -159,12 +157,12 @@ class LegacyClient(cdsapi.api.Client):  # type: ignore[misc]
     @overload
     def retrieve(
         self, name: str, request: dict[str, Any], target: None = ...
-    ) -> Results: ...
+    ) -> datastores.Results: ...
 
     def retrieve(
         self, name: str, request: dict[str, Any], target: str | None = None
-    ) -> str | Remote | Results:
-        submitted: Remote | Results
+    ) -> str | datastores.Remote | datastores.Results:
+        submitted: datastores.Remote | datastores.Results
         if self.wait_until_complete:
             submitted = self.client.submit_and_wait_on_results(
                 collection_id=name,
@@ -222,7 +220,9 @@ class LegacyClient(cdsapi.api.Client):  # type: ignore[misc]
 
     @typing.no_type_check
     def _download(self, results, targets=None):
-        if isinstance(results, (cdsapi.api.Result, Remote, Results)):
+        if isinstance(
+            results, (cdsapi.api.Result, datastores.Remote, datastores.Results)
+        ):
             if targets:
                 path = targets.pop(0)
             else:

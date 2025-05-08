@@ -11,7 +11,7 @@ Knowledge Base.
 :maxdepth: 2
 
 README.md
-API Reference <_api/ecmwf.datastores/index>
+API Reference <_api/datastores/index>
 ```
 
 # Indices and tables

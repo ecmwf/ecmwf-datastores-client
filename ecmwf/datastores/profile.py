@@ -19,7 +19,7 @@ from typing import Any, Callable
 import attrs
 import requests
 
-from . import config, processing
+from ecmwf.datastores import config, processing
 
 
 @attrs.define(slots=False)

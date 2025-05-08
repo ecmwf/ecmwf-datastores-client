@@ -22,9 +22,8 @@ import attrs
 import requests
 
 import ecmwf.datastores
-
-from . import config, utils
-from .processing import ApiResponse, ApiResponsePaginated, RequestKwargs
+from ecmwf.datastores import config, utils
+from ecmwf.datastores.processing import ApiResponse, ApiResponsePaginated, RequestKwargs
 
 
 @attrs.define
