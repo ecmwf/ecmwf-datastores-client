@@ -43,6 +43,7 @@ tracker = "https://github.com/ecmwf/ecmwf-datastores-client/issues"
 branch = true
 
 [tool.mypy]
+explicit_package_bases = true
 strict = true
 
 [[tool.mypy.overrides]]
