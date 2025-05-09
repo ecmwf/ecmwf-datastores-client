@@ -1,0 +1,174 @@
+datastores.Client
+=================
+
+.. py:class:: datastores.Client
+
+   ECMWF Data Stores Service (DSS) API Python client.
+
+   :param url: API URL. If None, infer from ECMWF_DATASTORES_URL or ECMWF_DATASTORES_RC_FILE.
+   :type url: :py:class:`str` or :py:obj:`None`, *default*: :py:obj:`None`
+   :param key: API Key. If None, infer from ECMWF_DATASTORES_KEY or ECMWF_DATASTORES_RC_FILE.
+   :type key: :py:class:`str` or :py:obj:`None`, *default*: :py:obj:`None`
+   :param verify: Whether to verify the TLS certificate at the remote end.
+   :type verify: :py:class:`bool`, *default*: :py:obj:`True`
+   :param timeout: How many seconds to wait for the server to send data, as a float, or a (connect, read) tuple.
+   :type timeout: :py:class:`float` or :py:class:`tuple[float,float]`, *default*: ``60``
+   :param progress: Whether to display the progress bar during download.
+   :type progress: :py:class:`bool`, *default*: :py:obj:`True`
+   :param cleanup: Whether to delete requests after completion.
+   :type cleanup: :py:class:`bool`, *default*: :py:obj:`False`
+   :param sleep_max: Maximum time to wait (in seconds) while checking for a status change.
+   :type sleep_max: :py:class:`float`, *default*: ``120``
+   :param retry_after: Time to wait (in seconds) between retries.
+   :type retry_after: :py:class:`float`, *default*: ``120``
+   :param maximum_tries: Maximum number of retries.
+   :type maximum_tries: :py:class:`int`, *default*: ``500``
+   :param session: Requests session.
+   :type session: :py:class:`requests.Session`
+
+
+   .. py:method:: apply_constraints(collection_id, request)
+
+      Apply constraints to the parameters in a request.
+
+      :param collection_id: Collection ID (e.g., ``"projections-cmip6"``).
+      :type collection_id: :py:class:`str`
+      :param request: Request parameters.
+      :type request: :py:class:`dict[str,Any]`
+
+      :returns: Dictionary of valid values.
+      :rtype: :py:class:`dict[str,Any]`
+
+
+
+   .. py:method:: check_authentication()
+
+      Verify authentication.
+
+      :returns: Content of the response.
+      :rtype: :py:class:`dict[str,Any]`
+
+      :raises requests.HTTPError: If the authentication fails.
+
+
+
+   .. py:method:: download_results(request_id, target = None)
+
+      Download the results of a request.
+
+      :param request_id: Request ID.
+      :type request_id: :py:class:`str`
+      :param target: Target path. If None, download to the working directory.
+      :type target: :py:class:`str` or :py:obj:`None`
+
+      :returns: Path to the retrieved file.
+      :rtype: :py:class:`str`
+
+
+
+   .. py:method:: get_collection(collection_id)
+
+      Retrieve a catalogue collection.
+
+      :param collection_id: Collection ID (e.g., ``"projections-cmip6"``).
+      :type collection_id: :py:class:`str`
+
+      :rtype: :py:class:`datastores.Collection`
+
+
+
+   .. py:method:: get_collections(limit = None, sortby = None, query = None, keywords = None)
+
+      Retrieve catalogue collections.
+
+      :param limit: Number of processes per page.
+      :type limit: :py:class:`int | None`
+      :param sortby: Field to sort results by.
+      :type sortby: ``{None, 'id', 'relevance', 'title', 'update'}``
+      :param query: Full-text search query.
+      :type query: :py:class:`str` or :py:obj:`None`
+      :param keywords: Filter by keywords.
+      :type keywords: :py:class:`list[str]` or :py:obj:`None`
+
+      :rtype: :py:class:`datastores.Collections`
+
+
+
+   .. py:method:: get_jobs(limit = None, sortby = None, status = None)
+
+      Retrieve submitted jobs.
+
+      :param limit: Number of processes per page.
+      :type limit: :py:class:`int` or :py:obj:`None`
+      :param sortby: Field to sort results by.
+      :type sortby: ``{None, 'created', '-created'}``
+      :param status: Status of the results.
+      :type status: ``{None, 'accepted', 'running', 'successful', 'failed'}``
+
+      :rtype: :py:class:`datastores.Jobs`
+
+
+
+   .. py:method:: get_remote(request_id)
+
+      Retrieve the remote object of a request.
+
+      :param request_id: Request ID.
+      :type request_id: :py:class:`str`
+
+      :rtype: :py:class:`datastores.Remote`
+
+
+
+   .. py:method:: get_results(request_id)
+
+      Retrieve the results of a request.
+
+      :param request_id: Request ID.
+      :type request_id: :py:class:`str`
+
+      :rtype: :py:class:`datastores.Results`
+
+
+
+   .. py:method:: retrieve(collection_id, request, target = None)
+
+      Submit a request and retrieve the results.
+
+      :param collection_id: Collection ID (e.g., ``"projections-cmip6"``).
+      :type collection_id: :py:class:`str`
+      :param request: Request parameters.
+      :type request: :py:class:`dict[str,Any]`
+      :param target: Target path. If None, download to the working directory.
+      :type target: :py:class:`str` or :py:obj:`None`
+
+      :returns: Path to the retrieved file.
+      :rtype: :py:class:`str`
+
+
+
+   .. py:method:: submit(collection_id, request)
+
+      Submit a request.
+
+      :param collection_id: Collection ID (e.g., ``"projections-cmip6"``).
+      :type collection_id: :py:class:`str`
+      :param request: Request parameters.
+      :type request: :py:class:`dict[str,Any]`
+
+      :rtype: :py:class:`datastores.Remote`
+
+
+
+   .. py:method:: submit_and_wait_on_results(collection_id, request)
+
+      Submit a request and wait for the results to be ready.
+
+      :param collection_id: Collection ID (e.g., ``"projections-cmip6"``).
+      :type collection_id: :py:class:`str`
+      :param request: Request parameters.
+      :type request: :py:class:`dict[str,Any]`
+
+      :rtype: :py:class:`datastores.Results`
+
+
