@@ -15,7 +15,6 @@
 from __future__ import annotations
 
 import datetime
-import warnings
 from typing import Any, Callable
 
 import attrs
@@ -92,16 +91,6 @@ class Collection(ApiResponse):
     def _process(self) -> datastores.Process:
         url = self._get_link_href(rel="retrieve")
         return datastores.Process.from_request("get", url, **self._request_kwargs)
-
-    @property
-    def process(self) -> datastores.Process:
-        warnings.warn(
-            "`process` has been deprecated, and in the future will raise an error."
-            "Please use `submit` and `apply_constraints` from now on.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self._process
 
     @property
     def form(self) -> list[dict[str, Any]]:
