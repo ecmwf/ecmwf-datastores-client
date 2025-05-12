@@ -14,8 +14,7 @@ dependencies:
 - sphinx
 - sphinx-autoapi
 # DO NOT EDIT ABOVE THIS LINE, ADD DEPENDENCIES BELOW
+- cdsapi >= 0.7.6
 - types-requests
 - pip:
-  # TODO: install from pypi or conda when available
-  - git+https://github.com/bopen/cdsapi.git@COPDS-2640
   - responses
