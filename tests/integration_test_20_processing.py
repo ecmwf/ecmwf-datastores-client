@@ -73,11 +73,3 @@ def test_processing_get_jobs_sortby(api_anon_client: Client) -> None:
     ids = api_anon_client.get_jobs(sortby="-created").request_ids
     assert ids.index(id2) < ids.index(id1)
     assert [id2] != api_anon_client.get_jobs(sortby="created", limit=1).request_ids
-
-
-def test_deprecation_warnings(api_anon_client: Client) -> None:
-    with pytest.warns(DeprecationWarning):
-        api_anon_client.submit("test-adaptor-dummy", {}).request_uid
-
-    with pytest.warns(DeprecationWarning):
-        api_anon_client.get_jobs().request_uids

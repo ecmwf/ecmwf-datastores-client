@@ -106,9 +106,3 @@ def test_remote_datetimes(api_anon_client: Client) -> None:
     assert remote.finished_at is not None
     assert remote.created_at < remote.started_at < remote.finished_at
     assert remote.finished_at == remote.updated_at
-
-
-def test_make_results_deprecation(api_anon_client: Client) -> None:
-    remote = api_anon_client.submit("test-adaptor-dummy", {})
-    with pytest.warns(DeprecationWarning, match="`make_results` has been deprecated"):
-        remote.make_results()

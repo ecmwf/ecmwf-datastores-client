@@ -390,33 +390,6 @@ def test_submit(cat: catalogue.Catalogue) -> None:
 
 
 @responses.activate
-def test_depracations(cat: catalogue.Catalogue) -> None:
-    responses_add()
-
-    collection = cat.get_collection(COLLECTION_ID)
-    with pytest.warns(DeprecationWarning, match="`process` has been deprecated"):
-        assert isinstance(collection.process, processing.Process)
-
-    request = {"variable": "temperature", "year": "2022"}
-    remote = collection.submit(request)
-
-    with pytest.warns(
-        DeprecationWarning, match="`creation_datetime` has been deprecated"
-    ):
-        assert (
-            remote.creation_datetime.isoformat() == "2022-09-02T17:30:48.201213+00:00"
-        )
-
-    with pytest.warns(DeprecationWarning, match="`start_datetime` has been deprecated"):
-        assert remote.start_datetime is not None
-        assert remote.start_datetime.isoformat() == "2022-09-02T17:32:43.890617+00:00"
-
-    with pytest.warns(DeprecationWarning, match="`end_datetime` has been deprecated"):
-        assert remote.end_datetime is not None
-        assert remote.end_datetime.isoformat() == "2022-09-02T17:32:54.308120+00:00"
-
-
-@responses.activate
 @pytest.mark.parametrize("method", ("submit", "apply_constraints", "estimate_costs"))
 def test_process_docstrings(cat: catalogue.Catalogue, method: str) -> None:
     responses_add()
