@@ -14,7 +14,7 @@ dependencies:
 - sphinx
 - sphinx-autoapi
 # DO NOT EDIT ABOVE THIS LINE, ADD DEPENDENCIES BELOW
-- cdsapi >= 0.7.6
 - types-requests
 - pip:
+  - cdsapi >= 0.7.6
   - responses
