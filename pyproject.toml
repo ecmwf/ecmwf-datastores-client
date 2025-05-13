@@ -32,7 +32,7 @@ readme = "README.md"
 requires-python = ">=3.8"
 
 [project.optional-dependencies]
-legacy = ["cdsapi >= 0.7.5"]
+legacy = ["cdsapi >= 0.7.6"]
 
 [project.urls]
 documentation = "https://ecmwf.github.io/ecmwf-datastores-client/"

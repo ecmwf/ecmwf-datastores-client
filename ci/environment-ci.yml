@@ -16,6 +16,5 @@ dependencies:
 # DO NOT EDIT ABOVE THIS LINE, ADD DEPENDENCIES BELOW
 - types-requests
 - pip:
-  # TODO: install from pypi or conda when available
-  - git+https://github.com/bopen/cdsapi.git@COPDS-2640
+  - cdsapi >= 0.7.6
   - responses
