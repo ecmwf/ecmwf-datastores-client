@@ -401,16 +401,6 @@ class Remote:
         return self.url.rpartition("/")[2]
 
     @property
-    def request_uid(self) -> str:
-        warnings.warn(
-            "`request_uid` has been deprecated, and in the future will raise an error."
-            "Please use `request_id` from now on.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self.request_id
-
-    @property
     def json(self) -> dict[str, Any]:
         """Content of the response."""
         params = {"log": True, "request": True}
@@ -451,46 +441,16 @@ class Remote:
         return utils.string_to_datetime(self.json["created"])
 
     @property
-    def creation_datetime(self) -> datetime.datetime:
-        warnings.warn(
-            "`creation_datetime` has been deprecated, and in the future will raise an error."
-            "Please use `created_at` from now on.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self.created_at
-
-    @property
     def started_at(self) -> datetime.datetime | None:
         """When the job started. If None, the job has not started."""
         value = self.json.get("started")
         return value if value is None else utils.string_to_datetime(value)
 
     @property
-    def start_datetime(self) -> datetime.datetime | None:
-        warnings.warn(
-            "`start_datetime` has been deprecated, and in the future will raise an error."
-            "Please use `started_at` from now on.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self.started_at
-
-    @property
     def finished_at(self) -> datetime.datetime | None:
         """When the job finished. If None, the job has not finished."""
         value = self.json.get("finished")
         return value if value is None else utils.string_to_datetime(value)
-
-    @property
-    def end_datetime(self) -> datetime.datetime | None:
-        warnings.warn(
-            "`end_datetime` has been deprecated, and in the future will raise an error."
-            "Please use `finished_at` from now on.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self.finished_at
 
     def _wait_on_results(self) -> None:
         sleep = 1.0
@@ -524,15 +484,6 @@ class Remote:
             results_url = f"{self.url}/results"
         results = Results.from_request("get", results_url, **self._request_kwargs)
         return results
-
-    def make_results(self, wait: bool = True) -> Results:
-        warnings.warn(
-            "`make_results` has been deprecated, and in the future will raise an error."
-            "Please use `get_results` from now on.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self._make_results(wait)
 
     def get_results(self) -> Results:
         """Retrieve results.
@@ -641,15 +592,6 @@ class Job(ApiResponse):
             url = self._get_link_href(rel="self")
         return Remote(url, **self._request_kwargs)
 
-    def make_remote(self) -> Remote:
-        warnings.warn(
-            "`make_remote` has been deprecated, and in the future will raise an error."
-            "Please use `get_remote` from now on.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self.get_remote()
-
 
 @attrs.define
 class Jobs(ApiResponsePaginated):
@@ -659,16 +601,6 @@ class Jobs(ApiResponsePaginated):
     def request_ids(self) -> list[str]:
         """List of request IDs."""
         return [job["jobID"] for job in self._json_dict["jobs"]]
-
-    @property
-    def request_uids(self) -> list[str]:
-        warnings.warn(
-            "`request_uids` has been deprecated, and in the future will raise an error."
-            "Please use `request_ids` from now on.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return self.request_ids
 
 
 @attrs.define
