@@ -11,6 +11,7 @@ import sys
 
 import ecmwf.datastores
 
+sys.path.insert(0, os.path.abspath("./"))
 sys.path.insert(0, os.path.abspath("../"))
 
 # -- Project information -----------------------------------------------------
@@ -31,6 +32,7 @@ extensions = [
     "myst_parser",
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
+    "nbsphinx",
 ]
 
 # autodoc configuration
