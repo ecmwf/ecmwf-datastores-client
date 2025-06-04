@@ -14,8 +14,11 @@ dependencies:
 - sphinx
 - sphinx-autoapi
 # DO NOT EDIT ABOVE THIS LINE, ADD DEPENDENCIES BELOW
+- ipykernel
 - nbsphinx
 - types-requests
+- pandas
+- itables
 - pip:
   - cdsapi >= 0.7.6
   - responses
