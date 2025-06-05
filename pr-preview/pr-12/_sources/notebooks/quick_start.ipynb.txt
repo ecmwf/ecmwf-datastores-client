@@ -15,14 +15,9 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "import os\n",
-    "\n",
     "from ecmwf.datastores import Client\n",
     "\n",
-    "client = Client(\n",
-    "    url=os.getenv(\"ECMWF_DATASTORES_URL\"),\n",
-    "    key=os.getenv(\"ECMWF_DATASTORES_KEY\"),\n",
-    ")"
+    "client = Client()"
    ]
   }
  ],
