@@ -117,6 +117,7 @@ jobs:
     runs-on: macos-latest
     permissions:
       contents: write
+      pull-requests: write
 
     steps:
     - uses: actions/checkout@v4
@@ -147,6 +148,9 @@ jobs:
         ECMWF_DATASTORES_ANON_KEY: ${{ secrets.ECMWF_DATASTORES_ANON_KEY }}
       run: |
         make docs-build
+    - uses: rossjrw/pr-preview-action@v1
+      with:
+        source-dir: "docs/_build/html"
     - name: Deploy documentation
       uses: peaceiris/actions-gh-pages@v4
       if: |

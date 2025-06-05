@@ -11,7 +11,7 @@ Knowledge Base.
 :maxdepth: 2
 
 README.md
-notebooks/quick_start
+notebooks/index
 API Reference <_api/datastores/index>
 ```
 
