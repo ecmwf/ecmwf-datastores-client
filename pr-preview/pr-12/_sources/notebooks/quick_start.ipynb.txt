@@ -22,8 +22,7 @@
     "client = Client(\n",
     "    url=os.getenv(\"ECMWF_DATASTORES_URL\"),\n",
     "    key=os.getenv(\"ECMWF_DATASTORES_KEY\"),\n",
-    ")\n",
-    "client.check_authentication()"
+    ")"
    ]
   }
  ],
