@@ -140,6 +140,11 @@ jobs:
       run: |
         python -m pip install --no-deps -e .
     - name: Build documentation
+      timeout-minutes: 10
+      env:
+        ECMWF_DATASTORES_URL: ${{ secrets.ECMWF_DATASTORES_URL }}
+        ECMWF_DATASTORES_KEY: ${{ secrets.ECMWF_DATASTORES_KEY }}
+        ECMWF_DATASTORES_ANON_KEY: ${{ secrets.ECMWF_DATASTORES_ANON_KEY }}
       run: |
         make docs-build
     - name: Deploy documentation
