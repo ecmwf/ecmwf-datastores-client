@@ -1,0 +1,17 @@
+name: on-pr-closed
+on:
+  pull_request:
+    types:
+    - closed
+
+jobs:
+  remove-preview:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+    - uses: rossjrw/pr-preview-action@v1
+      with:
+        action: "remove"
