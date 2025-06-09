@@ -44,8 +44,11 @@ $ pip install ecmwf-datastores-client
 
 ## Configuration
 
-The `Client` requires the `url` to the API root and a valid API `key`. You can also set the `ECMWF_DATASTORES_URL` and `ECMWF_DATASTORES_KEY` environment variables, or use a configuration file.
-The configuration file must be located at `~/.ecmwfdatastoresrc`, or at the path specified by the `ECMWF_DATASTORES_RC_FILE` environment variable.
+The `Client` requires the `url` to the API root and a valid API `key`. These can be provided in three ways, in order of precedence:
+
+1. As keyword arguments when instantiating the `Client`.
+1. Via the `ECMWF_DATASTORES_URL` and `ECMWF_DATASTORES_KEY` environment variables.
+1. From a configuration file, which must be located at `~/.ecmwfdatastoresrc` or at the path specified by the `ECMWF_DATASTORES_RC_FILE` environment variable.
 
 ```
 $ cat $HOME/.ecmwfdatastoresrc
@@ -66,12 +69,8 @@ Configure the logging level to display INFO messages:
 Instantiate the API client and optionally verify authentication:
 
 ```python
->>> import os
 >>> from ecmwf.datastores import Client
->>> client = Client(
-...     url=os.getenv("ECMWF_DATASTORES_URL"),
-...     key=os.getenv("ECMWF_DATASTORES_KEY"),
-... )
+>>> client = Client()
 >>> client.check_authentication()  # optional check
 {...}
 
