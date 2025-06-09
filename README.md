@@ -46,7 +46,7 @@ $ pip install ecmwf-datastores-client
 
 The `Client` requires the `url` to the API root and a valid API `key`. These can be provided in three ways, in order of precedence:
 
-1. As keyword arguments when instantiating the Client.
+1. As keyword arguments when instantiating the `Client`.
 1. Via the `ECMWF_DATASTORES_URL` and `ECMWF_DATASTORES_KEY` environment variables.
 1. From a configuration file, which must be located at `~/.ecmwfdatastoresrc` or at the path specified by the `ECMWF_DATASTORES_RC_FILE` environment variable.
 
