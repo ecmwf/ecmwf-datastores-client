@@ -69,12 +69,8 @@ Configure the logging level to display INFO messages:
 Instantiate the API client and optionally verify authentication:
 
 ```python
->>> import os
 >>> from ecmwf.datastores import Client
->>> client = Client(
-...     url=os.getenv("ECMWF_DATASTORES_URL"),
-...     key=os.getenv("ECMWF_DATASTORES_KEY"),
-... )
+>>> client = Client()
 >>> client.check_authentication()  # optional check
 {...}
 
