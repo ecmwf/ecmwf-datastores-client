@@ -7,6 +7,11 @@ on:
     tags:
     - '*'
   pull_request:
+    types:
+    - opened
+    - reopened
+    - synchronize
+    - closed
     branches:
     - main
 
@@ -152,13 +157,15 @@ jobs:
       with:
         source-dir: "docs/_build/html"
     - name: Deploy documentation
-      uses: peaceiris/actions-gh-pages@v4
+      uses: JamesIves/github-pages-deploy-action@v4
       if: |
         github.event_name == 'push' &&
         startsWith(github.ref, 'refs/tags')
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./docs/_build/html/
+        folder: ./docs/_build/html/
+        # See: https://github.com/marketplace/actions/deploy-pr-preview#ensure-your-main-deployment-is-compatible
+        clean-exclude: pr-preview/
+        force: false
 
   integration-tests:
     needs: [combine-environments, unit-tests]
