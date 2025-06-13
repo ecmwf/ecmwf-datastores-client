@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>ecmwf-datastores-client &#8212; ecmwf.datastores 0.1.0 documentation</title>
+    <title>ecmwf-datastores-client &#8212; ecmwf.datastores 0.2.0 documentation</title>
   
   
   
@@ -39,17 +39,18 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=01f34227"></script>
+    <script src="_static/documentation_options.js?v=938c9ccc"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'README';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="datastores" href="_api/datastores/index.html" />
+    <link rel="next" title="Notebooks" href="notebooks/index.html" />
     <link rel="prev" title="Welcome to ecmwf-datastores-client’s documentation!" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.0" />
+  <meta name="docsearch:version" content="0.2.0" />
   </head>
   
   
@@ -111,7 +112,7 @@
   
   
   
-    <p class="title logo__title">ecmwf.datastores 0.1.0 documentation</p>
+    <p class="title logo__title">ecmwf.datastores 0.2.0 documentation</p>
   
 </a></div>
     
@@ -128,6 +129,13 @@
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="#">
     ecmwf-datastores-client
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="notebooks/index.html">
+    Notebooks
   </a>
 </li>
 
@@ -214,6 +222,13 @@
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="#">
     ecmwf-datastores-client
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="notebooks/index.html">
+    Notebooks
   </a>
 </li>
 
@@ -309,20 +324,15 @@
                   
   <p align="center">
   <a href="https://github.com/ecmwf/codex/raw/refs/heads/main/ESEE">
-    <img src="https://github.com/ecmwf/codex/raw/refs/heads/main/ESEE/data_provision_badge.svg" alt="ECMWF Software EnginE">
-  </a>
+    <img src="https://github.com/ecmwf/codex/raw/refs/heads/main/ESEE/data_provision_badge.svg" alt="ECMWF Software EnginE"></a>
   <a href="https://github.com/ecmwf/codex/raw/refs/heads/main/Project Maturity">
-    <img src="https://github.com/ecmwf/codex/raw/refs/heads/main/Project Maturity/incubating_badge.svg" alt="Maturity Level">
-  </a>
-  <!-- <a href="https://codecov.io/gh/ecmwf/earthkit">
-    <img src="https://codecov.io/gh/ecmwf/ecmwf-datastores-client/branch/main/graph/badge.svg" alt="Code Coverage">
-  </a> -->
+    <img src="https://github.com/ecmwf/codex/raw/refs/heads/main/Project Maturity/incubating_badge.svg" alt="Maturity Level"></a>
+  <!-- <a href="https://codecov.io/gh/ecmwf/ecmwf-datastores-client">
+    <img src="https://codecov.io/gh/ecmwf/ecmwf-datastores-client/branch/main/graph/badge.svg" alt="Code Coverage"></a> -->
   <a href="https://opensource.org/licenses/apache-2-0">
-    <img src="https://img.shields.io/badge/Licence-Apache 2.0-blue.svg" alt="Licence">
-  </a>
-  <a href="https://github.com/ecmwf/earthkit/releases">
-    <img src="https://img.shields.io/github/v/release/ecmwf/ecmwf-datastores-client?color=purple&label=Release" alt="Latest Release">
-  </a>
+    <img src="https://img.shields.io/badge/Licence-Apache 2.0-blue.svg" alt="Licence"></a>
+  <a href="https://github.com/ecmwf/ecmwf-datastores-client/releases">
+    <img src="https://img.shields.io/github/v/release/ecmwf/ecmwf-datastores-client?color=purple&label=Release" alt="Latest Release"></a>
 </p>
 <p align="center">
   <a href="#quick-start">Quick Start</a>
@@ -352,18 +362,17 @@ This software is <strong>Incubating</strong> and subject to ECMWF’s guidelines
 </section>
 <section id="configuration">
 <h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading">#</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">Client</span></code> requires the <code class="docutils literal notranslate"><span class="pre">url</span></code> to the API root and a valid API <code class="docutils literal notranslate"><span class="pre">key</span></code>. You can also set the <code class="docutils literal notranslate"><span class="pre">ECMWF_DATASTORES_URL</span></code> and <code class="docutils literal notranslate"><span class="pre">ECMWF_DATASTORES_KEY</span></code> environment variables, or use a configuration file.
-The configuration file must be located at <code class="docutils literal notranslate"><span class="pre">~/.ecmwfdatastoresrc</span></code>, or at the path specified by the <code class="docutils literal notranslate"><span class="pre">ECMWF_DATASTORES_RC_FILE</span></code> environment variable.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Client</span></code> requires the <code class="docutils literal notranslate"><span class="pre">url</span></code> to the API root and a valid API <code class="docutils literal notranslate"><span class="pre">key</span></code>. These can be provided in three ways, in order of precedence:</p>
+<ol class="arabic simple">
+<li><p>As keyword arguments when instantiating the <code class="docutils literal notranslate"><span class="pre">Client</span></code>.</p></li>
+<li><p>Via the <code class="docutils literal notranslate"><span class="pre">ECMWF_DATASTORES_URL</span></code> and <code class="docutils literal notranslate"><span class="pre">ECMWF_DATASTORES_KEY</span></code> environment variables.</p></li>
+<li><p>From a configuration file, which must be located at <code class="docutils literal notranslate"><span class="pre">~/.ecmwfdatastoresrc</span></code> or at the path specified by the <code class="docutils literal notranslate"><span class="pre">ECMWF_DATASTORES_RC_FILE</span></code> environment variable.</p></li>
+</ol>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cat $HOME/.ecmwfdatastoresrc
 url: https://cds.climate.copernicus.eu/api
 key: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 </pre></div>
 </div>
-<p>It is possible (though not recommended) to use the API key of one of the test users:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">00112233</span><span class="o">-</span><span class="mi">4455</span><span class="o">-</span><span class="mi">6677</span><span class="o">-</span><span class="n">c899</span><span class="o">-</span><span class="n">aabbccddeeff</span>
-</pre></div>
-</div>
-<p>This key is used for anonymous tests and is designed to be the least performant option for accessing the system.</p>
 </section>
 <section id="quick-start">
 <h2>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading">#</a></h2>
@@ -374,12 +383,8 @@ key: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 </pre></div>
 </div>
 <p>Instantiate the API client and optionally verify authentication:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">ecmwf.datastores</span><span class="w"> </span><span class="kn">import</span> <span class="n">Client</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">url</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;ECMWF_DATASTORES_URL&quot;</span><span class="p">),</span>
-<span class="gp">... </span>    <span class="n">key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;ECMWF_DATASTORES_KEY&quot;</span><span class="p">),</span>
-<span class="gp">... </span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">ecmwf.datastores</span><span class="w"> </span><span class="kn">import</span> <span class="n">Client</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">check_authentication</span><span class="p">()</span>  <span class="c1"># optional check</span>
 <span class="go">{...}</span>
 
@@ -598,11 +603,11 @@ key: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
       </div>
     </a>
     <a class="right-next"
-       href="_api/datastores/index.html"
+       href="notebooks/index.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">datastores</p>
+        <p class="prev-next-title">Notebooks</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

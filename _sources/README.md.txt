@@ -1,19 +1,14 @@
 <p align="center">
   <a href="https://github.com/ecmwf/codex/raw/refs/heads/main/ESEE">
-    <img src="https://github.com/ecmwf/codex/raw/refs/heads/main/ESEE/data_provision_badge.svg" alt="ECMWF Software EnginE">
-  </a>
+    <img src="https://github.com/ecmwf/codex/raw/refs/heads/main/ESEE/data_provision_badge.svg" alt="ECMWF Software EnginE"></a>
   <a href="https://github.com/ecmwf/codex/raw/refs/heads/main/Project Maturity">
-    <img src="https://github.com/ecmwf/codex/raw/refs/heads/main/Project Maturity/incubating_badge.svg" alt="Maturity Level">
-  </a>
-  <!-- <a href="https://codecov.io/gh/ecmwf/earthkit">
-    <img src="https://codecov.io/gh/ecmwf/ecmwf-datastores-client/branch/main/graph/badge.svg" alt="Code Coverage">
-  </a> -->
+    <img src="https://github.com/ecmwf/codex/raw/refs/heads/main/Project Maturity/incubating_badge.svg" alt="Maturity Level"></a>
+  <!-- <a href="https://codecov.io/gh/ecmwf/ecmwf-datastores-client">
+    <img src="https://codecov.io/gh/ecmwf/ecmwf-datastores-client/branch/main/graph/badge.svg" alt="Code Coverage"></a> -->
   <a href="https://opensource.org/licenses/apache-2-0">
-    <img src="https://img.shields.io/badge/Licence-Apache 2.0-blue.svg" alt="Licence">
-  </a>
-  <a href="https://github.com/ecmwf/earthkit/releases">
-    <img src="https://img.shields.io/github/v/release/ecmwf/ecmwf-datastores-client?color=purple&label=Release" alt="Latest Release">
-  </a>
+    <img src="https://img.shields.io/badge/Licence-Apache 2.0-blue.svg" alt="Licence"></a>
+  <a href="https://github.com/ecmwf/ecmwf-datastores-client/releases">
+    <img src="https://img.shields.io/github/v/release/ecmwf/ecmwf-datastores-client?color=purple&label=Release" alt="Latest Release"></a>
 </p>
 
 <p align="center">
@@ -49,22 +44,17 @@ $ pip install ecmwf-datastores-client
 
 ## Configuration
 
-The `Client` requires the `url` to the API root and a valid API `key`. You can also set the `ECMWF_DATASTORES_URL` and `ECMWF_DATASTORES_KEY` environment variables, or use a configuration file.
-The configuration file must be located at `~/.ecmwfdatastoresrc`, or at the path specified by the `ECMWF_DATASTORES_RC_FILE` environment variable.
+The `Client` requires the `url` to the API root and a valid API `key`. These can be provided in three ways, in order of precedence:
+
+1. As keyword arguments when instantiating the `Client`.
+1. Via the `ECMWF_DATASTORES_URL` and `ECMWF_DATASTORES_KEY` environment variables.
+1. From a configuration file, which must be located at `~/.ecmwfdatastoresrc` or at the path specified by the `ECMWF_DATASTORES_RC_FILE` environment variable.
 
 ```
 $ cat $HOME/.ecmwfdatastoresrc
 url: https://cds.climate.copernicus.eu/api
 key: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 ```
-
-It is possible (though not recommended) to use the API key of one of the test users:
-
-```
-00112233-4455-6677-c899-aabbccddeeff
-```
-
-This key is used for anonymous tests and is designed to be the least performant option for accessing the system.
 
 ## Quick Start
 
@@ -79,12 +69,8 @@ Configure the logging level to display INFO messages:
 Instantiate the API client and optionally verify authentication:
 
 ```python
->>> import os
 >>> from ecmwf.datastores import Client
->>> client = Client(
-...     url=os.getenv("ECMWF_DATASTORES_URL"),
-...     key=os.getenv("ECMWF_DATASTORES_KEY"),
-... )
+>>> client = Client()
 >>> client.check_authentication()  # optional check
 {...}
 

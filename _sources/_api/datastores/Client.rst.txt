@@ -81,7 +81,7 @@ datastores.Client
 
       Retrieve catalogue collections.
 
-      :param limit: Number of processes per page.
+      :param limit: Number of collections per page.
       :type limit: :py:class:`int | None`
       :param sortby: Field to sort results by.
       :type sortby: ``{None, 'id', 'relevance', 'title', 'update'}``
@@ -98,7 +98,7 @@ datastores.Client
 
       Retrieve submitted jobs.
 
-      :param limit: Number of processes per page.
+      :param limit: Number of jobs per page.
       :type limit: :py:class:`int` or :py:obj:`None`
       :param sortby: Field to sort results by.
       :type sortby: ``{None, 'created', '-created'}``
