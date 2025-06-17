@@ -1,0 +1,34 @@
+datastores
+==========
+
+.. py:module:: datastores
+
+.. autoapi-nested-parse::
+
+   ECMWF Data Stores Service (DSS) API Python client.
+
+
+
+Classes
+-------
+
+.. toctree::
+   :hidden:
+
+   /_api/datastores/Client
+   /_api/datastores/Collection
+   /_api/datastores/Collections
+   /_api/datastores/Jobs
+   /_api/datastores/Remote
+   /_api/datastores/Results
+
+.. autoapisummary::
+
+   datastores.Client
+   datastores.Collection
+   datastores.Collections
+   datastores.Jobs
+   datastores.Remote
+   datastores.Results
+
+
