@@ -21,10 +21,7 @@ def api_root_url() -> str:
 
 @pytest.fixture
 def api_anon_key() -> str:
-    return os.getenv(
-        "ECMWF_DATASTORES_ANON_KEY",
-        "00112233-4455-6677-c899-aabbccddeeff",  # gitleaks:allow
-    )
+    return os.getenv("ANONYMOUS_PAT", "00112233-4455-6677-c899-aabbccddeeff")
 
 
 @pytest.fixture
