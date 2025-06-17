@@ -145,7 +145,7 @@ jobs:
       env:
         ECMWF_DATASTORES_URL: ${{ secrets.ECMWF_DATASTORES_URL }}
         ECMWF_DATASTORES_KEY: ${{ secrets.ECMWF_DATASTORES_KEY }}
-        ECMWF_DATASTORES_ANON_KEY: ${{ secrets.ECMWF_DATASTORES_ANON_KEY }}
+        ANONYMOUS_PAT: ${{ secrets.ANONYMOUS_PAT }}
       run: |
         make docs-build
     - uses: rossjrw/pr-preview-action@v1
@@ -199,7 +199,7 @@ jobs:
       env:
         ECMWF_DATASTORES_URL: ${{ secrets.ECMWF_DATASTORES_URL }}
         ECMWF_DATASTORES_KEY: ${{ secrets.ECMWF_DATASTORES_KEY }}
-        ECMWF_DATASTORES_ANON_KEY: ${{ secrets.ECMWF_DATASTORES_ANON_KEY }}
+        ANONYMOUS_PAT: ${{ secrets.ANONYMOUS_PAT }}
       run: |
         make ci-integration-tests COV_REPORT=xml
 
