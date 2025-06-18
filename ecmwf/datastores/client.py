@@ -179,6 +179,21 @@ class Client:
         """
         return self._profile_api.check_authentication()
 
+    def delete(self, *request_ids: str) -> dict[str, Any]:
+        """Delete requests.
+
+        Parameters
+        ----------
+        *request_ids: str
+            Request IDs.
+
+        Returns
+        -------
+        dict[str,Any]
+            Content of the response.
+        """
+        return self._retrieve_api.delete(*request_ids)
+
     def download_results(self, request_id: str, target: str | None = None) -> str:
         """Download the results of a request.
 

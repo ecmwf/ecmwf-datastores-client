@@ -705,6 +705,13 @@ class Processing:
             log_callback=self.log_callback,
         )
 
+    def delete(self, *job_ids: str) -> dict[str, Any]:
+        url = f"{self.url}/jobs/delete"
+        response = ApiResponse.from_request(
+            "post", url, json={"job_ids": job_ids}, **self._request_kwargs
+        )
+        return response._json_dict
+
     def get_processes(self, **params: Any) -> Processes:
         url = f"{self.url}/processes"
         return Processes.from_request("get", url, params=params, **self._request_kwargs)
