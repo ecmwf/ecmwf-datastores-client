@@ -103,7 +103,7 @@ datastores.Client
       :param sortby: Field to sort results by.
       :type sortby: ``{None, 'created', '-created'}``
       :param status: Status of the results.
-      :type status: ``{None, 'accepted', 'running', 'successful', 'failed'}``
+      :type status: :py:obj:`None` or ``{'accepted', 'running', 'successful', 'failed', 'rejected'}`` or :py:class:`list`
 
       :rtype: :py:class:`datastores.Jobs`
 
