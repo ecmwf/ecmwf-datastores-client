@@ -417,7 +417,6 @@ def test_wait_on_result_failed(
     cat: catalogue.Catalogue, status: str, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     monkeypatch.setitem(JOB_FAILED_JSON, "status", status)
-
     responses_add()
 
     collection = cat.get_collection(COLLECTION_ID)
