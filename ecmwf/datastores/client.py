@@ -28,7 +28,7 @@ from ecmwf.datastores.catalogue import Catalogue
 from ecmwf.datastores.processing import Processing, RequestKwargs
 from ecmwf.datastores.profile import Profile
 
-STATUSES = Literal["accepted", "running", "successful", "failed", "rejected"]
+T_STATUS = Literal["accepted", "running", "successful", "failed", "rejected"]
 
 
 @attrs.define(slots=False)
@@ -261,7 +261,7 @@ class Client:
         self,
         limit: int | None = None,
         sortby: Literal[None, "created", "-created"] = None,
-        status: None | STATUSES | list[STATUSES] = None,
+        status: None | T_STATUS | list[T_STATUS] = None,
     ) -> datastores.Jobs:
         """Retrieve submitted jobs.
 
