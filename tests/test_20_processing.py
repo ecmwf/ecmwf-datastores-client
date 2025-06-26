@@ -411,8 +411,13 @@ def test_wait_on_result(cat: catalogue.Catalogue) -> None:
     remote._wait_on_results()
 
 
+@pytest.mark.parametrize("status", ["failed", "rejected"])
 @responses.activate
-def test_wait_on_result_failed(cat: catalogue.Catalogue) -> None:
+def test_wait_on_result_failed(
+    cat: catalogue.Catalogue, status: str, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setitem(JOB_FAILED_JSON, "status", status)
+
     responses_add()
 
     collection = cat.get_collection(COLLECTION_ID)
@@ -424,6 +429,7 @@ def test_wait_on_result_failed(cat: catalogue.Catalogue) -> None:
     ):
         remote._wait_on_results()
 
+    assert remote.status == status
     assert remote.created_at.isoformat() == "2022-09-02T17:30:48.201213+00:00"
     assert remote.started_at is not None
     assert remote.started_at.isoformat() == "2022-09-02T17:32:43.890617+00:00"
