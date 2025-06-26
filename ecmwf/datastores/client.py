@@ -271,7 +271,7 @@ class Client:
             Number of jobs per page.
         sortby: {None, 'created', '-created'}
             Field to sort results by.
-        status: {None, 'accepted', 'running', 'successful', 'failed'}
+        status: None or {'accepted', 'running', 'successful', 'failed', 'rejected'} or list
             Status of the results.
 
         Returns
