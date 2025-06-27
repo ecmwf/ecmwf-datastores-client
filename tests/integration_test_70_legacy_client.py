@@ -54,7 +54,7 @@ def legacy_update(remote: processing.Remote) -> None:
             )
 
 
-def test_legacy_api_client_retrieve(
+def test_legacy_client_retrieve(
     tmp_path: pathlib.Path, legacy_client: LegacyClient
 ) -> None:
     collection_id = "test-adaptor-dummy"
@@ -65,7 +65,7 @@ def test_legacy_api_client_retrieve(
     assert os.path.getsize(target) == 1
 
 
-def test_legacy_api_client_result(
+def test_legacy_client_result(
     monkeypatch: pytest.MonkeyPatch,
     tmp_path: pathlib.Path,
     legacy_client: LegacyClient,
@@ -92,7 +92,7 @@ def test_legacy_api_client_result(
 
 
 @pytest.mark.parametrize("quiet", [True, False])
-def test_legacy_api_client_quiet(
+def test_legacy_client_quiet(
     caplog: pytest.LogCaptureFixture,
     api_root_url: str,
     api_anon_key: str,
@@ -105,7 +105,7 @@ def test_legacy_api_client_quiet(
 
 
 @pytest.mark.parametrize("debug", [True, False])
-def test_legacy_api_client_debug(
+def test_legacy_client_debug(
     caplog: pytest.LogCaptureFixture,
     api_root_url: str,
     api_anon_key: str,
@@ -120,7 +120,7 @@ def test_legacy_api_client_debug(
     "wait_until_complete,expected_type",
     [(True, processing.Results), (False, processing.Remote)],
 )
-def test_legacy_api_client_wait_until_complete(
+def test_legacy_client_wait_until_complete(
     tmp_path: pathlib.Path,
     api_root_url: str,
     api_anon_key: str,
@@ -156,7 +156,7 @@ def test_legacy_api_client_wait_until_complete(
         ),
     ],
 )
-def test_legacy_api_client_update(
+def test_legacy_client_update(
     api_root_url: str,
     api_anon_key: str,
     collection_id: str,
@@ -173,7 +173,7 @@ def test_legacy_api_client_update(
 
 
 @pytest.mark.filterwarnings("ignore:Unverified HTTPS")
-def test_legacy_api_client_kwargs(api_root_url: str, api_anon_key: str) -> None:
+def test_legacy_client_kwargs(api_root_url: str, api_anon_key: str) -> None:
     session = requests.Session()
     client = LegacyClient(
         url=api_root_url,
@@ -198,7 +198,7 @@ def test_legacy_api_client_kwargs(api_root_url: str, api_anon_key: str) -> None:
     assert client.client.session is session
 
 
-def test_legacy_api_client_logging(
+def test_legacy_client_logging(
     caplog: pytest.LogCaptureFixture,
     api_root_url: str,
     api_anon_key: str,
@@ -226,7 +226,7 @@ def test_legacy_api_client_logging(
         ]
 
 
-def test_legacy_api_client_download(
+def test_legacy_client_download(
     tmp_path: pathlib.Path,
     monkeypatch: pytest.MonkeyPatch,
     api_root_url: str,
@@ -258,7 +258,7 @@ def test_legacy_api_client_download(
     assert all(os.path.getsize(target) == 1 for target in targets)
 
 
-def test_legacy_api_client_status(legacy_client: LegacyClient) -> None:
+def test_legacy_client_status(legacy_client: LegacyClient) -> None:
     status = legacy_client.status()
     assert set(status) <= {
         "critical",
@@ -277,7 +277,7 @@ def test_legacy_api_client_status(legacy_client: LegacyClient) -> None:
     )
 
 
-def test_legacy_api_client_remote(
+def test_legacy_client_remote(
     legacy_client: LegacyClient, tmp_path: pathlib.Path
 ) -> None:
     results = legacy_client.retrieve("test-adaptor-dummy", {"size": 1})
@@ -288,7 +288,7 @@ def test_legacy_api_client_remote(
     assert os.path.getsize(target) == 1
 
 
-def test_legacy_api_client_warning(
+def test_legacy_client_warning(
     api_root_url: str,
     api_anon_key: str,
 ) -> None:
@@ -305,7 +305,7 @@ def test_legacy_api_client_warning(
         )
 
 
-def test_legacy_api_client_toolbox(legacy_client: LegacyClient) -> None:
+def test_legacy_client_toolbox(legacy_client: LegacyClient) -> None:
     with pytest.raises(NotImplementedError):
         legacy_client.service("service")
     with pytest.raises(NotImplementedError):
