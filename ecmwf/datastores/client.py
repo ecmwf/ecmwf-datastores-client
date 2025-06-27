@@ -28,6 +28,8 @@ from ecmwf.datastores.catalogue import Catalogue
 from ecmwf.datastores.processing import Processing, RequestKwargs
 from ecmwf.datastores.profile import Profile
 
+T_STATUS = Literal["accepted", "running", "successful", "failed", "rejected"]
+
 
 @attrs.define(slots=False)
 class Client:
@@ -259,7 +261,7 @@ class Client:
         self,
         limit: int | None = None,
         sortby: Literal[None, "created", "-created"] = None,
-        status: Literal[None, "accepted", "running", "successful", "failed"] = None,
+        status: None | T_STATUS | list[T_STATUS] = None,
     ) -> datastores.Jobs:
         """Retrieve submitted jobs.
 
@@ -269,7 +271,7 @@ class Client:
             Number of jobs per page.
         sortby: {None, 'created', '-created'}
             Field to sort results by.
-        status: {None, 'accepted', 'running', 'successful', 'failed'}
+        status: None or {'accepted', 'running', 'successful', 'failed', 'rejected'} or list
             Status of the results.
 
         Returns

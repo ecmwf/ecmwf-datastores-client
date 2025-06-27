@@ -467,7 +467,7 @@ class Remote:
             return True
         if status in ("accepted", "running"):
             return False
-        if status == "failed":
+        if status in ("failed", "rejected"):
             results = self._make_results(wait=False)
             raise ProcessingFailedError(error_json_to_message(results._json_dict))
         if status in ("dismissed", "deleted"):
