@@ -52,6 +52,18 @@ datastores.Client
 
 
 
+   .. py:method:: delete(*request_ids)
+
+      Delete requests.
+
+      :param \*request_ids: Request IDs.
+      :type \*request_ids: :py:class:`str`
+
+      :returns: Content of the response.
+      :rtype: :py:class:`dict[str,Any]`
+
+
+
    .. py:method:: download_results(request_id, target = None)
 
       Download the results of a request.
@@ -103,7 +115,7 @@ datastores.Client
       :param sortby: Field to sort results by.
       :type sortby: ``{None, 'created', '-created'}``
       :param status: Status of the results.
-      :type status: ``{None, 'accepted', 'running', 'successful', 'failed'}``
+      :type status: :py:obj:`None` or ``{'accepted', 'running', 'successful', 'failed', 'rejected'}`` or :py:class:`list`
 
       :rtype: :py:class:`datastores.Jobs`
 
