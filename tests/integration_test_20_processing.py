@@ -73,3 +73,12 @@ def test_processing_get_jobs_sortby(api_anon_client: Client) -> None:
     ids = api_anon_client.get_jobs(sortby="-created").request_ids
     assert ids.index(id2) < ids.index(id1)
     assert [id2] != api_anon_client.get_jobs(sortby="created", limit=1).request_ids
+
+
+def test_processing_delete(api_anon_client: Client) -> None:
+    id1 = api_anon_client.submit("test-adaptor-dummy", {}).request_id
+    id2 = api_anon_client.submit("test-adaptor-dummy", {}).request_id
+    job1, job2 = api_anon_client.delete(id1, id2)["jobs"]
+    assert job1["status"] == job2["status"] == "dismissed"
+    assert job1["jobID"] == id1
+    assert job2["jobID"] == id2
