@@ -623,7 +623,7 @@ class Results(ApiResponse):
         multiurl.download(
             url,
             target=target,
-            **self.retry_options,
+            maximum_retries=1,  # Handled by outer robust wrapper
             **self.request_options,
             **download_options,
         )
