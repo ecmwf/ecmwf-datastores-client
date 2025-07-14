@@ -618,12 +618,16 @@ class Results(ApiResponse):
         return dict(self._json_dict["asset"]["value"])
 
     def _download(self, url: str, target: str) -> requests.Response:
+        retry_options = {
+            ("maximum_retries" if k == "maximum_tries" else k): v
+            for k, v in self.retry_options.items()
+        }
         download_options = {"stream": True, "resume_transfers": True}
         download_options.update(self.download_options)
         multiurl.download(
             url,
             target=target,
-            maximum_retries=1,  # Handled by outer robust wrapper
+            **retry_options,
             **self.request_options,
             **download_options,
         )
