@@ -48,7 +48,7 @@ strict = true
 
 [[tool.mypy.overrides]]
 ignore_missing_imports = true
-module = ["cdsapi.*", "multiurl.*"]
+module = ["cdsapi.*", "multiurl.*", "pytest_httpbin.*"]
 
 [tool.pytest.ini_options]
 markers = ["extra: additional tests skipped by CI"]
