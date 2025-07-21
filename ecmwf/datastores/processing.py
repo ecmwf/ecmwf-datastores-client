@@ -618,19 +618,18 @@ class Results(ApiResponse):
         return dict(self._json_dict["asset"]["value"])
 
     def _download(self, url: str, target: str) -> requests.Response:
-        retry_options = {
-            ("maximum_retries" if k == "maximum_tries" else k): v
-            for k, v in self.retry_options.items()
-        }
         download_options = {"stream": True, "resume_transfers": True}
         download_options.update(self.download_options)
-        multiurl.download(
-            url,
-            target=target,
-            **retry_options,
-            **self.request_options,
-            **download_options,
-        )
+        try:
+            multiurl.download(
+                url,
+                target=target,
+                maximum_retries=0,
+                **self.request_options,
+                **download_options,
+            )
+        except requests.HTTPError as exc:
+            return exc.response
         return requests.Response()  # mutliurl robust needs a response
 
     def download(
@@ -665,7 +664,7 @@ class Results(ApiResponse):
     @property
     def location(self) -> str:
         """File location."""
-        result_href = self.asset["href"]
+        result_href: str = self.asset["href"]
         return urllib.parse.urljoin(self.response.url, result_href)
 
     @property
