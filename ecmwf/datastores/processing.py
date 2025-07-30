@@ -21,7 +21,7 @@ import os
 import time
 import urllib.parse
 import warnings
-from typing import Any, Callable, Type, TypedDict, TypeVar
+from typing import Any, Callable, TypedDict, TypeVar
 
 try:
     from typing import Self
@@ -144,7 +144,7 @@ class ApiResponse:
 
     @classmethod
     def from_request(
-        cls: Type[T_ApiResponse],
+        cls: type[T_ApiResponse],
         method: str,
         url: str,
         headers: dict[str, str],
