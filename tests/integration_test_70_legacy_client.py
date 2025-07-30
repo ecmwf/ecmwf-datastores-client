@@ -29,7 +29,7 @@ def legacy_update(remote: processing.Remote) -> None:
             remote.update()
 
         reply = remote.reply
-        remote.info("Request ID: %s, state: %s" % (reply["request_id"], reply["state"]))
+        remote.info(f"Request ID: {reply['request_id']!s}, state: {reply['state']!s}")
 
         if reply["state"] == "completed":
             break
@@ -49,8 +49,7 @@ def legacy_update(remote: processing.Remote) -> None:
                     break
                 remote.error("  %s", n)
             raise Exception(
-                "%s. %s."
-                % (reply["error"].get("message"), reply["error"].get("reason"))
+                f"{reply['error'].get('message')!s}. {reply['error'].get('reason')!s}."
             )
 
 

@@ -9,6 +9,6 @@ channels:
 # DO NOT EDIT ABOVE THIS LINE, ADD DEPENDENCIES BELOW AS SHOWN IN THE EXAMPLE
 dependencies:
 - attrs
-- multiurl
+- multiurl >= 0.3.7
 - requests
 - typing-extensions

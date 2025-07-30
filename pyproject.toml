@@ -10,7 +10,6 @@ classifiers = [
   "Operating System :: OS Independent",
   "Programming Language :: Python",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
@@ -20,7 +19,7 @@ classifiers = [
 ]
 dependencies = [
   "attrs",
-  "multiurl >= 0.3.2",
+  "multiurl >= 0.3.7",
   "requests",
   "typing-extensions"
 ]
@@ -29,7 +28,7 @@ dynamic = ["version"]
 license = {file = "LICENSE"}
 name = "ecmwf-datastores-client"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 
 [project.optional-dependencies]
 legacy = ["cdsapi >= 0.7.6"]
@@ -48,7 +47,7 @@ strict = true
 
 [[tool.mypy.overrides]]
 ignore_missing_imports = true
-module = ["cdsapi.*", "multiurl.*"]
+module = ["cdsapi.*", "multiurl.*", "pytest_httpbin.*"]
 
 [tool.pytest.ini_options]
 markers = ["extra: additional tests skipped by CI"]
@@ -57,7 +56,7 @@ markers = ["extra: additional tests skipped by CI"]
 # Same as Black.
 indent-width = 4
 line-length = 88
-target-version = "py38"
+target-version = "py39"
 
 [tool.ruff.lint]
 ignore = [
@@ -75,7 +74,9 @@ select = [
   # pydocstyle
   "D",
   # flake8-future-annotations
-  "FA"
+  "FA",
+  # pyupgrade
+  "UP"
 ]
 
 [tool.ruff.lint.pycodestyle]
