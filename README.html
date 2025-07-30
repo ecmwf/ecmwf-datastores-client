@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>ecmwf-datastores-client &#8212; ecmwf.datastores 0.3.0 documentation</title>
+    <title>ecmwf-datastores-client &#8212; ecmwf.datastores 0.4.0 documentation</title>
   
   
   
@@ -39,7 +39,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=e259d695"></script>
+    <script src="_static/documentation_options.js?v=6c02275b"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -50,7 +50,7 @@
     <link rel="prev" title="Welcome to ecmwf-datastores-client’s documentation!" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.3.0" />
+  <meta name="docsearch:version" content="0.4.0" />
   </head>
   
   
@@ -112,7 +112,7 @@
   
   
   
-    <p class="title logo__title">ecmwf.datastores 0.3.0 documentation</p>
+    <p class="title logo__title">ecmwf.datastores 0.4.0 documentation</p>
   
 </a></div>
     
@@ -401,8 +401,8 @@ key: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 <span class="gp">... </span>    <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;00:00&quot;</span><span class="p">],</span>
 <span class="gp">... </span>    <span class="s2">&quot;pressure_level&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;1000&quot;</span><span class="p">],</span>
 <span class="gp">... </span>    <span class="s2">&quot;data_format&quot;</span><span class="p">:</span> <span class="s2">&quot;grib&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="s2">&quot;download_format&quot;</span><span class="p">:</span> <span class="s2">&quot;unarchived&quot;</span>
-<span class="gp">... </span>    <span class="p">}</span>
+<span class="gp">... </span>    <span class="s2">&quot;download_format&quot;</span><span class="p">:</span> <span class="s2">&quot;unarchived&quot;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">}</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="n">client</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span><span class="n">collection_id</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s2">&quot;target_1.grib&quot;</span><span class="p">)</span>  <span class="c1"># blocks</span>
 <span class="go">&#39;target_1.grib&#39;</span>
@@ -434,6 +434,7 @@ key: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 <span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="n">collections</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># Loop over pages</span>
 <span class="gp">... </span>    <span class="n">collection_ids</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">collections</span><span class="o">.</span><span class="n">collection_ids</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="n">collections</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">next</span>  <span class="c1"># Move to the next page</span>
+<span class="gp">...</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="n">collection_ids</span>
 <span class="go">[...]</span>
@@ -494,6 +495,7 @@ key: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 <span class="gp">&gt;&gt;&gt; </span><span class="k">while</span> <span class="n">jobs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># Loop over pages</span>
 <span class="gp">... </span>    <span class="n">request_ids</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">jobs</span><span class="o">.</span><span class="n">request_ids</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="n">jobs</span> <span class="o">=</span> <span class="n">jobs</span><span class="o">.</span><span class="n">next</span>  <span class="c1"># Move to the next page</span>
+<span class="gp">...</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="n">request_ids</span>
 <span class="go">[...]</span>

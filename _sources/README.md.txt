@@ -89,8 +89,8 @@ Retrieve data:
 ...     "time": ["00:00"],
 ...     "pressure_level": ["1000"],
 ...     "data_format": "grib",
-...     "download_format": "unarchived"
-...     }
+...     "download_format": "unarchived",
+... }
 
 >>> client.retrieve(collection_id, request, target="target_1.grib")  # blocks
 'target_1.grib'
@@ -126,6 +126,7 @@ List all collection IDs sorted by last update:
 >>> while collections is not None:  # Loop over pages
 ...     collection_ids.extend(collections.collection_ids)
 ...     collections = collections.next  # Move to the next page
+...
 
 >>> collection_ids
 [...]
@@ -192,6 +193,7 @@ List all successful jobs, sorted by newest first:
 >>> while jobs is not None:  # Loop over pages
 ...     request_ids.extend(jobs.request_ids)
 ...     jobs = jobs.next  # Move to the next page
+...
 
 >>> request_ids
 [...]
