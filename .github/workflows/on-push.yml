@@ -114,7 +114,7 @@ jobs:
 
   docs-build:
     needs: [combine-environments, unit-tests]
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     permissions:
       contents: write
       pull-requests: write
