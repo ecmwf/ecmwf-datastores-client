@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v5
-    - uses: actions/setup-python@v5
+    - uses: actions/setup-python@v6
       with:
         python-version: 3.x
     - uses: pre-commit/action@v3.0.1
@@ -33,7 +33,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v5
-    - uses: actions/setup-python@v5
+    - uses: actions/setup-python@v6
       with:
         python-version: 3.x
     - name: Install conda-merge
@@ -215,7 +215,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v5
-    - uses: actions/setup-python@v5
+    - uses: actions/setup-python@v6
       with:
         python-version: '3.12'
     - name: Install package
@@ -256,6 +256,6 @@ jobs:
       with:
         name: distribution
         path: dist
-    - uses: pypa/gh-action-pypi-publish@v1.12.4
+    - uses: pypa/gh-action-pypi-publish@v1.13.0
       with:
         verbose: true
