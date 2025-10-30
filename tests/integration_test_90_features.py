@@ -18,6 +18,7 @@ def test_features_url_cds_adaptor_area_selection(
         "variable": "grid_point_altitude",
         "reference_dataset": "cru",
         "version": "2_1",
+        "_timestamp": datetime.datetime.now().isoformat(),
     }
 
     result_bigger = api_anon_client.retrieve(
