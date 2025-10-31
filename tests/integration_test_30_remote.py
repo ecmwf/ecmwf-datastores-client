@@ -11,6 +11,7 @@ from typing import Any
 import pytest
 from requests import HTTPError
 
+import ecmwf.datastores.processing
 from ecmwf.datastores import Client, Remote
 
 does_not_raise = contextlib.nullcontext
@@ -68,30 +69,29 @@ def test_remote_failed(api_anon_client: Client) -> None:
     assert remote.status == "failed"
 
 
-@pytest.mark.parametrize(
-    "cleanup,raises",
-    [
-        (True, pytest.raises(HTTPError, match="404 Client Error")),
-        (False, does_not_raise()),
-    ],
-)
+@pytest.mark.parametrize("cleanup", (True, False))
 def test_remote_cleanup(
     api_root_url: str,
     api_anon_key: str,
     cleanup: bool,
-    raises: contextlib.nullcontext[Any],
+    monkeypatch: pytest.MonkeyPatch,
 ) -> None:
+    class MockRemote(Remote):
+        delete_count = 0
+
+        def delete(self) -> dict[str, Any]:
+            self.delete_count += 1
+            return {}
+
+    monkeypatch.setattr(ecmwf.datastores.processing, "Remote", MockRemote)
+
     client = Client(
         url=api_root_url, key=api_anon_key, cleanup=cleanup, maximum_tries=0
     )
     remote = client.submit("test-adaptor-dummy", {})
-    request_id = remote.request_id
-    del remote
-    time.sleep(1)
-
-    client = Client(url=api_root_url, key=api_anon_key, maximum_tries=0)
-    with raises:
-        client.get_remote(request_id)
+    assert isinstance(remote, MockRemote)
+    remote.__del__()
+    assert remote.delete_count == cleanup
 
 
 def test_remote_datetimes(api_anon_client: Client) -> None:
