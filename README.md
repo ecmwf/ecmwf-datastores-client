@@ -88,8 +88,8 @@ Retrieve data:
 ...     "day": ["01"],
 ...     "time": ["00:00"],
 ...     "pressure_level": ["1000"],
-...     "data_format": "grib",
-...     "download_format": "unarchived",
+...     "data_format": ["grib"],
+...     "download_format": ["unarchived"],
 ... }
 
 >>> client.retrieve(collection_id, request, target="target_1.grib")  # blocks
