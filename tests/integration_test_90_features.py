@@ -57,7 +57,6 @@ def test_features_mars_cds_adaptor_format(
         "month": "01",
         "day": "02",
         "time": "00:00",
-        "target": None,
         "format": format,
     }
 
