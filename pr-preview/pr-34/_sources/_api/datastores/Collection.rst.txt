@@ -1,0 +1,103 @@
+datastores.Collection
+=====================
+
+.. py:class:: datastores.Collection
+
+   Bases: :py:obj:`ecmwf.datastores.processing.ApiResponse`
+
+
+   A class to interact with a catalogue collection.
+
+
+   .. py:method:: apply_constraints(request)
+
+      Apply constraints to the parameters in a request.
+
+      :param request: Request parameters.
+      :type request: :py:class:`dict[str,Any]`
+
+      :returns: Dictionary of valid values.
+      :rtype: :py:class:`dict[str,Any]`
+
+
+
+   .. py:method:: submit(request)
+
+      Submit a request.
+
+      :param request: Request parameters.
+      :type request: :py:class:`dict[str,Any]`
+
+      :rtype: :py:class:`datastores.Remote`
+
+
+
+   .. py:property:: bbox
+      :type: tuple[float, float, float, float]
+
+
+      Bounding box of the collection (W, S, E, N).
+
+
+   .. py:property:: begin_datetime
+      :type: datetime.datetime | None
+
+
+      Begin datetime of the collection.
+
+
+   .. py:property:: description
+      :type: str
+
+
+      Description of the collection.
+
+
+   .. py:property:: end_datetime
+      :type: datetime.datetime | None
+
+
+      End datetime of the collection.
+
+
+   .. py:property:: id
+      :type: str
+
+
+      Collection ID.
+
+
+   .. py:property:: json
+      :type: Any
+
+
+      Content of the response.
+
+
+   .. py:property:: published_at
+      :type: datetime.datetime
+
+
+      When the collection was first published.
+
+
+   .. py:property:: title
+      :type: str
+
+
+      Title of the collection.
+
+
+   .. py:property:: updated_at
+      :type: datetime.datetime
+
+
+      When the collection was last updated.
+
+
+   .. py:property:: url
+      :type: str
+
+
+      URL.
+
