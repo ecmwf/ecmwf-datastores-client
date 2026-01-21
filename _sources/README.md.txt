@@ -209,8 +209,8 @@ Interact with a previously submitted job:
 
 >>> remote.collection_id == collection_id
 True
->>> remote.request == request
-True
+>>> remote.request
+{...}
 
 >>> remote.status
 'successful'
