@@ -47,11 +47,7 @@ def test_remote_json(remote: Remote) -> None:
 
 
 def test_remote_request(remote: Remote) -> None:
-    assert remote.request == {
-        "elapsed": 0.0,
-        "format": "grib",
-        "size": 1,
-    }
+    assert remote.request == {"size": 1}
 
 
 def test_remote_request_id(remote: Remote) -> None:
