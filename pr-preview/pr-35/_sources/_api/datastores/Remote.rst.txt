@@ -1,0 +1,106 @@
+datastores.Remote
+=================
+
+.. py:class:: datastores.Remote
+
+   A class to interact with a submitted job.
+
+
+   .. py:method:: delete()
+
+      Delete job.
+
+      :returns: Content of the response.
+      :rtype: :py:class:`dict[str,Any]`
+
+
+
+   .. py:method:: download(target = None)
+
+      Download the results.
+
+      :param target: Target path. If None, download to the working directory.
+      :type target: :py:class:`str` or :py:obj:`None`
+
+      :returns: Path to the retrieved file.
+      :rtype: :py:class:`str`
+
+
+
+   .. py:method:: get_results()
+
+      Retrieve results.
+
+      :rtype: :py:class:`datastores.Results`
+
+
+
+   .. py:property:: collection_id
+      :type: str
+
+
+      Collection ID.
+
+
+   .. py:property:: created_at
+      :type: datetime.datetime
+
+
+      When the job was created.
+
+
+   .. py:property:: finished_at
+      :type: datetime.datetime | None
+
+
+      When the job finished. If None, the job has not finished.
+
+
+   .. py:property:: json
+      :type: dict[str, Any]
+
+
+      Content of the response.
+
+
+   .. py:property:: request
+      :type: dict[str, Any]
+
+
+      Request parameters.
+
+
+   .. py:property:: request_id
+      :type: str
+
+
+      Request ID.
+
+
+   .. py:property:: results_ready
+      :type: bool
+
+
+      Check if results are ready.
+
+
+   .. py:property:: started_at
+      :type: datetime.datetime | None
+
+
+      When the job started. If None, the job has not started.
+
+
+   .. py:property:: status
+      :type: str
+
+
+      Request status.
+
+
+   .. py:property:: updated_at
+      :type: datetime.datetime
+
+
+      When the job was last updated.
+

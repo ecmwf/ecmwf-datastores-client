@@ -1,0 +1,57 @@
+datastores.Results
+==================
+
+.. py:class:: datastores.Results
+
+   Bases: :py:obj:`ApiResponse`
+
+
+   A class to interact with the results of a job.
+
+
+   .. py:method:: download(target = None)
+
+      Download the results.
+
+      :param target: Target path. If None, download to the working directory.
+      :type target: :py:class:`str` or :py:obj:`None`
+
+      :returns: Path to the retrieved file.
+      :rtype: :py:class:`str`
+
+
+
+   .. py:property:: content_length
+      :type: int
+
+
+      File size in Bytes.
+
+
+   .. py:property:: content_type
+      :type: str
+
+
+      File MIME type.
+
+
+   .. py:property:: json
+      :type: Any
+
+
+      Content of the response.
+
+
+   .. py:property:: location
+      :type: str
+
+
+      File location.
+
+
+   .. py:property:: url
+      :type: str
+
+
+      URL.
+
