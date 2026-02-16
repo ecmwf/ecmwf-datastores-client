@@ -122,3 +122,27 @@ def test_adaptors_mars(api_anon_client: Client, tmp_path: pathlib.Path) -> None:
     remote = api_anon_client.submit(collection_id, request)
     assert remote.download(target) == target
     assert os.path.exists(target)
+
+
+@pytest.mark.extra
+def test_adaptors_mapped_requests_caching(api_anon_client: Client) -> None:
+    dataset = "satellite-soil-moisture"
+    request = {
+        "variable": ["surface_soil_moisture_saturation"],
+        "type_of_sensor": ["active"],
+        "time_aggregation": ["daily"],
+        "year": ["2023"],
+        "month": ["02"],
+        "type_of_record": ["icdr"],
+        "version": ["v202212"],
+        "_no_cache": datetime.datetime.now().isoformat(),
+    }
+    results_0 = api_anon_client.submit_and_wait_on_results(
+        dataset,
+        request | {"day": ["28"]},
+    )
+    results_1 = api_anon_client.submit_and_wait_on_results(
+        dataset,
+        request | {"day": ["28", "29"]},
+    )
+    assert results_0.location == results_1.location
