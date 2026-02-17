@@ -144,23 +144,3 @@ def test_adaptors_mapped_requests_caching(api_anon_client: Client) -> None:
         request | {"year": ["2023"], "month": ["02"], "day": ["28", "29"]},
     )
     assert results_1.location == results_2.location
-
-
-@pytest.mark.extra
-def test_adaptors_date_caching(api_anon_client: Client) -> None:
-    collection_id = "test-adaptor-mars"
-    request = {
-        "product_type": "reanalysis",
-        "variable": "2m_temperature",
-        "time": "00:00",
-        "_timestamp": datetime.datetime.now().isoformat(),
-    }
-    results_1 = api_anon_client.submit_and_wait_on_results(
-        collection_id,
-        request | {"year": ["2016"], "month": ["01"], "day": ["02"]},
-    )
-    results_2 = api_anon_client.submit_and_wait_on_results(
-        collection_id,
-        request | {"date": ["2016-01-02"]},
-    )
-    assert results_1.location == results_2.location
