@@ -126,23 +126,41 @@ def test_adaptors_mars(api_anon_client: Client, tmp_path: pathlib.Path) -> None:
 
 @pytest.mark.extra
 def test_adaptors_mapped_requests_caching(api_anon_client: Client) -> None:
-    dataset = "satellite-soil-moisture"
+    collection_id = "satellite-soil-moisture"
     request = {
         "variable": ["surface_soil_moisture_saturation"],
         "type_of_sensor": ["active"],
         "time_aggregation": ["daily"],
-        "year": ["2023"],
-        "month": ["02"],
         "type_of_record": ["icdr"],
         "version": ["v202212"],
         "_no_cache": datetime.datetime.now().isoformat(),
     }
-    results_0 = api_anon_client.submit_and_wait_on_results(
-        dataset,
-        request | {"day": ["28"]},
-    )
     results_1 = api_anon_client.submit_and_wait_on_results(
-        dataset,
-        request | {"day": ["28", "29"]},
+        collection_id,
+        request | {"year": ["2023"], "month": ["02"], "day": ["28"]},
     )
-    assert results_0.location == results_1.location
+    results_2 = api_anon_client.submit_and_wait_on_results(
+        collection_id,
+        request | {"year": ["2023"], "month": ["02"], "day": ["28", "29"]},
+    )
+    assert results_1.location == results_2.location
+
+
+@pytest.mark.extra
+def test_adaptors_date_caching(api_anon_client: Client) -> None:
+    collection_id = "test-adaptor-mars"
+    request = {
+        "product_type": "reanalysis",
+        "variable": "2m_temperature",
+        "time": "00:00",
+        "_timestamp": datetime.datetime.now().isoformat(),
+    }
+    results_1 = api_anon_client.submit_and_wait_on_results(
+        collection_id,
+        request | {"year": ["2016"], "month": ["01"], "day": ["02"]},
+    )
+    results_2 = api_anon_client.submit_and_wait_on_results(
+        collection_id,
+        request | {"date": ["2016-01-02"]},
+    )
+    assert results_1.location == results_2.location
