@@ -119,9 +119,9 @@ def test_remote_get_receipt(api_anon_client: Client, format: str, failed: bool) 
 
     if failed:
         assert set(receipt) == {"request", "collection", "job"}
-        assert receipt["job"]["traceback"]
+        assert receipt["job"]["traceback"] == "The job failed with: NotImplementedError"
     else:
         assert set(receipt) == {"request", "collection", "job", "results"}
-        assert not receipt["job"]["traceback"]
+        assert receipt["job"]["traceback"] is None
         assert receipt["results"]["file_size"] == 1
         assert receipt["results"]["type"] == "application/x-grib"
