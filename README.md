@@ -229,6 +229,9 @@ True
 >>> remote.download("target_6.grib")
 'target_6.grib'
 
+>>> remote.get_receipt()
+{...}
+
 >>> remote.get_results()
 Results(...)
 

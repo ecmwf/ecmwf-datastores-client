@@ -522,6 +522,24 @@ class Remote:
         self.cleanup = False
         return response._json_dict
 
+    def get_receipt(self) -> dict[str, Any]:
+        """Retrieve receipt.
+
+        Returns
+        -------
+        dict[str,Any]
+            Content of the receipt.
+        """
+        try:
+            self._wait_on_results()
+        except (requests.HTTPError, ProcessingFailedError):
+            if self.status != "failed":
+                raise
+        response = ApiResponse.from_request(
+            "get", f"{self.url}/receipt", **self._request_kwargs
+        )
+        return response._json_dict
+
     def _warn(self) -> None:
         message = (
             ".update and .reply are available for backward compatibility."
