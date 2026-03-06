@@ -106,3 +106,22 @@ def test_remote_datetimes(api_anon_client: Client) -> None:
     assert remote.finished_at is not None
     assert remote.created_at < remote.started_at < remote.finished_at
     assert remote.finished_at == remote.updated_at
+
+
+@pytest.mark.parametrize("format,failed", [("grib", False), ("foo", True)])
+def test_remote_get_receipt(api_anon_client: Client, format: str, failed: bool) -> None:
+    collection_id = "test-adaptor-dummy"
+    request = {"format": format, "size": 1, "elapsed": 0.0}
+    remote = api_anon_client.submit(collection_id, request)
+    receipt = remote.get_receipt()
+    assert receipt["request"] == request
+    assert receipt["collection"]["collection_id"] == collection_id
+
+    if failed:
+        assert set(receipt) == {"request", "collection", "job"}
+        assert receipt["job"]["traceback"] == "The job failed with: NotImplementedError"
+    else:
+        assert set(receipt) == {"request", "collection", "job", "results"}
+        assert receipt["job"]["traceback"] is None
+        assert receipt["results"]["file_size"] == 1
+        assert receipt["results"]["type"] == "application/x-grib"

@@ -322,6 +322,22 @@ class Client:
         }
         return self._retrieve_api.get_processes(**params)
 
+    def get_receipt(self, request_id: str) -> dict[str, Any]:
+        """
+        Retrieve the receipt of a request.
+
+        Parameters
+        ----------
+        request_id: str
+            Request ID.
+
+        Returns
+        -------
+        dict[str,Any]
+            Content of the receipt.
+        """
+        return self.get_remote(request_id).get_receipt()
+
     def get_remote(self, request_id: str) -> datastores.Remote:
         """
         Retrieve the remote object of a request.

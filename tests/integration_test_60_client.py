@@ -27,6 +27,12 @@ def test_client_get_process(api_anon_client: Client) -> None:
     assert set(process.headers) == {"User-Agent", "PRIVATE-TOKEN"}
 
 
+def test_client_get_receipt(api_anon_client: Client) -> None:
+    request_id = api_anon_client.submit("test-adaptor-dummy", {}).request_id
+    receipt = api_anon_client.get_receipt(request_id)
+    assert receipt["job"]["request_id"] == request_id
+
+
 def test_client_get_remote(api_anon_client: Client) -> None:
     request_id = api_anon_client.submit("test-adaptor-dummy", {}).request_id
     remote = api_anon_client.get_remote(request_id)
