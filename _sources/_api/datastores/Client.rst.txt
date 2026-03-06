@@ -121,6 +121,18 @@ datastores.Client
 
 
 
+   .. py:method:: get_receipt(request_id)
+
+      Retrieve the receipt of a request.
+
+      :param request_id: Request ID.
+      :type request_id: :py:class:`str`
+
+      :returns: Content of the receipt.
+      :rtype: :py:class:`dict[str,Any]`
+
+
+
    .. py:method:: get_remote(request_id)
 
       Retrieve the remote object of a request.

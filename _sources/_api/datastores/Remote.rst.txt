@@ -27,6 +27,15 @@ datastores.Remote
 
 
 
+   .. py:method:: get_receipt()
+
+      Retrieve receipt.
+
+      :returns: Content of the receipt.
+      :rtype: :py:class:`dict[str,Any]`
+
+
+
    .. py:method:: get_results()
 
       Retrieve results.
