@@ -47,13 +47,27 @@ def test_processing_apply_constraints(api_anon_client: Client) -> None:
         api_anon_client.apply_constraints("test-adaptor-url", {"foo": "bar"})
 
 
-def test_processing_estimate_costs(api_anon_client: Client) -> None:
+@pytest.mark.parametrize(
+    "variable,cost",
+    [
+        (["grid_point_altitude"], 1),
+        (["grid_point_altitude", "near_surface_air_temperature"], 2),
+    ],
+)
+def test_processing_estimate_costs(
+    api_anon_client: Client, variable: list[str], cost: int
+) -> None:
     result = api_anon_client.estimate_costs(
-        "test-adaptor-url", {"variable": ["foo", "bar"]}
+        "test-adaptor-url",
+        {
+            "variable": variable,
+            "reference_dataset": "cru",
+            "version": "2_1",
+        },
     )
     assert result == {
         "id": "size",
-        "cost": 2.0,
+        "cost": cost,
         "limit": 1000.0,
     }
 
