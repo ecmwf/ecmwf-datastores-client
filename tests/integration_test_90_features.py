@@ -84,7 +84,7 @@ def test_features_mars_date_caching(api_anon_client: Client) -> None:
         collection_id,
         request | {"date": ["2016-01-02"]},
     )
-    assert results_1.location == results_2.location
+    assert results_1.asset["file:checksum"] == results_2.asset["file:checksum"]
 
 
 @pytest.mark.extra

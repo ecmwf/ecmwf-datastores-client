@@ -143,4 +143,4 @@ def test_adaptors_mapped_requests_caching(api_anon_client: Client) -> None:
         collection_id,
         request | {"year": ["2023"], "month": ["02"], "day": ["28", "29"]},
     )
-    assert results_1.location == results_2.location
+    assert results_1.asset["file:checksum"] == results_2.asset["file:checksum"]
