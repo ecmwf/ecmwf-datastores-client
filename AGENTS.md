@@ -142,6 +142,7 @@ while jobs is not None:
 | `requests.HTTPError` | HTTP 4xx/5xx (message includes structured API error detail) |
 
 ```python
+import requests
 from ecmwf.datastores.processing import ProcessingFailedError
 
 try:
@@ -248,7 +249,7 @@ make qa                       # pre-commit (ruff + mypy) over all files
 make type-check               # mypy --strict
 
 # Unit tests (no live server required)
-make unit-tests               # pytest tests/test_*.py with coverage
+make unit-tests               # pytest with coverage
 
 # Integration tests (require a live API server)
 make integration-tests        # pytest tests/integration_test_*.py
