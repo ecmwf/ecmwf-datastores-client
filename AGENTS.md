@@ -12,10 +12,12 @@ Credentials live in `~/.ecmwfdatastoresrc` (see the Config section below). If a 
 
 ```python
 import logging
+
 logging.basicConfig(level="INFO")  # shows job status updates while polling
 
 from ecmwf.datastores import Client
-client = Client()                  # reads URL + key from config or env vars
+
+client = Client()  # reads URL + key from config or env vars
 ```
 
 ### Request structure
@@ -24,15 +26,15 @@ A request is a plain `dict[str, Any]` passed to `client.retrieve()`, `client.sub
 
 ```python
 request = {
-    "product_type": ["reanalysis"],       # list or single string
+    "product_type": ["reanalysis"],  # list or single string
     "variable": ["temperature"],
     "year": ["2022"],
     "month": ["01"],
     "day": ["01"],
     "time": ["00:00"],
     "pressure_level": ["1000"],
-    "data_format": "grib",                # "grib" or "netcdf"
-    "download_format": "unarchived",      # "unarchived" or "zip"
+    "data_format": "grib",  # "grib" or "netcdf"
+    "download_format": "unarchived",  # "unarchived" or "zip"
 }
 ```
 
@@ -46,7 +48,7 @@ There is no fixed schema enforced client-side. The exact keys and valid values d
 collections = client.get_collections(sortby="update")
 while collections is not None:
     print(collections.collection_ids)
-    collections = collections.next   # follow pagination
+    collections = collections.next  # follow pagination
 ```
 
 Or search by keyword/text:
@@ -61,7 +63,7 @@ collections = client.get_collections(query="ERA5", keywords=["Reanalysis"])
 col = client.get_collection("reanalysis-era5-pressure-levels")
 print(col.title, col.description)
 print(col.begin_datetime, col.end_datetime)  # temporal coverage
-print(col.bbox)                              # spatial bounding box
+print(col.bbox)  # spatial bounding box
 ```
 
 **Step 3 — Apply constraints to narrow valid values.** `apply_constraints` sends a partial or complete request to the API and returns only the values that are valid given the current selections. Use it iteratively to build up a valid request or to check what is available:
@@ -70,7 +72,7 @@ print(col.bbox)                              # spatial bounding box
 # What days exist for February 2000 (e.g. check for leap year)?
 partial = {"year": "2000", "month": "02"}
 constrained = client.apply_constraints("reanalysis-era5-pressure-levels", partial)
-print(constrained["day"])   # returns list of valid day strings
+print(constrained["day"])  # returns list of valid day strings
 
 # Validate a complete request before submitting
 constrained = client.apply_constraints("reanalysis-era5-pressure-levels", request)
@@ -117,9 +119,9 @@ If `target` is omitted from any download call the file is saved to the current w
 
 ```python
 remote = client.get_remote(request_id)
-print(remote.status)       # 'accepted' | 'running' | 'successful' | 'failed' | 'rejected'
-print(remote.created_at)   # datetime
-print(remote.started_at)   # datetime or None
+print(remote.status)  # 'accepted' | 'running' | 'successful' | 'failed' | 'rejected'
+print(remote.created_at)  # datetime
+print(remote.started_at)  # datetime or None
 print(remote.finished_at)  # datetime or None
 print(remote.results_ready)  # True once status == 'successful'
 ```
@@ -158,8 +160,8 @@ except requests.HTTPError as e:
 Some collections require accepting a licence before data can be retrieved. The API will return a 4xx error with a message indicating which licence is needed.
 
 ```python
-licences = client.get_licences()                    # all available licences
-accepted = client.get_accepted_licences()           # already accepted
+licences = client.get_licences()  # all available licences
+accepted = client.get_accepted_licences()  # already accepted
 
 client.accept_licence(licence_id="licence-to-use-copernicus-products", revision=12)
 ```
@@ -174,8 +176,8 @@ print(costs)  # dict with cost metadata
 ### Cleaning up jobs
 
 ```python
-client.delete(request_id)          # delete one job
-client.delete(id1, id2, id3)       # delete multiple jobs
+client.delete(request_id)  # delete one job
+client.delete(id1, id2, id3)  # delete multiple jobs
 
 # Auto-delete on completion (sets cleanup=True globally):
 client = Client(cleanup=True)
@@ -203,10 +205,11 @@ HTTP is handled by `multiurl`. All requests flow through `ApiResponse.from_reque
 Config for `url` and `key` resolves in this order:
 
 1. Constructor kwargs: `Client(url=..., key=...)`
-2. Env vars: `ECMWF_DATASTORES_URL`, `ECMWF_DATASTORES_KEY`
-3. RC file: `~/.ecmwfdatastoresrc` (or path in `ECMWF_DATASTORES_RC_FILE`)
+1. Env vars: `ECMWF_DATASTORES_URL`, `ECMWF_DATASTORES_KEY`
+1. RC file: `~/.ecmwfdatastoresrc` (or path in `ECMWF_DATASTORES_RC_FILE`)
 
 RC file format (custom line-based parser, not YAML):
+
 ```
 url: https://cds.climate.copernicus.eu/api
 key: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
@@ -231,6 +234,7 @@ Anything exported from `ecmwf/datastores/__init__.py` is public. Keep that list 
 ## Legacy Client
 
 `LegacyClient` (`legacy_client.py`) is a compatibility shim over `cdsapi.api.Client`. It:
+
 - Reads config via `cdsapi` conventions (`~/.cdsapirc`, `CDSAPI_*` env vars)
 - Delegates all real work to an internal `datastores.Client` instance
 - Must keep `cdsapi` as an **optional** dependency (`pip install ".[legacy]"`)
@@ -271,13 +275,14 @@ Before submitting changes, run `make qa` and `make unit-tests`. Integration test
 ## Adding a New Client Method
 
 1. Implement the underlying API call in `catalogue.py`, `processing.py`, or `profile.py`.
-2. Expose it on `Client` in `client.py` by delegating to the appropriate module object.
-3. Export the new type (if any) from `__init__.py`.
-4. Add a unit test in `tests/test_*.py` and an integration test in the matching `tests/integration_test_*.py`.
+1. Expose it on `Client` in `client.py` by delegating to the appropriate module object.
+1. Export the new type (if any) from `__init__.py`.
+1. Add a unit test in `tests/test_*.py` and an integration test in the matching `tests/integration_test_*.py`.
 
 ## Integration Test Setup
 
 Integration tests read configuration from:
+
 - `ECMWF_DATASTORES_URL` env var (default: `http://localhost:8080/api`)
 - `ANONYMOUS_PAT` env var for an anonymous API key
 
