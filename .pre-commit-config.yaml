@@ -7,17 +7,14 @@ repos:
   - id: check-json
   - id: check-yaml
   - id: check-toml
+    exclude: uv.lock
   - id: check-added-large-files
+    exclude: uv.lock
   - id: check-merge-conflict
   - id: debug-statements
   - id: mixed-line-ending
-- repo: https://github.com/keewis/blackdoc
-  rev: v0.4.4
-  hooks:
-  - id: blackdoc
-    additional_dependencies: [black==25.9.0]
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.14.1
+  rev: v0.15.20
   hooks:
   - id: ruff
     args: [--fix, --show-fixes]
@@ -27,18 +24,20 @@ repos:
   hooks:
   - id: mdformat
 - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
-  rev: v2.15.0
+  rev: v2.16.0
   hooks:
   - id: pretty-format-yaml
     args: [--autofix, --preserve-quotes]
   - id: pretty-format-toml
     args: [--autofix]
+    exclude: uv.lock
 - repo: https://github.com/gitleaks/gitleaks
-  rev: v8.28.0
+  rev: v8.30.0
   hooks:
   - id: gitleaks
-- repo: https://github.com/kynan/nbstripout
-  rev: 0.9.0
+- repo: https://github.com/zizmorcore/zizmor-pre-commit
+  rev: v1.26.1
   hooks:
-  - id: nbstripout
-    args: [--drop-empty-cells]
+  - id: zizmor
+    args: [--no-progress, --fix]
+    exclude: .github/workflows/main.yaml

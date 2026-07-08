@@ -1,16 +1,50 @@
 [build-system]
 build-backend = "setuptools.build_meta"
-requires = ["setuptools>=64", "setuptools_scm>=8"]
+requires = ["setuptools>=80", "setuptools-scm>=8"]
+
+[dependency-groups]
+dev = [
+  {include-group = "docs-build"},
+  {include-group = "qa"},
+  {include-group = "type-check"},
+  {include-group = "unit-tests"}
+]
+docs-build = [
+  "ipykernel>=7.3.0",
+  "myst-parser>=4.0.1",
+  "pydata-sphinx-theme>=0.19.0",
+  "sphinx>=8.1.3",
+  "sphinx-autoapi>=3.8.0"
+]
+integration-tests = [
+  {include-group = "legacy"},
+  {include-group = "unit-tests"}
+]
+legacy = [
+  "cdsapi >= 0.7.6"
+]
+qa = [
+  "pre-commit>=4.6.0",
+  "ruff>=0.15.19"
+]
+type-check = [
+  "mypy>=2.1.0",
+  "types-requests>=2.33.0.20260518"
+]
+unit-tests = [
+  "pytest>=9.1.1",
+  "pytest-cov>=7.1.0",
+  "pytest-httpbin>=2.1.0",
+  "responses>=0.26.2"
+]
 
 [project]
 classifiers = [
-  "Development Status :: 2 - Pre-Alpha",
+  "Development Status :: 5 - Production/Stable",
   "Intended Audience :: Science/Research",
-  "License :: OSI Approved :: Apache Software License",
   "Operating System :: OS Independent",
   "Programming Language :: Python",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
@@ -19,28 +53,24 @@ classifiers = [
   "Topic :: Scientific/Engineering"
 ]
 dependencies = [
-  "attrs",
-  "multiurl >= 0.3.7",
-  "requests",
-  "typing-extensions"
+  "attrs>=23.1.0",
+  "multiurl>=0.3.7",
+  "requests>=2.5.0",
+  "typing-extensions>=4.6.0"
 ]
 description = "ECMWF Data Stores Service (DSS) API Python client"
 dynamic = ["version"]
-license = {file = "LICENSE"}
+license = "Apache-2.0"
+license-files = ["LICENSE"]
 name = "ecmwf-datastores-client"
 readme = "README.md"
-requires-python = ">=3.9"
-
-[project.optional-dependencies]
-legacy = ["cdsapi >= 0.7.6"]
-
-[project.urls]
-documentation = "https://ecmwf.github.io/ecmwf-datastores-client/"
-source = "https://github.com/ecmwf/ecmwf-datastores-client"
-tracker = "https://github.com/ecmwf/ecmwf-datastores-client/issues"
+requires-python = ">= 3.10"
 
 [tool.coverage.run]
 branch = true
+
+[tool.git-clone]
+repo-list = []
 
 [tool.mypy]
 explicit_package_bases = true
@@ -48,16 +78,28 @@ strict = true
 
 [[tool.mypy.overrides]]
 ignore_missing_imports = true
-module = ["cdsapi.*", "multiurl.*", "pytest_httpbin.*"]
+module = [
+  "cdsapi.*",
+  "multiurl.*",
+  "pytest_httpbin.*"
+]
 
 [tool.pytest.ini_options]
-markers = ["extra: additional tests skipped by CI"]
+addopts = [
+  "--doctest-modules",
+  "--doctest-glob=README.md"
+]
+markers = [
+  "extra: additional tests skipped by CI"
+]
+testpaths = [
+  "tests/test_*.py"
+]
 
 [tool.ruff]
 # Same as Black.
 indent-width = 4
 line-length = 88
-target-version = "py39"
 
 [tool.ruff.lint]
 ignore = [
@@ -73,11 +115,7 @@ select = [
   # isort
   "I",
   # pydocstyle
-  "D",
-  # flake8-future-annotations
-  "FA",
-  # pyupgrade
-  "UP"
+  "D"
 ]
 
 [tool.ruff.lint.pycodestyle]
@@ -89,12 +127,9 @@ convention = "numpy"
 [tool.setuptools]
 packages = ["ecmwf.datastores"]
 
-[tool.setuptools.package-data]
-"ecmwf.datastores" = ["py.typed"]
-
 [tool.setuptools_scm]
 fallback_version = "999"
-write_to = "ecmwf/datastores/version.py"
+write_to = "ecmwf.datastores/version.py"
 write_to_template = '''
 # Do not change! Do not track in version control!
 __version__ = "{version}"

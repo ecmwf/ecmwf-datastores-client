@@ -1,6 +1,6 @@
 {
-  "template": "https://github.com/ecmwf-projects/cookiecutter-conda-package",
-  "commit": "ff19a1dc1b3e9f4ba2544423b3a6bb510f81f352",
+  "template": "git@github.com:ecmwf/dss-cookiecutter-pypackage.git",
+  "commit": "1f6e714d501787abc4b0c1af3101f2eae6c18a83",
   "checkout": null,
   "context": {
     "cookiecutter": {
@@ -9,11 +9,11 @@
       "project_short_description": "ECMWF Data Stores Service (DSS) API Python client",
       "copyright_holder": "European Union",
       "copyright_year": "2022",
-      "mypy_strict": "True",
-      "integration_tests": "True",
+      "integration_tests": true,
       "pypi": true,
-      "_template": "https://github.com/ecmwf-projects/cookiecutter-conda-package",
-      "_commit": "ff19a1dc1b3e9f4ba2544423b3a6bb510f81f352"
+      "gh_pages": true,
+      "_template": "git@github.com:ecmwf/dss-cookiecutter-pypackage.git",
+      "_commit": "1f6e714d501787abc4b0c1af3101f2eae6c18a83"
     }
   },
   "directory": null

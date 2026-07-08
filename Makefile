@@ -1,46 +1,68 @@
-PROJECT := ecmwf.datastores
-CONDA := conda
-CONDAFLAGS :=
-COV_REPORT := html
+PYTHON_VERSION ?= 3.11
 
-default: qa unit-tests type-check
+.PHONY: all
+all: install qa unit-tests type-check docs-build build ##  Runs installation, QA, tests, type checking, docs-build, and packaging.
 
-qa:
-	pre-commit run --all-files
+.PHONY: install
+install: ## Synchronises the environment with uv and installs pre-commit hooks.
+	@echo "🚀 Creating/updating virtual environment using uv"
+	@uv sync
+	@uv run pre-commit install
 
-unit-tests:
-	python -m pytest -vv --cov=. --cov-report=$(COV_REPORT)
+.PHONY: qa
+qa: ## Verifies lockfile consistency and runs pre-commit checks.
+	@echo "🚀 Checking lock file consistency with 'pyproject.toml'"
+	@uv lock --locked
+	@echo "🚀 Linting code: Running pre-commit"
+	@uv run --group qa pre-commit run --all-files
 
-type-check:
-	python -m mypy .
+.PHONY: unit-tests
+unit-tests: ## Runs local unit tests and doctests using pytest.
+	@echo "🚀 Testing code: Running pytest with Python $(PYTHON_VERSION)"
+	@uv run --group unit-tests --python=$(PYTHON_VERSION) pytest -vv --cov=. --cov-report=html
 
-conda-env-update:
-	$(CONDA) install -y -c conda-forge conda-merge
-	$(CONDA) run conda-merge environment.yml ci/environment-ci.yml > ci/combined-environment-ci.yml
-	$(CONDA) env update $(CONDAFLAGS) -f ci/combined-environment-ci.yml
+.PHONY: integration-tests
+integration-tests: ## Runs integration tests using pytest.
+	@echo "🚀 Testing minimum versions: Running pytest with Python $(PYTHON_VERSION)"
+	@uv run --group integration-tests --python=$(PYTHON_VERSION) pytest -vv tests/integration_*.py README.md
 
-docker-build:
-	docker build -t $(PROJECT) .
+.PHONY: ci-integration-tests
+ci-integration-tests: ## Runs integration tests for GitHub CI using pytest.
+	@echo "🚀 Testing minimum versions: Running pytest with Python $(PYTHON_VERSION)"
+	@uv run --group integration-tests --python=$(PYTHON_VERSION) pytest -vv -m="not extra" tests/integration_*.py README.md
 
-docker-run:
-	docker run --rm -ti -v $(PWD):/srv $(PROJECT)
+.PHONY: minver-tests
+minver-tests: ## Tests the codebase against the minimum supported dependency versions.
+	@echo "🚀 Testing minimum versions: Running pytest with Python $(PYTHON_VERSION)"
+	@uv run --resolution lowest-direct --group unit-tests --python=$(PYTHON_VERSION) pytest -vv
 
-template-update:
-	pre-commit autoupdate --repo https://github.com/kynan/nbstripout
-	pre-commit run --all-files cruft -c .pre-commit-config-cruft.yaml
+.PHONY: type-check
+type-check: ## Runs static type checks with mypy.
+	@echo "🚀 Static type checking: Running mypy"
+	@uv run --group type-check --python=$(PYTHON_VERSION) mypy .
 
-docs-build:
-	cp README.md docs/. && cd docs && rm -fr _api && make clean && make html
+.PHONY: docs-build
+docs-build: ## Copies the README and builds HTML documentation with Sphinx.
+	@echo "🚀 Building documentation: Running Sphinx"
+	@cp README.md docs/
+	@uv run --group docs-build make -C docs clean html
 
-# DO NOT EDIT ABOVE THIS LINE, ADD COMMANDS BELOW
+.PHONY: build
+build: ## Cleans build paths, builds distribution packages, and verifies the package imports successfully.
+	@echo "🚀 Building the package"
+	@rm -rf build dist
+	@uv build
+	@echo "🚀 Verifying build artifact import"
+	@uv run --no-project --python=$(PYTHON_VERSION) --with ./dist/ecmwf_datastores_client*.whl python -c "import ecmwf.datastores"
 
-integration-tests:
-	python -m pytest -vv --cov=. --cov-report=$(COV_REPORT) tests/integration*.py
+.PHONY: template-update
+template-update: ## Synchronises the template with the base Cookiecutter using cruft.
+	@echo "🚀 Updating template: Running cruft"
+	@uvx cruft[pyproject] update -y
 
-doc-tests:
-	python -m pytest -vv --doctest-glob='*.md' README.md
+.PHONY: help
+help: ## Displays all available Makefile targets.
+	@uv run python -c "import re; \
+	[[print(f'\033[36m{m[0]:<20}\033[0m {m[1]}') for m in re.findall(r'^([a-zA-Z_-]+):.*?## (.*)$$', open(makefile).read(), re.M)] for makefile in ('$(MAKEFILE_LIST)').strip().split()]"
 
-all-tests: unit-tests integration-tests doc-tests
-
-ci-integration-tests: unit-tests doc-tests
-	python -m pytest -vv --cov=. -m="not extra" --cov-report=$(COV_REPORT) tests/integration*.py
+.DEFAULT_GOAL := help

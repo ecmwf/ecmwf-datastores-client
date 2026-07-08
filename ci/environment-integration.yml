@@ -1,3 +1,6 @@
+# WARNING: This file is deprecated and is no longer used for development.
+# It is kept only for backward compatibility and will be removed once the migration to uv is complete.
+#
 # environment-integration.yml: Additional dependencies to install in the integration environment (e.g., pinned dependencies).
 channels:
 - conda-forge

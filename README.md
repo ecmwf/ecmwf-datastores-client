@@ -1,30 +1,11 @@
-<p align="center">
-  <a href="https://github.com/ecmwf/codex/raw/refs/heads/main/ESEE">
-    <img src="https://github.com/ecmwf/codex/raw/refs/heads/main/ESEE/data_provision_badge.svg" alt="ECMWF Software EnginE"></a>
-  <a href="https://github.com/ecmwf/codex/raw/refs/heads/main/Project Maturity">
-    <img src="https://github.com/ecmwf/codex/raw/refs/heads/main/Project Maturity/incubating_badge.svg" alt="Maturity Level"></a>
-  <!-- <a href="https://codecov.io/gh/ecmwf/ecmwf-datastores-client">
-    <img src="https://codecov.io/gh/ecmwf/ecmwf-datastores-client/branch/main/graph/badge.svg" alt="Code Coverage"></a> -->
-  <a href="https://opensource.org/licenses/apache-2-0">
-    <img src="https://img.shields.io/badge/Licence-Apache 2.0-blue.svg" alt="Licence"></a>
-  <a href="https://github.com/ecmwf/ecmwf-datastores-client/releases">
-    <img src="https://img.shields.io/github/v/release/ecmwf/ecmwf-datastores-client?color=purple&label=Release" alt="Latest Release"></a>
-</p>
-
-<p align="center">
-  <a href="#quick-start">Quick Start</a>
-  •
-  <a href="#installation">Installation</a>
-  •
-  <a href="https://ecmwf.github.io/ecmwf-datastores-client/">Documentation</a>
-</p>
-
-> [!IMPORTANT]
-> This software is **Incubating** and subject to ECMWF's guidelines on [Software Maturity](https://github.com/ecmwf/codex/raw/refs/heads/main/Project%20Maturity).
-
 # ecmwf-datastores-client
 
+[![Static Badge](https://github.com/ecmwf/codex/raw/refs/heads/main/Project%20Maturity/emerging_badge.svg)](https://github.com/ecmwf/codex/raw/refs/heads/main/Project%20Maturity#emerging)
+
 ECMWF Data Stores Service (DSS) API Python client.
+
+> [!IMPORTANT]
+> This software is **Emerging** and subject to ECMWF's guidelines on [Software Maturity](https://github.com/ecmwf/codex/raw/refs/heads/main/Project%20Maturity).
 
 Technical documentation: https://ecmwf.github.io/ecmwf-datastores-client/
 
@@ -65,6 +46,9 @@ Configure the logging level to display INFO messages:
 >>> logging.basicConfig(level="INFO")
 
 ```
+
+> [!NOTE]
+> All Python code examples in this README are automatically tested as part of the unit test suite.
 
 Instantiate the API client and optionally verify authentication:
 
@@ -251,24 +235,123 @@ Apply constraints and find the number of available days in a given month:
 
 ```
 
-## Workflow for developers/contributors
+## Developer Workflow
 
-For best experience create a new conda environment (e.g. DEVELOP) with Python 3.12:
+### 1. Initialise the Repository
 
+Create a repository on GitHub under the ecmwf organisation named ecmwf-datastores-client. Then, run:
+
+```bash
+git init -b main
+git add .
+git commit -m "initialise repository"
+git remote add origin git@github.com:ecmwf/ecmwf-datastores-client.git
+git push -u origin main
 ```
-conda create -n DEVELOP -c conda-forge python=3.12
-conda activate DEVELOP
+
+### 2. Set Up the Environment
+
+Configure your virtual environment and pre-commit hooks:
+
+```bash
+make install
 ```
 
-Before pushing to GitHub, run the following commands:
+> [!NOTE]
+> This project uses uv for dependency management. Commit the generated uv.lock file to version control.
 
-1. Update conda environment: `make conda-env-update`
-1. Install this package: `pip install -e .`
-1. Sync with the latest [template](https://github.com/ecmwf-projects/cookiecutter-conda-package) (optional): `make template-update`
-1. Run quality assurance checks: `make qa`
-1. Run tests: `make unit-tests`
-1. Run the static type checker: `make type-check`
-1. Build the documentation (see [Sphinx tutorial](https://www.sphinx-doc.org/en/master/tutorial/)): `make docs-build`
+### 3. Run Quality Assurance
+
+Check formatting, linting, and lockfile consistency:
+
+```bash
+make qa
+```
+
+### 4. Commit and Push
+
+Save and push any automatically formatted changes:
+
+```bash
+git add .
+git commit -m "format codebase and sync lockfile"
+git push origin main
+```
+
+The CI/CD pipeline triggers on pull requests, merges to main, and new releases.
+
+## Using the Makefile
+
+All development tasks are exposed as self-documenting targets in the `Makefile`. To see a complete list of available targets and their descriptions, run:
+
+```bash
+make help
+```
+
+This displays all available utility commands, including:
+
+- Environment setup: `make install`
+- Quality assurance: `make qa`
+- Unit tests: `make unit-tests`
+- Type checking: `make type-check`
+
+To run the full set of quality checks, tests, and build steps in a single command, use:
+
+```bash
+make all
+```
+
+## Instructions for internal dependencies
+
+The CI/CD pipeline is able to clone and install internal ECMWF DSS dependencies. If your package depends on other internal dependencies, follow these steps:
+
+1. In the `pyproject.toml`, add the packages as a Git dependency:
+
+```toml
+[project]
+dependencies = [
+  "dss-package-1 @ git+https://github.com/ecmwf/dss-package-1.git",
+  "dss-package-2 @ git+https://github.com/ecmwf/dss-package-2.git",
+]
+```
+
+2. In the `pyproject.toml`, add the packages to the `uv` workspace configuration as follows:
+
+```toml
+[tool.uv.sources]
+dss-package-1 = {path = "../dss-package-1", editable = true}
+dss-package-2 = {path = "../dss-package-2", editable = true}
+```
+
+3. In the `pyproject.toml`, add the packages to the list of repositories to be cloned by the `git-clone` action:
+
+```toml
+[tool.git-clone]
+repo-list = [
+  "ecmwf/dss-package-1",
+  "ecmwf/dss-package-2",
+]
+```
+
+The `git-clone` action will automatically clone the internal dependencies under `../` and check out the appropriate branch. For example, if you open a PR against the upstream branch, it will check out the corresponding upstream branches.
+
+> [!NOTE]
+> **Local Development:** If you are working locally and want to run unit tests, it is your responsibility to clone the internal repositories under `../` and check out the correct branches.
+
+## Instructions for PyPI
+
+Publishing to PyPI is done using a Trusted Publisher. See the [PyPI documentation](https://docs.pypi.org/trusted-publishers/adding-a-publisher/).
+Configure the Trusted Publisher with the following settings:
+
+- **Owner**: `ecmwf`
+- **Repository name**: `ecmwf-datastores-client`
+- **Workflow name**: `on-release.yml`
+- **Environment name**: `pypi`
+
+## Instructions for GitHub Pages
+
+1. Go to **Settings → Pages**, then set **Source** to **GitHub Actions**.
+1. Go to **Settings → Environments → GitHub Pages**, then add a deployment tag rule with the name pattern `"v*"`.
 
 ## License
 

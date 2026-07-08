@@ -1,18 +1,14 @@
 # setuptools-scm
 version.py
 
-# Sphinx automatic generation of API
+# Exclude README copied from root
 docs/README.md
-docs/_api/
-
-# Combined environments
-ci/combined-environment-*.yml
-
-# download tests
-*.grib
 
 # Created by https://www.toptal.com/developers/gitignore/api/python,jupyternotebooks,vim,visualstudiocode,pycharm,emacs,linux,macos,windows
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,jupyternotebooks,vim,visualstudiocode,pycharm,emacs,linux,macos,windows
+
+# download tests
+*.grib
 
 ### Emacs ###
 # -*- mode: gitignore; -*-
