@@ -49,9 +49,9 @@ jobs:
       fail-fast: false
       matrix:
         python-version: ['3.10', '3.11', '3.12', '3.13', '3.14']
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
-    - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+    - uses: actions/checkout@f78e563ecaa46b06e1a90bfedc07951f536167d6 # debug
       with:
         path: ${{ github.repository }}
         persist-credentials: false
@@ -175,4 +175,9 @@ jobs:
 
     - name: Run integration tests with pytest
       working-directory: ${{ github.repository }}
+      timeout-minutes: 10
+      env:
+        ECMWF_DATASTORES_URL: ${{ secrets.ECMWF_DATASTORES_URL }}
+        ECMWF_DATASTORES_KEY: ${{ secrets.ECMWF_DATASTORES_KEY }}
+        ANONYMOUS_PAT: ${{ secrets.ECMWF_DATASTORES_ANON_KEY }}
       run: make ci-integration-tests PYTHON_VERSION=${{ matrix.python-version }}
