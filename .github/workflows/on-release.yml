@@ -70,7 +70,7 @@ jobs:
         path: ${{ github.repository }}
         persist-credentials: false
     - name: Clone internal dependencies
-      uses: bopen/ci-cd/git-clone@75fdb0e0da447da38574ee14a0849eee160bb2b0 # v1.2
+      uses: bopen/ci-cd/git-clone@9761c2d0f98d6dcd8a073b9bb096b3a96e4d1c76 # v1.3
       with:
         git-pat: ${{ secrets.DSS_GITHUB_PAT }}
         default-repo-ref: ${{ env.TARGET_BRANCH }}

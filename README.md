@@ -1,6 +1,25 @@
 # ecmwf-datastores-client
 
-[![Static Badge](https://github.com/ecmwf/codex/raw/refs/heads/main/Project%20Maturity/graduated_badge.svg)](https://github.com/ecmwf/codex/raw/refs/heads/main/Project%20Maturity#graduated)
+<p align="center">
+  <a href="https://github.com/ecmwf/codex/raw/refs/heads/main/ESEE">
+    <img src="https://github.com/ecmwf/codex/raw/refs/heads/main/ESEE/data_provision_badge.svg" alt="ECMWF Software EnginE"></a>
+  <a href="https://github.com/ecmwf/codex/raw/refs/heads/main/Project Maturity">
+    <img src="https://github.com/ecmwf/codex/raw/refs/heads/main/Project Maturity/graduated_badge.svg" alt="Maturity Level"></a>
+  <!-- <a href="https://codecov.io/gh/ecmwf/ecmwf-datastores-client">
+    <img src="https://codecov.io/gh/ecmwf/ecmwf-datastores-client/branch/main/graph/badge.svg" alt="Code Coverage"></a> -->
+  <a href="https://opensource.org/licenses/apache-2-0">
+    <img src="https://img.shields.io/badge/Licence-Apache 2.0-blue.svg" alt="Licence"></a>
+  <a href="https://github.com/ecmwf/ecmwf-datastores-client/releases">
+    <img src="https://img.shields.io/github/v/release/ecmwf/ecmwf-datastores-client?color=purple&label=Release" alt="Latest Release"></a>
+</p>
+
+<p align="center">
+  <a href="#quick-start">Quick Start</a>
+  •
+  <a href="#installation">Installation</a>
+  •
+  <a href="https://ecmwf.github.io/ecmwf-datastores-client/">Documentation</a>
+</p>
 
 ECMWF Data Stores Service (DSS) API Python client.
 
