@@ -45,6 +45,9 @@ jobs:
   unit-tests:
     name: Unit Tests (Python ${{ matrix.python-version }} - ${{ matrix.os }})
     runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
     strategy:
       fail-fast: false
       matrix:
