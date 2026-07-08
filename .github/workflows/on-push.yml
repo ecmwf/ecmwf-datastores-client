@@ -51,12 +51,12 @@ jobs:
         python-version: ['3.10', '3.11', '3.12', '3.13', '3.14']
         os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
-    - uses: actions/checkout@f78e563ecaa46b06e1a90bfedc07951f536167d6 # debug
+    - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
       with:
         path: ${{ github.repository }}
         persist-credentials: false
     - name: Clone internal dependencies
-      uses: bopen/ci-cd/git-clone@75fdb0e0da447da38574ee14a0849eee160bb2b0 # v1.2
+      uses: bopen/ci-cd/git-clone@f78e563ecaa46b06e1a90bfedc07951f536167d6 # debug
       with:
         git-pat: ${{ secrets.DSS_GITHUB_PAT }}
         default-repo-ref: ${{ env.TARGET_BRANCH }}
