@@ -18,8 +18,9 @@ import collections
 import logging
 import typing
 import warnings
+from collections.abc import Callable
 from types import TracebackType
-from typing import Any, Callable, TypeVar, overload
+from typing import Any, TypeVar, overload
 
 import cdsapi.api
 import multiurl

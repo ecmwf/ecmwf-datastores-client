@@ -21,7 +21,8 @@ import os
 import time
 import urllib.parse
 import warnings
-from typing import Any, Callable, TypedDict, TypeVar
+from collections.abc import Callable
+from typing import Any, TypedDict, TypeVar
 
 try:
     from typing import Self
