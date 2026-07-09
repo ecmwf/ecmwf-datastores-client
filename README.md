@@ -1,5 +1,3 @@
-# ecmwf-datastores-client
-
 <p align="center">
   <a href="https://github.com/ecmwf/codex/raw/refs/heads/main/ESEE">
     <img src="https://github.com/ecmwf/codex/raw/refs/heads/main/ESEE/data_provision_badge.svg" alt="ECMWF Software EnginE"></a>
@@ -20,6 +18,8 @@
   •
   <a href="https://ecmwf.github.io/ecmwf-datastores-client/">Documentation</a>
 </p>
+
+# ecmwf-datastores-client
 
 ECMWF Data Stores Service (DSS) API Python client.
 
