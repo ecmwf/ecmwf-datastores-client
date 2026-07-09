@@ -609,7 +609,6 @@ dependencies = [
     { name = "attrs" },
     { name = "multiurl" },
     { name = "requests" },
-    { name = "typing-extensions" },
 ]
 
 [package.dev-dependencies]
@@ -671,7 +670,6 @@ requires-dist = [
     { name = "attrs", specifier = ">=23.1.0" },
     { name = "multiurl", specifier = ">=0.3.7" },
     { name = "requests", specifier = ">=2.5.0" },
-    { name = "typing-extensions", specifier = ">=4.6.0" },
 ]
 
 [package.metadata.requires-dev]

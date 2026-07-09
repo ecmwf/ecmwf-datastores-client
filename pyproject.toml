@@ -55,8 +55,7 @@ classifiers = [
 dependencies = [
   "attrs>=23.1.0",
   "multiurl>=0.3.7",
-  "requests>=2.5.0",
-  "typing-extensions>=4.6.0"
+  "requests>=2.5.0"
 ]
 description = "ECMWF Data Stores Service (DSS) API Python client"
 dynamic = ["version"]
