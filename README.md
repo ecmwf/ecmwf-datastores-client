@@ -256,19 +256,7 @@ Apply constraints and find the number of available days in a given month:
 
 ## Developer Workflow
 
-### 1. Initialise the Repository
-
-Create a repository on GitHub under the ecmwf organisation named ecmwf-datastores-client. Then, run:
-
-```bash
-git init -b main
-git add .
-git commit -m "initialise repository"
-git remote add origin git@github.com:ecmwf/ecmwf-datastores-client.git
-git push -u origin main
-```
-
-### 2. Set Up the Environment
+### 1. Set Up the Environment
 
 Configure your virtual environment and pre-commit hooks:
 
@@ -279,7 +267,7 @@ make install
 > [!NOTE]
 > This project uses uv for dependency management. Commit the generated uv.lock file to version control.
 
-### 3. Run Quality Assurance
+### 2. Run Quality Assurance
 
 Check formatting, linting, and lockfile consistency:
 
@@ -287,7 +275,7 @@ Check formatting, linting, and lockfile consistency:
 make qa
 ```
 
-### 4. Commit and Push
+### 3. Commit and Push
 
 Save and push any automatically formatted changes:
 
@@ -319,58 +307,6 @@ To run the full set of quality checks, tests, and build steps in a single comman
 ```bash
 make all
 ```
-
-## Instructions for internal dependencies
-
-The CI/CD pipeline is able to clone and install internal ECMWF DSS dependencies. If your package depends on other internal dependencies, follow these steps:
-
-1. In the `pyproject.toml`, add the packages as a Git dependency:
-
-```toml
-[project]
-dependencies = [
-  "dss-package-1 @ git+https://github.com/ecmwf/dss-package-1.git",
-  "dss-package-2 @ git+https://github.com/ecmwf/dss-package-2.git",
-]
-```
-
-2. In the `pyproject.toml`, add the packages to the `uv` workspace configuration as follows:
-
-```toml
-[tool.uv.sources]
-dss-package-1 = {path = "../dss-package-1", editable = true}
-dss-package-2 = {path = "../dss-package-2", editable = true}
-```
-
-3. In the `pyproject.toml`, add the packages to the list of repositories to be cloned by the `git-clone` action:
-
-```toml
-[tool.git-clone]
-repo-list = [
-  "ecmwf/dss-package-1",
-  "ecmwf/dss-package-2",
-]
-```
-
-The `git-clone` action will automatically clone the internal dependencies under `../` and check out the appropriate branch. For example, if you open a PR against the upstream branch, it will check out the corresponding upstream branches.
-
-> [!NOTE]
-> **Local Development:** If you are working locally and want to run unit tests, it is your responsibility to clone the internal repositories under `../` and check out the correct branches.
-
-## Instructions for PyPI
-
-Publishing to PyPI is done using a Trusted Publisher. See the [PyPI documentation](https://docs.pypi.org/trusted-publishers/adding-a-publisher/).
-Configure the Trusted Publisher with the following settings:
-
-- **Owner**: `ecmwf`
-- **Repository name**: `ecmwf-datastores-client`
-- **Workflow name**: `on-release.yml`
-- **Environment name**: `pypi`
-
-## Instructions for GitHub Pages
-
-1. Go to **Settings → Pages**, then set **Source** to **GitHub Actions**.
-1. Go to **Settings → Environments → GitHub Pages**, then add a deployment tag rule with the name pattern `"v*"`.
 
 ## License
 
