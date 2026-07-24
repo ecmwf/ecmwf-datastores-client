@@ -10,7 +10,9 @@ install: ## Synchronises the environment with uv and installs pre-commit hooks.
 	@uv run pre-commit install
 
 .PHONY: qa
-qa: ## Runs pre-commit checks.
+qa: ## Verifies lockfile consistency and runs pre-commit checks.
+	@echo "🚀 Checking lock file consistency with 'pyproject.toml'"
+	@uv lock --locked
 	@echo "🚀 Linting code: Running pre-commit"
 	@uv run --group qa pre-commit run --all-files
 
