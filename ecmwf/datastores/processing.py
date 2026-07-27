@@ -442,13 +442,13 @@ class Remote:
 
     @property
     def started_at(self) -> datetime.datetime | None:
-        """When the job started. If None, the job has not started."""
+        """When the job started (None if pending execution or served from cache)."""
         value = self.json.get("started")
         return value if value is None else utils.string_to_datetime(value)
 
     @property
     def finished_at(self) -> datetime.datetime | None:
-        """When the job finished. If None, the job has not finished."""
+        """When the job finished (None if pending execution or served from cache)."""
         value = self.json.get("finished")
         return value if value is None else utils.string_to_datetime(value)
 
