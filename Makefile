@@ -24,7 +24,7 @@ unit-tests: ## Runs local unit tests and doctests using pytest.
 .PHONY: integration-tests
 integration-tests: ## Runs integration tests using pytest.
 	@echo "🚀 Testing minimum versions: Running pytest with Python $(PYTHON_VERSION)"
-	@uv run --group integration-tests --python=$(PYTHON_VERSION) pytest -vv tests/integration_*.py README.md
+	@uv run --group integration-tests --python=$(PYTHON_VERSION) pytest -vv tests/integration_*.py
 
 .PHONY: ci-integration-tests
 ci-integration-tests: ## Runs integration tests for GitHub CI using pytest.
