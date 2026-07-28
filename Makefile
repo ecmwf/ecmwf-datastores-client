@@ -1,4 +1,4 @@
-PYTHON_VERSION ?= 3.11
+PYTHON_VERSION ?= 3.12
 
 .PHONY: all
 all: install qa unit-tests type-check docs-build build ##  Runs installation, QA, tests, type checking, docs-build, and packaging.
