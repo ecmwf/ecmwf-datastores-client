@@ -1,0 +1,19 @@
+version: 2
+
+updates:
+- package-ecosystem: uv
+  directory: /
+  target-branch: upstream
+  schedule:
+    interval: weekly
+  cooldown:
+    default-days: 7
+  groups:
+    dev-packages:
+      dependency-type: development
+      patterns:
+      - '*'
+    prod-packages:
+      dependency-type: production
+      patterns:
+      - '*'

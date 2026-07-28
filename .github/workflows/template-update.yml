@@ -1,4 +1,4 @@
-name: weekly
+name: Template update
 
 on:
   workflow_dispatch:
@@ -9,7 +9,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  autoupdate:
+  template-update:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -18,11 +18,28 @@ jobs:
         persist-credentials: false
     - uses: astral-sh/setup-uv@11f9893b081a58869d3b5fccaea48c9e9e46f990 # v8.3.2
 
+    - name: Check for .rej files
+      id: check_rej
+      uses: andstor/file-existence-action@558493d6c74bf472d87c84eab196434afc2fa029 # v3.1.0
+      with:
+        files: '**/*.rej'
+
     - name: Run template update
       run: make template-update
+
     - name: Create Pull Request
+      id: create_pr
       uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
       with:
         title: Template update
         base: upstream
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Comment on PR if .rej files exist
+      if: steps.check_rej.outputs.files_exists == 'true' && steps.create_pr.outputs.pull-request-number != ''
+      uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v5.0.0
+      with:
+        issue-number: ${{ steps.create_pr.outputs.pull-request-number }}
+        body: |
+          ⚠️ **Attention**: Conflict `.rej` files were generated during the template update. Please review and resolve them manually.
         token: ${{ secrets.GITHUB_TOKEN }}

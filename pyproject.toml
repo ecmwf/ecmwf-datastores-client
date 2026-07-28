@@ -143,5 +143,8 @@ write_to_template = '''
 __version__ = "{version}"
 '''
 
+[tool.uv]
+exclude-newer = "1 week"
+
 [tool.uv.sources]
 ecmwf-datastores-client = {workspace = true}
