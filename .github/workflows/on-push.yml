@@ -62,8 +62,6 @@ jobs:
         default-repo-ref: ${{ env.TARGET_BRANCH }}
         pyproject-path: ${{ github.repository }}/pyproject.toml
     - uses: astral-sh/setup-uv@11f9893b081a58869d3b5fccaea48c9e9e46f990 # v8.3.2
-    - uses: ikalnytskyi/action-setup-postgres@c4dda34aae1c821e3a771b68b73b13af3198a7ee # v8
-      if: 'false' # Enable/disable postgres
 
     - name: Test the code with pytest
       working-directory: ${{ github.repository }}
@@ -145,8 +143,6 @@ jobs:
         default-repo-ref: ${{ env.TARGET_BRANCH }}
         pyproject-path: ${{ github.repository }}/pyproject.toml
     - uses: astral-sh/setup-uv@11f9893b081a58869d3b5fccaea48c9e9e46f990 # v8.3.2
-    - uses: ikalnytskyi/action-setup-postgres@c4dda34aae1c821e3a771b68b73b13af3198a7ee # v8
-      if: 'false' # Enable/disable postgres
 
     - name: Test minimum versions with pytest
       working-directory: ${{ github.repository }}
@@ -173,8 +169,6 @@ jobs:
         default-repo-ref: ${{ env.TARGET_BRANCH }}
         pyproject-path: ${{ github.repository }}/pyproject.toml
     - uses: astral-sh/setup-uv@11f9893b081a58869d3b5fccaea48c9e9e46f990 # v8.3.2
-    - uses: ikalnytskyi/action-setup-postgres@c4dda34aae1c821e3a771b68b73b13af3198a7ee # v8
-      if: 'false' # Enable/disable postgres
 
     - name: Run integration tests with pytest
       working-directory: ${{ github.repository }}
