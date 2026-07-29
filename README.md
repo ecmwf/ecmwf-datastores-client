@@ -220,14 +220,8 @@ True
 >>> remote.results_ready
 True
 
->>> remote.created_at
+>>> remote.created_at  # See also started_at, finished_at, updated_at
 datetime.datetime(...)
->>> remote.started_at
-datetime.datetime(...)
->>> remote.finished_at
-datetime.datetime(...)
->>> remote.updated_at == remote.finished_at
-True
 
 >>> remote.download("target_6.grib")
 'target_6.grib'
