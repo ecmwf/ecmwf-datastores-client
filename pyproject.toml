@@ -87,15 +87,14 @@ module = [
 ]
 
 [tool.pytest.ini_options]
-addopts = [
-  "--doctest-modules",
-  "--doctest-glob=README.md"
-]
 markers = [
   "extra: additional tests skipped by CI"
 ]
+python_files = [
+  "test_*.py"
+]
 testpaths = [
-  "tests/test_*.py"
+  "tests"
 ]
 
 [tool.ruff]
@@ -133,6 +132,9 @@ convention = "numpy"
 
 [tool.setuptools]
 packages = ["ecmwf.datastores"]
+
+[tool.setuptools.package-data]
+"ecmwf.datastores" = ["py.typed"]
 
 [tool.setuptools_scm]
 fallback_version = "999"

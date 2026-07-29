@@ -282,10 +282,10 @@ Save and push any automatically formatted changes:
 ```bash
 git add .
 git commit -m "format codebase and sync lockfile"
-git push origin main
+git push origin HEAD
 ```
 
-The CI/CD pipeline triggers on pull requests, merges to main, and new releases.
+The CI/CD pipeline triggers on pull requests, merges to main/upstream, and new releases.
 
 ## Using the Makefile
 
