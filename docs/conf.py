@@ -18,8 +18,6 @@
 # list see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
-# -- Import and path setup ---------------------------------------------------
-
 import os
 import sys
 
@@ -28,7 +26,6 @@ import ecmwf.datastores
 sys.path.insert(0, os.path.abspath("../"))
 
 # -- Project information -----------------------------------------------------
-
 project = "ecmwf.datastores"
 copyright = "2022, European Union"
 author = "European Union"
