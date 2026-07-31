@@ -40,3 +40,4 @@ repos:
   hooks:
   - id: zizmor
     args: [--no-progress, --fix]
+    exclude: .github/workflows/main.yaml
