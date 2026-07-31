@@ -52,8 +52,6 @@ build: ## Cleans build paths, builds distribution packages, and verifies the pac
 	@echo "🚀 Building the package"
 	@rm -rf build dist
 	@uv build
-	@echo "🚀 Verifying build artifact import"
-	@uv run --no-project --python=$(PYTHON_VERSION) --with ./dist/ecmwf_datastores_client*.whl python -c "import ecmwf.datastores"
 
 .PHONY: template-update
 template-update: ## Synchronises the template with the base Cookiecutter using cruft.
