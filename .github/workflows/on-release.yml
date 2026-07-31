@@ -9,6 +9,7 @@ permissions:
 
 env:
   TARGET_BRANCH: ${{ github.base_ref || github.ref_name }}
+
 concurrency:
   group: on-release
 
