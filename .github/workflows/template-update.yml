@@ -17,11 +17,11 @@ jobs:
         path: ${{ github.repository }}
         persist-credentials: false
     - name: Clone cookiecutter
-      uses: bopen/ci-cd/git-clone@9761c2d0f98d6dcd8a073b9bb096b3a96e4d1c76 # v1.3
+      uses: bopen/ci-cd/git-clone@c7c1c9e8f6c4d783c8cdffc4b4b2412ae23e7db3 # v2.0
       with:
         repo-list: ecmwf/dss-cookiecutter-pypackage
         git-pat: ${{ secrets.DSS_GITHUB_PAT }}
-    - uses: astral-sh/setup-uv@11f9893b081a58869d3b5fccaea48c9e9e46f990 # v8.3.2
+    - uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
 
     - name: Run template update
       run: uvx "cruft[pyproject]" update --project-dir ${{ github.repository }} --template-path ecmwf/dss-cookiecutter-pypackage -y
