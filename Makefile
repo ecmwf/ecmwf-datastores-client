@@ -29,7 +29,7 @@ integration-tests: ## Runs integration tests using pytest.
 .PHONY: ci-integration-tests
 ci-integration-tests: ## Runs integration tests for GitHub CI using pytest.
 	@echo "🚀 Testing minimum versions: Running pytest with Python $(PYTHON_VERSION)"
-	@uv run --group integration-tests --python=$(PYTHON_VERSION) pytest -x -vv -m="not extra" -o "python_files=integration_*.py" --doctest-glob="README.md" README.md tests
+	@uv run --group integration-tests --python=$(PYTHON_VERSION) pytest -vv -m="not extra" -o "python_files=integration_*.py" --doctest-glob="README.md" README.md tests
 
 .PHONY: minver-tests
 minver-tests: ## Tests the codebase against the minimum supported dependency versions.
