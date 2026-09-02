@@ -31,12 +31,12 @@ jobs:
         path: ${{ github.repository }}
         persist-credentials: false
     - name: Clone internal dependencies
-      uses: bopen/ci-cd/git-clone@c7c1c9e8f6c4d783c8cdffc4b4b2412ae23e7db3 # v2.0
+      uses: bopen/ci-cd/git-clone@5f20e1c690b01bfda07dd235d068e665ad2ad581 # v2.1
       with:
         git-pat: ${{ secrets.DSS_GITHUB_PAT }}
         default-repo-ref: ${{ env.TARGET_BRANCH }}
         pyproject-path: ${{ github.repository }}/pyproject.toml
-    - uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+    - uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
 
     - name: Run code quality tools
       working-directory: ${{ github.repository }}
@@ -56,12 +56,12 @@ jobs:
         path: ${{ github.repository }}
         persist-credentials: false
     - name: Clone internal dependencies
-      uses: bopen/ci-cd/git-clone@c7c1c9e8f6c4d783c8cdffc4b4b2412ae23e7db3 # v2.0
+      uses: bopen/ci-cd/git-clone@5f20e1c690b01bfda07dd235d068e665ad2ad581 # v2.1
       with:
         git-pat: ${{ secrets.DSS_GITHUB_PAT }}
         default-repo-ref: ${{ env.TARGET_BRANCH }}
         pyproject-path: ${{ github.repository }}/pyproject.toml
-    - uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+    - uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
 
     - name: Test the code with pytest
       working-directory: ${{ github.repository }}
@@ -77,12 +77,12 @@ jobs:
         path: ${{ github.repository }}
         persist-credentials: false
     - name: Clone internal dependencies
-      uses: bopen/ci-cd/git-clone@c7c1c9e8f6c4d783c8cdffc4b4b2412ae23e7db3 # v2.0
+      uses: bopen/ci-cd/git-clone@5f20e1c690b01bfda07dd235d068e665ad2ad581 # v2.1
       with:
         git-pat: ${{ secrets.DSS_GITHUB_PAT }}
         default-repo-ref: ${{ env.TARGET_BRANCH }}
         pyproject-path: ${{ github.repository }}/pyproject.toml
-    - uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+    - uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
 
     - name: Static type checking with mypy
       working-directory: ${{ github.repository }}
@@ -98,12 +98,12 @@ jobs:
         path: ${{ github.repository }}
         persist-credentials: false
     - name: Clone internal dependencies
-      uses: bopen/ci-cd/git-clone@c7c1c9e8f6c4d783c8cdffc4b4b2412ae23e7db3 # v2.0
+      uses: bopen/ci-cd/git-clone@5f20e1c690b01bfda07dd235d068e665ad2ad581 # v2.1
       with:
         git-pat: ${{ secrets.DSS_GITHUB_PAT }}
         default-repo-ref: ${{ env.TARGET_BRANCH }}
         pyproject-path: ${{ github.repository }}/pyproject.toml
-    - uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+    - uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
 
     - name: Build the Sphinx documentation
       working-directory: ${{ github.repository }}
@@ -118,7 +118,7 @@ jobs:
       with:
         path: ${{ github.repository }}
         persist-credentials: false
-    - uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+    - uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
 
     - name: Building the package and verify import
       working-directory: ${{ github.repository }}
@@ -137,12 +137,12 @@ jobs:
         path: ${{ github.repository }}
         persist-credentials: false
     - name: Clone internal dependencies
-      uses: bopen/ci-cd/git-clone@c7c1c9e8f6c4d783c8cdffc4b4b2412ae23e7db3 # v2.0
+      uses: bopen/ci-cd/git-clone@5f20e1c690b01bfda07dd235d068e665ad2ad581 # v2.1
       with:
         git-pat: ${{ secrets.DSS_GITHUB_PAT }}
         default-repo-ref: ${{ env.TARGET_BRANCH }}
         pyproject-path: ${{ github.repository }}/pyproject.toml
-    - uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+    - uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
 
     - name: Test minimum versions with pytest
       working-directory: ${{ github.repository }}
@@ -163,12 +163,12 @@ jobs:
         path: ${{ github.repository }}
         persist-credentials: false
     - name: Clone internal dependencies
-      uses: bopen/ci-cd/git-clone@c7c1c9e8f6c4d783c8cdffc4b4b2412ae23e7db3 # v2.0
+      uses: bopen/ci-cd/git-clone@5f20e1c690b01bfda07dd235d068e665ad2ad581 # v2.1
       with:
         git-pat: ${{ secrets.DSS_GITHUB_PAT }}
         default-repo-ref: ${{ env.TARGET_BRANCH }}
         pyproject-path: ${{ github.repository }}/pyproject.toml
-    - uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+    - uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
 
     - name: Run integration tests with pytest
       working-directory: ${{ github.repository }}
