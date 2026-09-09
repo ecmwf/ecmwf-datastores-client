@@ -1,6 +1,6 @@
 {
   "template": "git@github.com:ecmwf/dss-cookiecutter-pypackage.git",
-  "commit": "636622e740e44f96e9ae463106885ceb3b2c0762",
+  "commit": "adc2126b9c263f4b3126ec747e1753f58f772db0",
   "checkout": null,
   "context": {
     "cookiecutter": {
@@ -13,7 +13,7 @@
       "pypi": true,
       "gh_pages": true,
       "_template": "git@github.com:ecmwf/dss-cookiecutter-pypackage.git",
-      "_commit": "636622e740e44f96e9ae463106885ceb3b2c0762"
+      "_commit": "adc2126b9c263f4b3126ec747e1753f58f772db0"
     }
   },
   "directory": null

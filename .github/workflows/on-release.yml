@@ -17,6 +17,7 @@ jobs:
   build:
     name: Build Distribution
     runs-on: ubuntu-latest
+    if: '!github.event.release.prerelease'
     steps:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
@@ -64,7 +65,7 @@ jobs:
   docs-build:
     name: Build Documentation
     runs-on: ubuntu-latest
-    if: 'true' # Enable/disable GitHub Pages deployment
+    if: 'true && !github.event.release.prerelease' # Enable/disable GitHub Pages deployment
     steps:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
