@@ -24,7 +24,7 @@ import multiurl.base
 import requests
 
 from ecmwf import datastores
-from ecmwf.datastores import config
+from ecmwf.datastores import config, utils
 from ecmwf.datastores.catalogue import Catalogue
 from ecmwf.datastores.processing import Processing, RequestKwargs
 from ecmwf.datastores.profile import Profile
@@ -61,7 +61,9 @@ class Client:
     """
 
     url: str | None = None
-    key: str | None = None
+    key: str | None = attrs.field(
+        default=None, repr=lambda value: repr(utils.sanitise_token(value))
+    )
     verify: bool = True
     timeout: float | tuple[float, float] = 60
     progress: bool = True

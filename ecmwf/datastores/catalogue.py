@@ -143,7 +143,7 @@ class Collection(ApiResponse):
 @attrs.define(slots=False)
 class Catalogue:
     url: str
-    headers: dict[str, Any]
+    headers: dict[str, Any] = attrs.field(repr=utils.sanitise_headers)
     session: requests.Session
     retry_options: dict[str, Any]
     request_options: dict[str, Any]
