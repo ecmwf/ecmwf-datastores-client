@@ -18,5 +18,5 @@ from ecmwf.datastores import utils
         ),
     ],
 )
-def test_sanitise_headers(headers: dict[str, Any], expected: str) -> None:
+def test_headers_repr(headers: dict[str, Any], expected: str) -> None:
     assert utils.headers_repr(headers) == expected
