@@ -61,9 +61,7 @@ class Client:
     """
 
     url: str | None = None
-    key: str | None = attrs.field(
-        default=None, repr=lambda value: repr(utils.sanitise_token(value))
-    )
+    key: str | None = attrs.field(default=None, repr=utils.token_repr)
     verify: bool = True
     timeout: float | tuple[float, float] = 60
     progress: bool = True

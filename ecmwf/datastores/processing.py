@@ -121,7 +121,7 @@ def log(*args: Any, callback: Callable[..., None] | None = None, **kwargs: Any) 
 @attrs.define(slots=False)
 class ApiResponse:
     response: requests.Response
-    headers: dict[str, str] = attrs.field(repr=utils.sanitise_headers)
+    headers: dict[str, str] = attrs.field(repr=utils.headers_repr)
     session: requests.Session
     retry_options: dict[str, Any]
     request_options: dict[str, Any]
@@ -358,7 +358,7 @@ class Remote:
     """A class to interact with a submitted job."""
 
     url: str
-    headers: dict[str, str] = attrs.field(repr=utils.sanitise_headers)
+    headers: dict[str, str] = attrs.field(repr=utils.headers_repr)
     session: requests.Session
     retry_options: dict[str, Any]
     request_options: dict[str, Any]
@@ -700,7 +700,7 @@ class Results(ApiResponse):
 @attrs.define(slots=False)
 class Processing:
     url: str
-    headers: dict[str, str] = attrs.field(repr=utils.sanitise_headers)
+    headers: dict[str, str] = attrs.field(repr=utils.headers_repr)
     session: requests.Session
     retry_options: dict[str, Any]
     request_options: dict[str, Any]

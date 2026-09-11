@@ -25,12 +25,17 @@ def string_to_datetime(string: str) -> datetime.datetime:
 
 
 def sanitise_token(value: Any) -> Any:
-    if value:
-        return "***"
-    return value
+    return "***" if value else value
 
 
-def sanitise_headers(headers: dict[str, Any]) -> str:
+def token_repr(token: Any) -> str:
+    return repr(sanitise_token(token))
+
+
+def headers_repr(headers: dict[str, Any]) -> str:
     return repr(
-        {k: "***" if v and k == "PRIVATE-TOKEN" else v for k, v in headers.items()}
+        {
+            k: sanitise_token(v) if k == "PRIVATE-TOKEN" else v
+            for k, v in headers.items()
+        }
     )

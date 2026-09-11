@@ -23,6 +23,10 @@ from urllib3.exceptions import InsecureRequestWarning
 from ecmwf.datastores import Client, Remote, Results, processing
 
 
+def test_client_repr(api_anon_client: Client) -> None:
+    assert "key='***'" in repr(api_anon_client)
+
+
 def test_client_download_results(
     api_anon_client: Client, tmp_path: pathlib.Path
 ) -> None:

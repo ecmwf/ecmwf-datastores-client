@@ -26,7 +26,7 @@ from ecmwf.datastores import config, processing, utils
 @attrs.define(slots=False)
 class Profile:
     url: str
-    headers: dict[str, Any] = attrs.field(repr=utils.sanitise_headers)
+    headers: dict[str, Any] = attrs.field(repr=utils.headers_repr)
     session: requests.Session
     retry_options: dict[str, Any]
     request_options: dict[str, Any]

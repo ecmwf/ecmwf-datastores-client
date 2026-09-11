@@ -58,7 +58,7 @@ def results(results_json: dict[str, Any]) -> Results:
     return Results.from_request(
         "get",
         RESULTS_URL,
-        headers={},
+        headers={"PRIVATE-TOKEN": "token"},
         session=None,
         retry_options={"maximum_tries": 1, "retry_after": 0},
         request_options={},
@@ -67,6 +67,10 @@ def results(results_json: dict[str, Any]) -> Results:
         cleanup=False,
         log_callback=None,
     )
+
+
+def test_results_repr(results: Results) -> None:
+    assert "'PRIVATE-TOKEN': '***'" in repr(results)
 
 
 @pytest.mark.parametrize(
