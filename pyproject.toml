@@ -4,10 +4,10 @@ requires = ["setuptools>=80", "setuptools-scm>=8"]
 
 [dependency-groups]
 dev = [
-  {include-group = "docs-build"},
-  {include-group = "qa"},
-  {include-group = "type-check"},
-  {include-group = "unit-tests"}
+  { include-group = "docs-build" },
+  { include-group = "qa" },
+  { include-group = "type-check" },
+  { include-group = "unit-tests" }
 ]
 docs-build = [
   "myst-parser>=4.0.1",
@@ -16,7 +16,7 @@ docs-build = [
   "sphinx-autoapi>=3.8.0"
 ]
 integration-tests = [
-  {include-group = "unit-tests"},
+  { include-group = "unit-tests" },
   "ecmwf-datastores-client[legacy]"
 ]
 qa = [
@@ -149,4 +149,4 @@ __version__ = "{version}"
 exclude-newer = "1 week"
 
 [tool.uv.sources]
-ecmwf-datastores-client = {workspace = true}
+ecmwf-datastores-client = { workspace = true }
