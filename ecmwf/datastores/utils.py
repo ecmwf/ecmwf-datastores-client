@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import datetime
+from typing import Any
 
 
 def string_to_datetime(string: str) -> datetime.datetime:
@@ -21,3 +22,20 @@ def string_to_datetime(string: str) -> datetime.datetime:
     if date_time.tzinfo is None:
         date_time = date_time.replace(tzinfo=datetime.timezone.utc)
     return date_time
+
+
+def sanitise_token(value: Any) -> Any:
+    return "***" if value else value
+
+
+def token_repr(token: Any) -> str:
+    return repr(sanitise_token(token))
+
+
+def headers_repr(headers: dict[str, Any]) -> str:
+    return repr(
+        {
+            k: sanitise_token(v) if k == "PRIVATE-TOKEN" else v
+            for k, v in headers.items()
+        }
+    )

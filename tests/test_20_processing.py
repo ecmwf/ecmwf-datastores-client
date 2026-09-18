@@ -280,7 +280,7 @@ RESULT_FAILED_JSON = {
 def cat() -> catalogue.Catalogue:
     return catalogue.Catalogue(
         CATALOGUE_URL,
-        headers={},
+        headers={"PRIVATE-TOKEN": "token"},
         session=requests.Session(),
         retry_options={},
         request_options={},
@@ -368,6 +368,28 @@ def responses_add() -> None:
         json=RESULT_FAILED_JSON,
         content_type="application/json",
     )
+
+
+@responses.activate
+def test_catalogue_repr(cat: catalogue.Catalogue) -> None:
+    responses_add()
+    assert "'PRIVATE-TOKEN': '***'" in repr(cat)
+
+
+@responses.activate
+def test_collection_repr(cat: catalogue.Catalogue) -> None:
+    responses_add()
+    collection = cat.get_collection(COLLECTION_ID)
+    assert "'PRIVATE-TOKEN': '***'" in repr(collection)
+
+
+@responses.activate
+def test_remote_repr(cat: catalogue.Catalogue) -> None:
+    responses_add()
+    collection = cat.get_collection(COLLECTION_ID)
+    request = {"variable": "temperature", "year": "2022"}
+    remote = collection.submit(request)
+    assert "'PRIVATE-TOKEN': '***'" in repr(remote)
 
 
 @responses.activate
