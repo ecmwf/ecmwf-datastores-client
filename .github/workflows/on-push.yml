@@ -36,7 +36,7 @@ jobs:
         git-pat: ${{ secrets.DSS_GITHUB_PAT }}
         default-repo-ref: ${{ env.TARGET_BRANCH }}
         pyproject-path: ${{ github.repository }}/pyproject.toml
-    - uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+    - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
 
     - name: Run code quality tools
       working-directory: ${{ github.repository }}
@@ -61,7 +61,7 @@ jobs:
         git-pat: ${{ secrets.DSS_GITHUB_PAT }}
         default-repo-ref: ${{ env.TARGET_BRANCH }}
         pyproject-path: ${{ github.repository }}/pyproject.toml
-    - uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+    - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
 
     - name: Test the code with pytest
       working-directory: ${{ github.repository }}
@@ -82,7 +82,7 @@ jobs:
         git-pat: ${{ secrets.DSS_GITHUB_PAT }}
         default-repo-ref: ${{ env.TARGET_BRANCH }}
         pyproject-path: ${{ github.repository }}/pyproject.toml
-    - uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+    - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
 
     - name: Static type checking with mypy
       working-directory: ${{ github.repository }}
@@ -103,7 +103,7 @@ jobs:
         git-pat: ${{ secrets.DSS_GITHUB_PAT }}
         default-repo-ref: ${{ env.TARGET_BRANCH }}
         pyproject-path: ${{ github.repository }}/pyproject.toml
-    - uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+    - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
 
     - name: Build the Sphinx documentation
       working-directory: ${{ github.repository }}
@@ -118,7 +118,7 @@ jobs:
       with:
         path: ${{ github.repository }}
         persist-credentials: false
-    - uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+    - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
 
     - name: Building the package and verify import
       working-directory: ${{ github.repository }}
@@ -142,7 +142,7 @@ jobs:
         git-pat: ${{ secrets.DSS_GITHUB_PAT }}
         default-repo-ref: ${{ env.TARGET_BRANCH }}
         pyproject-path: ${{ github.repository }}/pyproject.toml
-    - uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+    - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
 
     - name: Test minimum versions with pytest
       working-directory: ${{ github.repository }}
@@ -168,7 +168,7 @@ jobs:
         git-pat: ${{ secrets.DSS_GITHUB_PAT }}
         default-repo-ref: ${{ env.TARGET_BRANCH }}
         pyproject-path: ${{ github.repository }}/pyproject.toml
-    - uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
+    - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
 
     - name: Run integration tests with pytest
       working-directory: ${{ github.repository }}
