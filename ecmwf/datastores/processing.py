@@ -644,6 +644,7 @@ class Results(ApiResponse):
                 url,
                 target=target,
                 maximum_retries=0,
+                session=self.session,
                 **self.request_options,
                 **download_options,
             )

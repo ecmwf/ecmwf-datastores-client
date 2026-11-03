@@ -155,3 +155,17 @@ def test_results_robust_download(
     with raises:
         results.download(str(target))
         assert target.stat().st_size == 10
+
+
+def test_results_download_uses_session(
+    monkeypatch: pytest.MonkeyPatch, results: Results, tmp_path: pathlib.Path
+) -> None:
+    calls: list[dict[str, Any]] = []
+
+    def download(url: str, target: str, **kwargs: Any) -> None:
+        calls.append(kwargs)
+        pathlib.Path(target).write_bytes(b"0" * 10)
+
+    monkeypatch.setattr("multiurl.download", download)
+    results.download(str(tmp_path / "test.grib"))
+    assert calls[0]["session"] is results.session
