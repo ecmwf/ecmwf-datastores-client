@@ -35,7 +35,7 @@ def token_repr(token: Any) -> str:
 def headers_repr(headers: dict[str, Any]) -> str:
     return repr(
         {
-            k: sanitise_token(v) if k == "PRIVATE-TOKEN" else v
+            k: sanitise_token(v) if k.lower() == "private-token" else v
             for k, v in headers.items()
         }
     )
