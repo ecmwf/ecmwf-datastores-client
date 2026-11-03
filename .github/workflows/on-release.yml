@@ -17,12 +17,13 @@ jobs:
   build:
     name: Build Distribution
     runs-on: ubuntu-latest
+    if: '!github.event.release.prerelease'
     steps:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
         path: ${{ github.repository }}
         persist-credentials: false
-    - uses: astral-sh/setup-uv@11f9893b081a58869d3b5fccaea48c9e9e46f990 # v8.3.2
+    - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
       with:
         enable-cache: false
 
@@ -53,30 +54,30 @@ jobs:
         name: dist
         path: dist/
     - name: Attest build provenance
-      uses: actions/attest-build-provenance@0f67c3f4856b2e3261c31976d6725780e5e4c373   # v4.1.1
+      uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8   # v4.2.2
       with:
         subject-path: dist/*
     - name: Publish to PyPI
-      uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b   # v1.14.0
+      uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33   # v1.14.2
       with:
         verbose: true
 
   docs-build:
     name: Build Documentation
     runs-on: ubuntu-latest
-    if: 'true' # Enable/disable GitHub Pages deployment
+    if: 'true && !github.event.release.prerelease' # Enable/disable GitHub Pages deployment
     steps:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
         path: ${{ github.repository }}
         persist-credentials: false
     - name: Clone internal dependencies
-      uses: bopen/ci-cd/git-clone@9761c2d0f98d6dcd8a073b9bb096b3a96e4d1c76 # v1.3
+      uses: bopen/ci-cd/git-clone@5f20e1c690b01bfda07dd235d068e665ad2ad581 # v2.1
       with:
         git-pat: ${{ secrets.DSS_GITHUB_PAT }}
         default-repo-ref: ${{ env.TARGET_BRANCH }}
         pyproject-path: ${{ github.repository }}/pyproject.toml
-    - uses: astral-sh/setup-uv@11f9893b081a58869d3b5fccaea48c9e9e46f990 # v8.3.2
+    - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
       with:
         enable-cache: false
 
@@ -99,5 +100,5 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-    - uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128   # v5.0.0
+    - uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346   # v5.0.1
       id: deployment
