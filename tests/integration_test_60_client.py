@@ -23,8 +23,10 @@ from urllib3.exceptions import InsecureRequestWarning
 from ecmwf.datastores import Client, Remote, Results, processing
 
 
-def test_client_repr(api_anon_client: Client) -> None:
-    assert "key='***'" in repr(api_anon_client)
+@pytest.mark.parametrize("key,expected", [("foo", "***"), ("", "")])
+def test_client_repr(key: str, expected: str) -> None:
+    client = Client(key=key)
+    assert f"key='{expected}'" in repr(client)
 
 
 def test_client_download_results(
@@ -42,7 +44,7 @@ def test_client_get_process(api_anon_client: Client) -> None:
     process = api_anon_client.get_process("test-adaptor-dummy")
     assert isinstance(process, processing.Process)
     assert process.id == "test-adaptor-dummy"
-    assert set(process.headers) == {"User-Agent", "PRIVATE-TOKEN"}
+    assert set(process.headers) == {"User-Agent"}
 
 
 def test_client_get_receipt(api_anon_client: Client) -> None:
@@ -55,7 +57,7 @@ def test_client_get_remote(api_anon_client: Client) -> None:
     request_id = api_anon_client.submit("test-adaptor-dummy", {}).request_id
     remote = api_anon_client.get_remote(request_id)
     assert remote.request_id == request_id
-    assert set(remote.headers) == {"User-Agent", "PRIVATE-TOKEN"}
+    assert set(remote.headers) == {"User-Agent"}
 
 
 def test_client_get_results(api_anon_client: Client) -> None:

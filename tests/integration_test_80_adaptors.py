@@ -139,7 +139,7 @@ def test_adaptors_mars(api_anon_client: Client, tmp_path: pathlib.Path) -> None:
 
 
 @pytest.mark.extra
-def test_adaptors_mapped_requests_caching(api_anon_client: Client) -> None:
+def test_adaptors_mapped_requests_caching(api_client: Client) -> None:
     collection_id = "satellite-soil-moisture"
     request = {
         "variable": ["surface_soil_moisture_saturation"],
@@ -149,11 +149,11 @@ def test_adaptors_mapped_requests_caching(api_anon_client: Client) -> None:
         "version": ["v202212"],
         "_no_cache": datetime.datetime.now().isoformat(),
     }
-    results_1 = api_anon_client.submit_and_wait_on_results(
+    results_1 = api_client.submit_and_wait_on_results(
         collection_id,
         request | {"year": ["2023"], "month": ["02"], "day": ["28"]},
     )
-    results_2 = api_anon_client.submit_and_wait_on_results(
+    results_2 = api_client.submit_and_wait_on_results(
         collection_id,
         request | {"year": ["2023"], "month": ["02"], "day": ["28", "29"]},
     )

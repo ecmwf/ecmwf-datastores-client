@@ -86,21 +86,26 @@ def test_processing_estimate_costs(
     }
 
 
-def test_processing_get_jobs_status(api_anon_client: Client) -> None:
-    remote = api_anon_client.submit("test-adaptor-dummy", {"format": "foo"})
+def test_processing_get_jobs_unauthenticated_fails(api_anon_client: Client) -> None:
+    with pytest.raises(HTTPError, match="401 Client Error: Unauthorized for url"):
+        api_anon_client.get_jobs()
+
+
+def test_processing_get_jobs_status(api_client: Client) -> None:
+    remote = api_client.submit("test-adaptor-dummy", {"format": "foo"})
     request_id = remote.request_id
     with pytest.raises(HTTPError, match="400 Client Error: Bad Request"):
         remote.get_results()
-    assert request_id in api_anon_client.get_jobs(status="failed").request_ids
-    assert request_id not in api_anon_client.get_jobs(status="successful").request_ids
+    assert request_id in api_client.get_jobs(status="failed").request_ids
+    assert request_id not in api_client.get_jobs(status="successful").request_ids
 
 
-def test_processing_get_jobs_sortby(api_anon_client: Client) -> None:
-    id1 = api_anon_client.submit("test-adaptor-dummy", {}).request_id
-    id2 = api_anon_client.submit("test-adaptor-dummy", {}).request_id
-    ids = api_anon_client.get_jobs(sortby="-created").request_ids
+def test_processing_get_jobs_sortby(api_client: Client) -> None:
+    id1 = api_client.submit("test-adaptor-dummy", {}).request_id
+    id2 = api_client.submit("test-adaptor-dummy", {}).request_id
+    ids = api_client.get_jobs(sortby="-created").request_ids
     assert ids.index(id2) < ids.index(id1)
-    assert [id2] != api_anon_client.get_jobs(sortby="created", limit=1).request_ids
+    assert [id2] != api_client.get_jobs(sortby="created", limit=1).request_ids
 
 
 def test_processing_delete(api_anon_client: Client) -> None:
