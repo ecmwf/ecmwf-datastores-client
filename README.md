@@ -60,7 +60,9 @@ key: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 
 Some resources (e.g., browsing the catalogue) can be accessed without an API key. To use the `Client` anonymously, pass an empty key: `Client(key="")`.
 If no key is passed and none can be found in the environment or configuration file, the `Client` falls back to anonymous access and emits a `UserWarning`.
-Anonymous access is discouraged: it is only permitted for a small subset of datasets, and anonymous requests are subject to tighter limits and longer queues.
+
+> [!WARNING]
+> Anonymous access is discouraged: it is only permitted for a small subset of datasets, and anonymous requests are subject to tighter limits and longer queues.
 
 ## Quick Start
 
