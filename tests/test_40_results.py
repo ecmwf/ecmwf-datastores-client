@@ -58,7 +58,7 @@ def results(results_json: dict[str, Any]) -> Results:
     return Results.from_request(
         "get",
         RESULTS_URL,
-        headers={},
+        headers={"PRIVATE-TOKEN": "token"},
         session=None,
         retry_options={"maximum_tries": 1, "retry_after": 0},
         request_options={},
@@ -67,6 +67,10 @@ def results(results_json: dict[str, Any]) -> Results:
         cleanup=False,
         log_callback=None,
     )
+
+
+def test_results_repr(results: Results) -> None:
+    assert "'PRIVATE-TOKEN': '***'" in repr(results)
 
 
 @pytest.mark.parametrize(
@@ -155,3 +159,17 @@ def test_results_robust_download(
     with raises:
         results.download(str(target))
         assert target.stat().st_size == 10
+
+
+def test_results_download_uses_session(
+    monkeypatch: pytest.MonkeyPatch, results: Results, tmp_path: pathlib.Path
+) -> None:
+    calls: list[dict[str, Any]] = []
+
+    def download(url: str, target: str, **kwargs: Any) -> None:
+        calls.append(kwargs)
+        pathlib.Path(target).write_bytes(b"0" * 10)
+
+    monkeypatch.setattr("multiurl.download", download)
+    results.download(str(tmp_path / "test.grib"))
+    assert calls[0]["session"] is results.session

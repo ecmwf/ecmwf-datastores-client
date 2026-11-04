@@ -17,12 +17,13 @@ jobs:
   build:
     name: Build Distribution
     runs-on: ubuntu-latest
+    if: '!github.event.release.prerelease'
     steps:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
         path: ${{ github.repository }}
         persist-credentials: false
-    - uses: astral-sh/setup-uv@11f9893b081a58869d3b5fccaea48c9e9e46f990 # v8.3.2
+    - uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e # v10.3.2
       with:
         enable-cache: false
 
@@ -30,7 +31,7 @@ jobs:
       working-directory: ${{ github.repository }}
       run: make build
     - name: Upload distribution
-      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
       with:
         name: dist
         path: ${{ github.repository }}/dist/
@@ -48,35 +49,35 @@ jobs:
       url: https://pypi.org/p/ecmwf-datastores-client
     steps:
     - name: Download distribution
-      uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c   # v8.0.1
+      uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333   # v8.0.2
       with:
         name: dist
         path: dist/
     - name: Attest build provenance
-      uses: actions/attest-build-provenance@0f67c3f4856b2e3261c31976d6725780e5e4c373   # v4.1.1
+      uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8   # v4.2.2
       with:
         subject-path: dist/*
     - name: Publish to PyPI
-      uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b   # v1.14.0
+      uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086   # v1.14.3
       with:
         verbose: true
 
   docs-build:
     name: Build Documentation
     runs-on: ubuntu-latest
-    if: 'true' # Enable/disable GitHub Pages deployment
+    if: 'true && !github.event.release.prerelease' # Enable/disable GitHub Pages deployment
     steps:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
         path: ${{ github.repository }}
         persist-credentials: false
     - name: Clone internal dependencies
-      uses: bopen/ci-cd/git-clone@9761c2d0f98d6dcd8a073b9bb096b3a96e4d1c76 # v1.3
+      uses: bopen/ci-cd/git-clone@5f20e1c690b01bfda07dd235d068e665ad2ad581 # v2.1
       with:
         git-pat: ${{ secrets.DSS_GITHUB_PAT }}
         default-repo-ref: ${{ env.TARGET_BRANCH }}
         pyproject-path: ${{ github.repository }}/pyproject.toml
-    - uses: astral-sh/setup-uv@11f9893b081a58869d3b5fccaea48c9e9e46f990 # v8.3.2
+    - uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e # v10.3.2
       with:
         enable-cache: false
 
@@ -99,5 +100,5 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-    - uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128   # v5.0.0
+    - uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346   # v5.0.1
       id: deployment

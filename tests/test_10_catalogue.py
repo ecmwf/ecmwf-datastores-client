@@ -48,7 +48,7 @@ def collection() -> Collection:
     return Collection.from_request(
         "get",
         COLLECTION_URL,
-        headers={},
+        headers={"PRIVATE-TOKEN": "token"},
         session=None,
         retry_options={"maximum_tries": 1},
         request_options={},
@@ -57,6 +57,10 @@ def collection() -> Collection:
         cleanup=False,
         log_callback=None,
     )
+
+
+def test_catalogue_collection_repr(collection: Collection) -> None:
+    assert "'PRIVATE-TOKEN': '***'" in repr(collection)
 
 
 def test_catalogue_collection_begin_datetime(collection: Collection) -> None:
