@@ -42,6 +42,7 @@ class Client:
         API URL. If None, infer from ECMWF_DATASTORES_URL or ECMWF_DATASTORES_RC_FILE.
     key: str or None, default: None
         API Key. If None, infer from ECMWF_DATASTORES_KEY or ECMWF_DATASTORES_RC_FILE.
+        Use an empty string for anonymous access.
     verify: bool, default: True
         Whether to verify the TLS certificate at the remote end.
     timeout: float or tuple[float,float], default: 60
@@ -80,19 +81,20 @@ class Client:
             try:
                 self.key = str(config.get_config("key"))
             except (KeyError, FileNotFoundError):
-                warnings.warn("The API key is missing", UserWarning)
+                warnings.warn(
+                    "The API key is missing, falling back to anonymous access.",
+                    UserWarning,
+                )
 
         try:
             self._catalogue_api.messages.log_messages()
         except Exception as exc:
             warnings.warn(str(exc), UserWarning)
 
-    def _get_headers(self, key_is_mandatory: bool = True) -> dict[str, str]:
+    def _get_headers(self) -> dict[str, str]:
         headers = {"User-Agent": f"ecmwf-datastores-client/{datastores.__version__}"}
-        if self.key is not None:
+        if self.key:
             headers["PRIVATE-TOKEN"] = self.key
-        elif key_is_mandatory:
-            raise ValueError("The API key is needed to access this resource")
         return headers
 
     @property
@@ -118,9 +120,9 @@ class Client:
             "verify": self.verify,
         }
 
-    def _get_request_kwargs(self, key_is_mandatory: bool = True) -> RequestKwargs:
+    def _get_request_kwargs(self) -> RequestKwargs:
         return RequestKwargs(
-            headers=self._get_headers(key_is_mandatory=key_is_mandatory),
+            headers=self._get_headers(),
             session=self.session,
             retry_options=self._retry_options,
             request_options=self._request_options,
@@ -134,7 +136,7 @@ class Client:
     def _catalogue_api(self) -> Catalogue:
         return Catalogue(
             f"{self.url}/catalogue",
-            **self._get_request_kwargs(key_is_mandatory=False),
+            **self._get_request_kwargs(),
         )
 
     @functools.cached_property

@@ -19,17 +19,7 @@ from typing import Literal
 import pytest
 from requests import HTTPError
 
-from ecmwf.datastores import Client, config
-
-
-@pytest.fixture
-def api_client() -> Client:
-    try:
-        # Can not use anonymous user
-        config.get_config("key")
-    except Exception:
-        pytest.skip("The API key is missing")
-    return Client(maximum_tries=0)
+from ecmwf.datastores import Client
 
 
 @pytest.mark.parametrize("scope", [None, "all", "dataset", "portal"])
@@ -51,15 +41,17 @@ def test_profile_accept_licence(
     )
 
 
-def test_profile_check_authentication(
-    api_root_url: str, api_anon_client: Client
+def test_profile_check_authentication_anonymous_fails(
+    api_anon_client: Client,
 ) -> None:
-    assert api_anon_client.check_authentication() == {
-        "email": None,
-        "id": -1,
-        "role": "anonymous",
-        "sub": "anonymous",
-    }
+    with pytest.raises(HTTPError, match=r"401[\s\S]*No authentication data provided"):
+        api_anon_client.check_authentication()
+
+
+def test_profile_check_authentication(api_root_url: str, api_client: Client) -> None:
+    auth = api_client.check_authentication()
+    assert set(auth) == {"email", "id", "role", "sub"}
+    assert auth["role"] != "anonymous"
 
     bad_client = Client(key="foo", url=api_root_url)
     with pytest.raises(HTTPError, match="401 Client Error"):

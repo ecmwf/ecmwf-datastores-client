@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import os
 import pathlib
+import warnings
 
 import pytest
 from urllib3.exceptions import InsecureRequestWarning
@@ -23,8 +24,20 @@ from urllib3.exceptions import InsecureRequestWarning
 from ecmwf.datastores import Client, Remote, Results, processing
 
 
-def test_client_repr(api_anon_client: Client) -> None:
-    assert "key='***'" in repr(api_anon_client)
+@pytest.mark.parametrize("key,expected", [("foo", "'***'"), ("", "''"), (None, "None")])
+def test_client_repr(
+    api_root_url: str,
+    key: str | None,
+    expected: str,
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: pathlib.Path,
+) -> None:
+    monkeypatch.delenv("ECMWF_DATASTORES_KEY", raising=False)
+    monkeypatch.setenv("ECMWF_DATASTORES_RC_FILE", str(tmp_path / "missing"))
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", UserWarning)
+        client = Client(url=api_root_url, key=key)
+    assert f"key={expected}" in repr(client)
 
 
 def test_client_download_results(
@@ -42,7 +55,7 @@ def test_client_get_process(api_anon_client: Client) -> None:
     process = api_anon_client.get_process("test-adaptor-dummy")
     assert isinstance(process, processing.Process)
     assert process.id == "test-adaptor-dummy"
-    assert set(process.headers) == {"User-Agent", "PRIVATE-TOKEN"}
+    assert set(process.headers) == {"User-Agent"}
 
 
 def test_client_get_receipt(api_anon_client: Client) -> None:
@@ -55,7 +68,7 @@ def test_client_get_remote(api_anon_client: Client) -> None:
     request_id = api_anon_client.submit("test-adaptor-dummy", {}).request_id
     remote = api_anon_client.get_remote(request_id)
     assert remote.request_id == request_id
-    assert set(remote.headers) == {"User-Agent", "PRIVATE-TOKEN"}
+    assert set(remote.headers) == {"User-Agent"}
 
 
 def test_client_get_results(api_anon_client: Client) -> None:

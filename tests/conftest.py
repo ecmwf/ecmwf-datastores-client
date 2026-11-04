@@ -14,7 +14,6 @@
 
 from __future__ import annotations
 
-import os
 from typing import TYPE_CHECKING
 
 import pytest
@@ -35,7 +34,7 @@ def api_root_url() -> str:
 
 @pytest.fixture
 def api_anon_key() -> str:
-    return os.getenv("ANONYMOUS_PAT", "00112233-4455-6677-c899-aabbccddeeff")
+    return ""
 
 
 @pytest.fixture
@@ -43,3 +42,16 @@ def api_anon_client(api_root_url: str, api_anon_key: str) -> Client:
     from ecmwf.datastores import Client
 
     return Client(url=api_root_url, key=api_anon_key, maximum_tries=0)
+
+
+@pytest.fixture
+def api_client() -> Client:
+    from ecmwf.datastores import Client, config
+
+    try:
+        key = config.get_config("key")
+    except Exception:
+        key = None
+    if not key:
+        pytest.skip("The API key is missing")
+    return Client(maximum_tries=0)
