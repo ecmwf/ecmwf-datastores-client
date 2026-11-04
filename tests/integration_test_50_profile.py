@@ -44,7 +44,7 @@ def test_profile_accept_licence(
 def test_profile_check_authentication_anonymous_fails(
     api_anon_client: Client,
 ) -> None:
-    with pytest.raises(HTTPError, match="401 Client Error: Unauthorized for url"):
+    with pytest.raises(HTTPError, match=r"401[\s\S]*No authentication data provided"):
         api_anon_client.check_authentication()
 
 

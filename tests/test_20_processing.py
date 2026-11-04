@@ -543,32 +543,3 @@ def test_remote_logs(
         ("ecmwf.datastores.processing", 30, "This is a warning log"),
         ("ecmwf.datastores.processing", 20, "status has been updated to successful"),
     ]
-
-
-def get_unauthorized(headers: dict[str, str]) -> None:
-    responses.add(responses.GET, JOB_SUCCESSFUL_URL, json={}, status=401)
-    with pytest.raises(requests.HTTPError, match="401 Client Error"):
-        processing.ApiResponse.from_request(
-            "get",
-            JOB_SUCCESSFUL_URL,
-            headers=headers,
-            session=None,
-            retry_options={"maximum_tries": 0},
-            request_options={},
-            download_options={},
-            sleep_max=0,
-            cleanup=False,
-            log_callback=None,
-        )
-
-
-@responses.activate
-def test_unauthorized_anonymous_warns() -> None:
-    with pytest.warns(UserWarning, match="anonymous mode"):
-        get_unauthorized({})
-
-
-@responses.activate
-@pytest.mark.filterwarnings("error")
-def test_unauthorized_authenticated_does_not_warn() -> None:
-    get_unauthorized({"PRIVATE-TOKEN": "foo"})

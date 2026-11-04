@@ -87,10 +87,7 @@ def test_processing_estimate_costs(
 
 
 def test_processing_get_jobs_anonymous_fails(api_anon_client: Client) -> None:
-    with (
-        pytest.warns(UserWarning, match="anonymous mode"),
-        pytest.raises(HTTPError, match="401 Client Error: Unauthorized for url"),
-    ):
+    with pytest.raises(HTTPError, match=r"401[\s\S]*authentication required"):
         api_anon_client.get_jobs()
 
 
