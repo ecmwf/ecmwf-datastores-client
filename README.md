@@ -44,7 +44,7 @@ $ pip install ecmwf-datastores-client
 
 ## Configuration
 
-The `Client` requires the `url` to the API root and a valid API `key`. These can be provided in three ways, in order of precedence:
+The `Client` requires the `url` to the API root and, for authenticated access, a valid API `key`. These can be provided in three ways, in order of precedence:
 
 1. As keyword arguments when instantiating the `Client`.
 1. Via the `ECMWF_DATASTORES_URL` and `ECMWF_DATASTORES_KEY` environment variables.
@@ -55,6 +55,12 @@ $ cat $HOME/.ecmwfdatastoresrc
 url: https://cds.climate.copernicus.eu/api
 key: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 ```
+
+### Anonymous access
+
+Some resources (e.g., browsing the catalogue) can be accessed without an API key. To use the `Client` anonymously, pass an empty key: `Client(key="")`.
+If no key is passed and none can be found in the environment or configuration file, the `Client` falls back to anonymous access and emits a `UserWarning`.
+Anonymous access is discouraged: it is only permitted for a small subset of datasets, and anonymous requests are subject to tighter limits and longer queues.
 
 ## Quick Start
 

@@ -1,4 +1,4 @@
-# Copyright 2022, European Union.
+# Copyright 2026, European Union.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
 from __future__ import annotations
 
 import pathlib
-import warnings
 from collections.abc import Iterator
 
 import pytest
