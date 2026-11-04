@@ -42,6 +42,7 @@ class Client:
         API URL. If None, infer from ECMWF_DATASTORES_URL or ECMWF_DATASTORES_RC_FILE.
     key: str or None, default: None
         API Key. If None, infer from ECMWF_DATASTORES_KEY or ECMWF_DATASTORES_RC_FILE.
+        Use an empty string for unauthenticated access.
     verify: bool, default: True
         Whether to verify the TLS certificate at the remote end.
     timeout: float or tuple[float,float], default: 60
