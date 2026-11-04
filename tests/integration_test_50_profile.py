@@ -41,7 +41,7 @@ def test_profile_accept_licence(
     )
 
 
-def test_profile_check_authentication_unauthenticated_fails(
+def test_profile_check_authentication_anonymous_fails(
     api_anon_client: Client,
 ) -> None:
     with pytest.raises(HTTPError, match="401 Client Error: Unauthorized for url"):
@@ -49,7 +49,9 @@ def test_profile_check_authentication_unauthenticated_fails(
 
 
 def test_profile_check_authentication(api_root_url: str, api_client: Client) -> None:
-    assert set(api_client.check_authentication()) == {"email", "id", "role", "sub"}
+    auth = api_client.check_authentication()
+    assert set(auth) == {"email", "id", "role", "sub"}
+    assert auth["role"] != "anonymous"
 
     bad_client = Client(key="foo", url=api_root_url)
     with pytest.raises(HTTPError, match="401 Client Error"):

@@ -42,7 +42,7 @@ class Client:
         API URL. If None, infer from ECMWF_DATASTORES_URL or ECMWF_DATASTORES_RC_FILE.
     key: str or None, default: None
         API Key. If None, infer from ECMWF_DATASTORES_KEY or ECMWF_DATASTORES_RC_FILE.
-        Use an empty string for unauthenticated access.
+        Use an empty string for anonymous access.
     verify: bool, default: True
         Whether to verify the TLS certificate at the remote end.
     timeout: float or tuple[float,float], default: 60
@@ -82,7 +82,7 @@ class Client:
                 self.key = str(config.get_config("key"))
             except (KeyError, FileNotFoundError):
                 warnings.warn(
-                    "The API key is missing, falling back to unauthenticated access.",
+                    "The API key is missing, falling back to anonymous access.",
                     UserWarning,
                 )
 

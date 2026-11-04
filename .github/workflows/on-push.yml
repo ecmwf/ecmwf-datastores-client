@@ -176,5 +176,4 @@ jobs:
       env:
         ECMWF_DATASTORES_URL: ${{ secrets.ECMWF_DATASTORES_URL }}
         ECMWF_DATASTORES_KEY: ${{ secrets.ECMWF_DATASTORES_KEY }}
-        ANONYMOUS_PAT: ${{ secrets.ECMWF_DATASTORES_ANON_KEY }}
       run: make ci-integration-tests PYTHON_VERSION=${{ matrix.python-version }}

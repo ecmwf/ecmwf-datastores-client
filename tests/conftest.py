@@ -49,7 +49,9 @@ def api_client() -> Client:
     from ecmwf.datastores import Client, config
 
     try:
-        config.get_config("key")
+        key = config.get_config("key")
     except Exception:
+        key = None
+    if not key:
         pytest.skip("The API key is missing")
     return Client(maximum_tries=0)

@@ -174,6 +174,13 @@ class ApiResponse:
         )
         log(logging.DEBUG, f"REPLY {response.text}", callback=log_callback)
 
+        if response.status_code == 401 and not any(
+            k.lower() == "private-token" for k in headers
+        ):
+            warnings.warn(
+                "The request was sent in anonymous mode (no API key provided).",
+                UserWarning,
+            )
         cads_raise_for_status(response)
 
         self = cls(
