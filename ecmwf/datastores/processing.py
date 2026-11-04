@@ -22,12 +22,7 @@ import time
 import urllib.parse
 import warnings
 from collections.abc import Callable
-from typing import Any, TypedDict, TypeVar
-
-try:
-    from typing import Self
-except ImportError:
-    from typing_extensions import Self
+from typing import Any, Self, TypedDict, TypeVar
 
 import attrs
 import multiurl

@@ -42,18 +42,17 @@ classifiers = [
   "Operating System :: OS Independent",
   "Programming Language :: Python",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
   "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: 3.15",
   "Topic :: Scientific/Engineering"
 ]
 dependencies = [
   "attrs>=23.1.0",
   "multiurl>=0.3.7",
-  "requests>=2.5.0",
-  "typing-extensions>=4.13.0"
+  "requests>=2.5.0"
 ]
 description = "ECMWF Data Stores Service (DSS) API Python client"
 dynamic = ["version"]
@@ -61,7 +60,7 @@ license = "Apache-2.0"
 license-files = ["LICENSE"]
 name = "ecmwf-datastores-client"
 readme = "README.md"
-requires-python = ">= 3.10"
+requires-python = ">= 3.11"
 
 [project.optional-dependencies]
 legacy = [
@@ -101,7 +100,7 @@ testpaths = [
 # Same as Black.
 indent-width = 4
 line-length = 88
-target-version = "py310"
+target-version = "py311"
 
 [tool.ruff.lint]
 ignore = [
