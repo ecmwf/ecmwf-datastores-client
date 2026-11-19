@@ -1226,7 +1226,7 @@ wheels = [
 
 [[package]]
 name = "multiurl"
-version = "0.3.9"
+version = "0.3.10"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "python-dateutil" },
@@ -1234,9 +1234,9 @@ dependencies = [
     { name = "requests" },
     { name = "tqdm" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/d3/35/a08c568e63fda8cb1b7f3168409c026d2b407ab6d82da09cea078b01c2d7/multiurl-0.3.9.tar.gz", hash = "sha256:799b7998bfabd4e15d51ba09d08eb5d0716762655bae6e09db00a14c3bfaeae6", size = 20044, upload-time = "2026-06-18T07:43:38.756Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/d4/4e/f9d2e73ff31721e279600cd7a56c8e2c323c412769883a1f1115932aff5b/multiurl-0.3.10.tar.gz", hash = "sha256:139927318b0a92d7f254d49ca4ea8544a4e3224e615fd2ed79408fe6d2d10e61", size = 20957, upload-time = "2026-11-10T10:53:02.008Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/59/f1/2374970b2ad0ab20e28a0cd12eec1c234567fef31064f0903396d55ae3f1/multiurl-0.3.9-py3-none-any.whl", hash = "sha256:5acedb53343bb47ff6188405dc33e10c1f1713591de8929a69b966d4d395d88e", size = 22610, upload-time = "2026-06-18T07:43:37.727Z" },
+    { url = "https://files.pythonhosted.org/packages/e0/a2/e8163a02558002dbf337ffde70c8ac9ebfe1803c983da95fb656000619a3/multiurl-0.3.10-py3-none-any.whl", hash = "sha256:752f8eaeeead66443ff114069b06de2b659ac1533734c1b7f229fd3923e16c8c", size = 22606, upload-time = "2026-11-10T10:53:00.927Z" },
 ]
 
 [[package]]
