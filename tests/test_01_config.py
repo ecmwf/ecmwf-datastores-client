@@ -44,6 +44,52 @@ def test_read_default_config() -> None:
         assert config.read_config() == config.read_config(str(config_path))
 
 
+def test_read_config_legacy_fallback(
+    tmp_path: pathlib.Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    expected_config = {"url": "dummy-url", "key": "dummy-key"}
+
+    monkeypatch.delenv("ECMWF_DATASTORES_RC_FILE", raising=False)
+    monkeypatch.delenv("CDSAPI_RC", raising=False)
+    monkeypatch.setenv("HOME", str(tmp_path))
+
+    legacy_file = tmp_path / ".cdsapirc"
+    legacy_file.write_text("url: dummy-url\nkey: dummy-key")
+    monkeypatch.setattr(config, "LEGACY_RC_FILE", str(legacy_file))
+
+    with pytest.warns(UserWarning, match="migrate your credentials"):
+        res = config.read_config()
+    assert res == expected_config
+
+
+def test_read_config_legacy_fallback_env_var(
+    tmp_path: pathlib.Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    expected_config = {"url": "dummy-url", "key": "dummy-key"}
+
+    monkeypatch.delenv("ECMWF_DATASTORES_RC_FILE", raising=False)
+    monkeypatch.setenv("HOME", str(tmp_path))
+
+    legacy_file = tmp_path / "custom-cdsapirc"
+    legacy_file.write_text("url: dummy-url\nkey: dummy-key")
+    monkeypatch.setenv("CDSAPI_RC", str(legacy_file))
+
+    with pytest.warns(UserWarning, match="ECMWF_DATASTORES_RC_FILE"):
+        res = config.read_config()
+    assert res == expected_config
+
+
+def test_read_config_no_legacy_fallback_for_explicit_path(
+    tmp_path: pathlib.Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    legacy_file = tmp_path / ".cdsapirc"
+    legacy_file.write_text("url: dummy-url\nkey: dummy-key")
+    monkeypatch.setattr(config, "LEGACY_RC_FILE", str(legacy_file))
+
+    with pytest.raises(FileNotFoundError):
+        config.read_config(str(tmp_path / ".ecmwfdatastoresrc"))
+
+
 def test_get_config_from_configuration_file(
     tmp_path: pathlib.Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
